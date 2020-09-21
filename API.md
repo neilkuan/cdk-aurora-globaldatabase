@@ -4,7 +4,8 @@
 
 Name|Description
 ----|-----------
-[GolbalAuroraRDS](#cdk-aurora-globaldatabase-golbalaurorards)|*No description*
+[GolbalAuroraRDSMaster](#cdk-aurora-globaldatabase-golbalaurorardsmaster)|*No description*
+[GolbalAuroraRDSSlave](#cdk-aurora-globaldatabase-golbalaurorardsslave)|*No description*
 [PasswordProvider](#cdk-aurora-globaldatabase-passwordprovider)|Random Password Provider.
 [VpcProvider](#cdk-aurora-globaldatabase-vpcprovider)|The VPC provider to create or import the VPC.
 
@@ -13,7 +14,8 @@ Name|Description
 
 Name|Description
 ----|-----------
-[GolbalAuroraRDSProps](#cdk-aurora-globaldatabase-golbalaurorardsprops)|*No description*
+[GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)|*No description*
+[GolbalAuroraRDSSlaveProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveprops)|*No description*
 
 
 **Enums**
@@ -25,7 +27,7 @@ Name|Description
 
 
 
-## class GolbalAuroraRDS  <a id="cdk-aurora-globaldatabase-golbalaurorards"></a>
+## class GolbalAuroraRDSMaster  <a id="cdk-aurora-globaldatabase-golbalaurorardsmaster"></a>
 
 
 
@@ -38,20 +40,18 @@ __Extends__: [Construct](#aws-cdk-core-construct)
 
 
 ```ts
-new GolbalAuroraRDS(scope: Construct, id: string, props?: GolbalAuroraRDSProps)
+new GolbalAuroraRDSMaster(scope: Construct, id: string, props?: GolbalAuroraRDSMasterProps)
 ```
 
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
-* **props** (<code>[GolbalAuroraRDSProps](#cdk-aurora-globaldatabase-golbalaurorardsprops)</code>)  *No description*
+* **props** (<code>[GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)</code>)  *No description*
   * **dbClusterpPG** (<code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code>)  RDS ParameterGroup. __*Default*__: Aurora MySQL ParameterGroup
   * **dbUserName** (<code>string</code>)  RDS default Super User Name. __*Default*__: < Mysql: admin >, < Postgres: postgres >
   * **defaultDatabaseName** (<code>string</code>)  RDS default Database Name. __*Default*__: globaldatabase
-  * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
   * **engineVersion** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  RDS Database Cluster Engine . __*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
   * **instanceType** (<code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code>)  RDS Instance Type only can use r4 or r5 type  see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations. __*Default*__: r5.large
   * **parameters** (<code>Map<string, string></code>)  RDS Parameters. __*Default*__: {time_zone: 'UTC'}
-  * **storageEncrypted** (<code>boolean</code>)  Global RDS Database Cluster Engine Storage Encrypted Option . __*Default*__: true
   * **timeZone** (<code>[MySQLtimeZone](#cdk-aurora-globaldatabase-mysqltimezone)</code>)  RDS time zone. __*Default*__: MySQLtimeZone.UTC
   * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  RDS default VPC. __*Default*__: new VPC
 
@@ -65,6 +65,34 @@ Name | Type | Description
 **dbClusterpPG** | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | reture RDS Cluster ParameterGroup.
 **rdsCluster** | <code>[IDatabaseCluster](#aws-cdk-aws-rds-idatabasecluster)</code> | reture RDS Cluster.
 **rdsPassword** | <code>string</code> | reture RDS Cluster password.
+
+
+
+## class GolbalAuroraRDSSlave  <a id="cdk-aurora-globaldatabase-golbalaurorardsslave"></a>
+
+
+
+__Implements__: [IConstruct](#constructs-iconstruct), [IConstruct](#aws-cdk-core-iconstruct), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable)
+__Extends__: [Construct](#aws-cdk-core-construct)
+
+### Initializer
+
+
+
+
+```ts
+new GolbalAuroraRDSSlave(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveProps)
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **id** (<code>string</code>)  *No description*
+* **props** (<code>[GolbalAuroraRDSSlaveProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveprops)</code>)  *No description*
+  * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
+  * **stack** (<code>[Stack](#aws-cdk-core-stack)</code>)  RDS Stack. __*Optional*__
+  * **storageEncrypted** (<code>boolean</code>)  Global RDS Database Cluster Engine Storage Encrypted Option . __*Default*__: true
+  * **subnetType** (<code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code>)  Slave region. __*Optional*__
+  * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  Slave region VPC. __*Default*__: new VPC
+
 
 
 
@@ -135,7 +163,7 @@ __Returns__:
 
 
 
-## struct GolbalAuroraRDSProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsprops"></a>
+## struct GolbalAuroraRDSMasterProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsmasterprops"></a>
 
 
 
@@ -147,13 +175,28 @@ Name | Type | Description
 **dbClusterpPG**? | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | RDS ParameterGroup.<br/>__*Default*__: Aurora MySQL ParameterGroup
 **dbUserName**? | <code>string</code> | RDS default Super User Name.<br/>__*Default*__: < Mysql: admin >, < Postgres: postgres >
 **defaultDatabaseName**? | <code>string</code> | RDS default Database Name.<br/>__*Default*__: globaldatabase
-**deletionProtection**? | <code>boolean</code> | Global RDS Database Cluster Engine Deletion Protection Option .<br/>__*Default*__: false
 **engineVersion**? | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | RDS Database Cluster Engine .<br/>__*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
 **instanceType**? | <code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code> | RDS Instance Type only can use r4 or r5 type  see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations.<br/>__*Default*__: r5.large
 **parameters**? | <code>Map<string, string></code> | RDS Parameters.<br/>__*Default*__: {time_zone: 'UTC'}
-**storageEncrypted**? | <code>boolean</code> | Global RDS Database Cluster Engine Storage Encrypted Option .<br/>__*Default*__: true
 **timeZone**? | <code>[MySQLtimeZone](#cdk-aurora-globaldatabase-mysqltimezone)</code> | RDS time zone.<br/>__*Default*__: MySQLtimeZone.UTC
 **vpc**? | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | RDS default VPC.<br/>__*Default*__: new VPC
+
+
+
+## struct GolbalAuroraRDSSlaveProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveprops"></a>
+
+
+
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**deletionProtection**? | <code>boolean</code> | Global RDS Database Cluster Engine Deletion Protection Option .<br/>__*Default*__: false
+**stack**? | <code>[Stack](#aws-cdk-core-stack)</code> | RDS Stack.<br/>__*Optional*__
+**storageEncrypted**? | <code>boolean</code> | Global RDS Database Cluster Engine Storage Encrypted Option .<br/>__*Default*__: true
+**subnetType**? | <code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code> | Slave region.<br/>__*Optional*__
+**vpc**? | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | Slave region VPC.<br/>__*Default*__: new VPC
 
 
 

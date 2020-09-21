@@ -6,6 +6,7 @@ import * as logs from '@aws-cdk/aws-logs';
 import * as cr from '@aws-cdk/custom-resources';
 import * as iam from '@aws-cdk/aws-iam';
 import * as path from 'path';
+import { CfnOutput } from '@aws-cdk/core';
 
 export enum MySQLtimeZone {
   UTC = 'UTC',
@@ -111,7 +112,11 @@ export enum InstanceTypeEnum{
   R5_24XLARGE = 'r5.24xlarge',
 }
 
-export interface GolbalAuroraRDSProps {
+const GlobalAuroraRDSSupportRegion = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-central-1',
+  'ap-south-1', 'ap-southeast-1', 'ap-southeast-2' , 'ap-northeast-1' , 'ap-northeast-2' , 'ca-central-1',
+];
+
+export interface GolbalAuroraRDSMasterProps {
   /**
    * RDS default VPC
    *
@@ -168,23 +173,9 @@ export interface GolbalAuroraRDSProps {
    * @default - rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
   */
   readonly engineVersion?: rds.IClusterEngine;
-
-  /** 
-   * Global RDS Database Cluster Engine Deletion Protection Option .
-   * 
-   * @default - false
-  */
-  readonly deletionProtection?: boolean,
-  
-  /** 
-   * Global RDS Database Cluster Engine Storage Encrypted Option .
-   * 
-   * @default - true
-  */
-  readonly storageEncrypted?: boolean,
 }
 
-export class GolbalAuroraRDS extends cdk.Construct {
+export class GolbalAuroraRDSMaster extends cdk.Construct {
   /**
    * reture RDS Cluster
    */
@@ -198,21 +189,26 @@ export class GolbalAuroraRDS extends cdk.Construct {
    */
   readonly dbClusterpPG: rds.IParameterGroup;
 
-  constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSProps ) {
+  constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
     super(scope, id);
+    const stack = cdk.Stack.of(this);
 
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ){
+      throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
+    }
     
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
     const engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
       version: rds.AuroraMysqlEngineVersion.VER_2_07_1,
     });    
     const rdsInstanceType = props?.instanceType ?? InstanceTypeEnum.R5_LARGE;
+    // Master region Vpc 
     const rdsVpc =  props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionMaster',{
-      cidr: '10.109.0.0/16',
+      cidr: '10.108.0.0/16',
       enableDnsHostnames: true,
       enableDnsSupport: true,
       natGateways: 1,
-    })
+    });
 
     this.rdsPassword = PasswordProvider.genRdsPassword();
 
@@ -222,6 +218,11 @@ export class GolbalAuroraRDS extends cdk.Construct {
         time_zone: props?.timeZone ?? MySQLtimeZone.UTC,
       },
     });
+
+    let rdsVpcSubnetSelect = ec2.SubnetType.PRIVATE;
+    if(this.azOfSubnets(rdsVpc.privateSubnets) === 0){
+      rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
+    }
 
     this.rdsCluster = new rds.DatabaseCluster(this, 'RDSCluster', {
       engine: engineVersion,
@@ -234,7 +235,7 @@ export class GolbalAuroraRDS extends cdk.Construct {
       instanceProps: {
         // if want publicAccess , need to define vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC } ,
         vpc: rdsVpc,
-        vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE },
+        vpcSubnets: { subnetType: rdsVpcSubnetSelect },
         instanceType: new ec2.InstanceType(rdsInstanceType),
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -242,6 +243,86 @@ export class GolbalAuroraRDS extends cdk.Construct {
     });
 
     this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock))
+    new CfnOutput(this, 'RDSPublic?',{
+      value: rdsVpcSubnetSelect,
+    })
+  }
+  private azOfSubnets(subnets: ec2.ISubnet[]): number {
+    return new Set(subnets.map(subnet => subnet.availabilityZone)).size;
+  }
+}
+
+export interface  GolbalAuroraRDSSlaveProps {
+  /**
+   *  Slave region VPC
+   * 
+   *  @default - new VPC
+   */
+  readonly vpc?: ec2.IVpc;
+
+  /**
+   *  Slave region
+   * 
+   */
+  readonly subnetType?: ec2.SubnetType;
+
+  /**
+   *  RDS Stack
+   */
+  readonly stack?: cdk.Stack;
+
+  /** 
+   * Global RDS Database Cluster Engine Deletion Protection Option .
+   * 
+   * @default - false
+  */
+  readonly deletionProtection?: boolean,
+   
+  /** 
+   * Global RDS Database Cluster Engine Storage Encrypted Option .
+   * 
+  * @default - true
+  */
+  readonly storageEncrypted?: boolean,
+}
+
+export class GolbalAuroraRDSSlave extends cdk.Construct {
+  constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSSlaveProps ) {
+    super(scope, id);
+
+    const stack = cdk.Stack.of(this);
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ){
+      throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
+    }
+    // Slave region Vpc 
+    const rdsVpcSecond =  props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionSlave',{
+      cidr: '10.109.0.0/16',
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+      natGateways: 1,
+    });
+
+    const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE;
+    if (DBsubnetType === ec2.SubnetType.PRIVATE){
+      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE });
+      const DBPrivateSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
+        dbSubnetGroupDescription: 'Private Subnets for database',
+        subnetIds: PrivateSubnet.subnetIds,
+      });
+
+      cdk.Tags.of(DBPrivateSubnetGroup).add('Name','PrivateDBSubnetGroup')
+      DBPrivateSubnetGroup.node.addDependency(rdsVpcSecond)  
+    }else {
+      const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
+      const DBPrivateSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
+        dbSubnetGroupDescription: 'Public Subnets for database',
+        subnetIds: PublicSubnet.subnetIds,
+      });
+
+      cdk.Tags.of(DBPrivateSubnetGroup).add('Name','PublicDBSubnetGroup')
+      DBPrivateSubnetGroup.node.addDependency(rdsVpcSecond)
+    }
+
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
       resources: ['*'],
@@ -257,18 +338,17 @@ export class GolbalAuroraRDS extends cdk.Construct {
       onEventHandler: onEvent,
       logRetention: logs.RetentionDays.ONE_DAY,
     });
-  
-    const CRUpgradeglobaldbProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
+    
+    new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
       serviceToken: UpgradeglobaldbProvider.serviceToken,
       properties: {
-        SourceDBClusterIdentifier: this.rdsCluster.clusterIdentifier,
+        SourceDBClusterIdentifier: props?.stack ?? undefined,
         GlobalClusterIdentifier: this.node.uniqueId,
         DeletionProtection: props?.deletionProtection ?? false,
         StorageEncrypted: props?.storageEncrypted ?? true,
       },
     });
   
-    CRUpgradeglobaldbProvider.node.addDependency(this.rdsCluster)
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
   }
 }
