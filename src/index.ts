@@ -6,7 +6,6 @@ import * as logs from '@aws-cdk/aws-logs';
 import * as cr from '@aws-cdk/custom-resources';
 import * as iam from '@aws-cdk/aws-iam';
 import * as path from 'path';
-import { CfnOutput } from '@aws-cdk/core';
 
 export enum MySQLtimeZone {
   UTC = 'UTC',
@@ -173,6 +172,21 @@ export interface GolbalAuroraRDSMasterProps {
    * @default - rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
   */
   readonly engineVersion?: rds.IClusterEngine;
+
+  /** 
+   * Global RDS Database Cluster Engine Deletion Protection Option .
+   * 
+   * @default - false
+  */
+  readonly deletionProtection?: boolean;
+    
+  /** 
+   * Global RDS Database Cluster Engine Storage Encrypted Option .
+   * 
+  * @default - true
+  */
+  readonly storageEncrypted?: boolean;
+
 }
 
 export class GolbalAuroraRDSMaster extends cdk.Construct {
@@ -243,9 +257,59 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     });
 
     this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock))
-    new CfnOutput(this, 'RDSPublic?',{
+
+    // custom resource policy
+    const CustomResourcePolicy = new iam.PolicyStatement({
+      resources: ['*'],
+      actions: ['rds:CreateGlobalCluster','rds:DeleteGlobalCluster','rds:RemoveFromGlobalCluster','rds:ModifyGlobalCluster']});
+    // Upgrade database to Global.
+    const onEvent = new lambda.Function(this, 'onEventHandler', {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      code: lambda.Code.fromAsset(path.join(__dirname, '../custom-resource-handler')),
+      handler: 'global_index.on_event',
+      timeout: cdk.Duration.minutes(5),
+    });
+  
+    const UpgradeglobaldbProvider = new cr.Provider(this, 'UpgradeglobaldbProvider', {
+      onEventHandler: onEvent,
+      logRetention: logs.RetentionDays.ONE_DAY,
+    });
+    
+    const CRGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
+      serviceToken: UpgradeglobaldbProvider.serviceToken,
+      properties: {
+        SourceDBClusterIdentifier: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}` ?? undefined,
+        GlobalClusterIdentifier: `global-${stack.stackName}`,
+        //DeletionProtection: props?.deletionProtection ?? false,
+        //StorageEncrypted: props?.storageEncrypted ?? true,
+      },
+    });
+    CRGlobalRDSProvider.node.addDependency(this.rdsCluster);
+    onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
+
+    new cdk.CfnOutput(this, 'RDSisPublic',{
       value: rdsVpcSubnetSelect,
-    })
+    });
+
+    new cdk.CfnOutput(this, 'RDSClusterarn',{
+      value: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}` ?? undefined,
+    });
+
+    new cdk.CfnOutput(this, 'GlobalClusterIdentifier',{
+      value: `global-${stack.stackName}`,
+    });
+
+    new cdk.CfnOutput(this, 'Engine',{
+      value: cdk.Token.asString(CRGlobalRDSProvider.getAtt('Engine')),
+    });
+
+    new cdk.CfnOutput(this, 'EngineVersion',{
+      value: cdk.Token.asString(CRGlobalRDSProvider.getAtt('EngineVersion')),
+    });
+
+    new cdk.CfnOutput(this, 'GlobalClusterArn',{
+      value: cdk.Token.asString(CRGlobalRDSProvider.getAtt('GlobalClusterArn')),
+    });
   }
   private azOfSubnets(subnets: ec2.ISubnet[]): number {
     return new Set(subnets.map(subnet => subnet.availabilityZone)).size;
@@ -331,7 +395,8 @@ export class GolbalAuroraRDSSlave extends cdk.Construct {
     const onEvent = new lambda.Function(this, 'onEventHandler', {
       runtime: lambda.Runtime.PYTHON_3_8,
       code: lambda.Code.fromAsset(path.join(__dirname, '../custom-resource-handler')),
-      handler: 'index.on_event',
+      handler: 'add_region_index.on_event',
+      timeout: cdk.Duration.minutes(5),
     });
   
     const UpgradeglobaldbProvider = new cr.Provider(this, 'UpgradeglobaldbProvider', {
@@ -344,8 +409,8 @@ export class GolbalAuroraRDSSlave extends cdk.Construct {
       properties: {
         SourceDBClusterIdentifier: props?.stack ?? undefined,
         GlobalClusterIdentifier: this.node.uniqueId,
-        DeletionProtection: props?.deletionProtection ?? false,
-        StorageEncrypted: props?.storageEncrypted ?? true,
+        //DeletionProtection: props?.deletionProtection ?? false,
+        //StorageEncrypted: props?.storageEncrypted ?? true,
       },
     });
   

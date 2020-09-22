@@ -2,7 +2,7 @@
 import boto3
 import time
 
-ec2 = boto3.client('rds')
+rds = boto3.client('rds')
 data={}
 print("[INFO]", "Initialize function")
 def on_event(event, context):
@@ -19,18 +19,20 @@ def on_event(event, context):
 
 def on_create(event):
     props = event["ResourceProperties"]
-    GlobalClusterIdentifier = props['GlobalClusterIdentifier']
-    SourceDBClusterIdentifier = props['SourceDBClusterIdentifier']
-    DeletionProtection = props['DeletionProtection']
-    StorageEncrypted = props['StorageEncrypted']
+    GlobalClusterIdentifier_value = props['GlobalClusterIdentifier']
+    SourceDBClusterIdentifier_value = props['SourceDBClusterIdentifier']
+    #DeletionProtection_value = props['DeletionProtection']
+    #StorageEncrypted_value = props['StorageEncrypted']
+    response = rds.create_global_cluster(
+    GlobalClusterIdentifier=GlobalClusterIdentifier_value,
+    SourceDBClusterIdentifier=SourceDBClusterIdentifier_value)
     data ={
-      'GlobalClusterIdentifier': GlobalClusterIdentifier,
-      'SourceDBClusterIdentifier': SourceDBClusterIdentifier,
-      'DeletionProtection': DeletionProtection,
-      'StorageEncrypted': StorageEncrypted
+      'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
+      'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value,
+      'Engine': response['GlobalCluster']['Engine'],
+      'EngineVersion': response['GlobalCluster']['EngineVersion'],
+      'GlobalClusterArn': response['GlobalCluster']['GlobalClusterArn']
     }
-    # rds.create_global_cluster(
-    # )
     if (data):
       output = {'Status': data}
     else:
@@ -45,5 +47,27 @@ def on_update(event):
 
 
 def on_delete(event):
-    output = {'Status': 'Updated'}
-    return {"Data": output}
+    props = event["ResourceProperties"]
+    GlobalClusterIdentifier_value = props['GlobalClusterIdentifier']
+    SourceDBClusterIdentifier_value = props['SourceDBClusterIdentifier']
+    response = rds.remove_from_global_cluster(
+    GlobalClusterIdentifier=GlobalClusterIdentifier_value,
+    DbClusterIdentifier=SourceDBClusterIdentifier_value)
+    
+    time.sleep(5)
+    if not response['GlobalCluster']['GlobalClusterMembers']:
+       rds.delete_global_cluster(
+       GlobalClusterIdentifier=GlobalClusterIdentifier_value)
+       removeCluster=True
+       time.sleep(5)
+
+    data ={
+      'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
+      'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value,
+      'Status': removeCluster
+    }
+    if (data):
+      output = {'Status': data}
+    else:
+      output = {'Status': 'deleted'}
+    return {'Data': output}
