@@ -253,6 +253,11 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
    * return Second RDS Instance Identifier .
    */
   public seconddbInstanceIdentifier: string;
+  
+  /**
+   * CustomResource for Second Regional .
+   */
+  private crGlobalRDSProvider: cdk.CustomResource;
   constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
@@ -306,8 +311,8 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       defaultDatabaseName:  props?.defaultDatabaseName ?? 'globaldatabase',
     });
-
-    this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock))
+    this.rdsCluster.node.addDependency(rdsVpc);
+    this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock));
 
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
@@ -326,7 +331,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       logRetention: logs.RetentionDays.ONE_DAY,
     });
     
-    const CRGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
+    this.crGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
       serviceToken: UpgradeglobaldbProvider.serviceToken,
       properties: {
         SourceDBClusterIdentifier: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}` ?? undefined,
@@ -334,7 +339,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       },
     });
 
-    CRGlobalRDSProvider.node.addDependency(this.rdsCluster);
+    this.crGlobalRDSProvider.node.addDependency(this.rdsCluster);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
     this.secondRDSClusterArn = 'None';
     this.seconddbInstanceIdentifier = 'None';
@@ -353,17 +358,17 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       value: this.globalClusterIdentifier ,
     });
 
-    this.engine = cdk.Token.asString(CRGlobalRDSProvider.getAtt('Engine'));
+    this.engine = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('Engine'));
     new cdk.CfnOutput(this, 'Engine',{
       value: this.engine,
     });
 
-    this.engineVersion = cdk.Token.asString(CRGlobalRDSProvider.getAtt('EngineVersion'));
+    this.engineVersion = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('EngineVersion'));
     new cdk.CfnOutput(this, 'EngineVersion',{
       value: this.engineVersion,
     });
 
-    this.globalClusterArn = cdk.Token.asString(CRGlobalRDSProvider.getAtt('GlobalClusterArn'));
+    this.globalClusterArn = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('GlobalClusterArn'));
     new cdk.CfnOutput(this, 'GlobalClusterArn',{
       value: this.globalClusterArn,
     });
@@ -410,7 +415,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
         seconddbInstanceIdentifier: this.seconddbInstanceIdentifier,
       },
     });
-  
+    CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
 
     this.secondRDSClusterArn = cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn'));

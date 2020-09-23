@@ -8,7 +8,7 @@ const envSingapro  = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-sou
 const envTokyo = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-northeast-1' };
 
 const stackM = new Stack(mockApp, 'testing-stackM',{env: envTokyo});
-const VPCPublic = new ec2.Vpc(stackM,'defaultVpc',{
+const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
   natGateways: 0,
   maxAzs: 3,
   subnetConfiguration: [{
@@ -19,12 +19,12 @@ const VPCPublic = new ec2.Vpc(stackM,'defaultVpc',{
 });
 const  GdbM = new GolbalAuroraRDSMaster(stackM, 'testing',{
   instanceType: InstanceTypeEnum.R5_LARGE,
-  vpc: VPCPublic,
+  vpc: vpcPublic,
 });
 GdbM.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(`${process.env.MYIP}/32`))
 
 const stackS = new Stack(mockApp, 'testing-stackS',{env: envSingapro});
-const VPCPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
+const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
   natGateways: 0,
   maxAzs: 3,
   subnetConfiguration: [{
@@ -33,7 +33,7 @@ const VPCPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-new GolbalAuroraRDSSlaveInfra(stackS, 'Slaveregion',{vpc: VPCPublic2,subnetType:ec2.SubnetType.PUBLIC });
+new GolbalAuroraRDSSlaveInfra(stackS, 'Slaveregion',{vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC });
 
 stackM.addDependency(stackS)
 
