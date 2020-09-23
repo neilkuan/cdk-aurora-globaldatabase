@@ -5,7 +5,7 @@
 Name|Description
 ----|-----------
 [GolbalAuroraRDSMaster](#cdk-aurora-globaldatabase-golbalaurorardsmaster)|*No description*
-[GolbalAuroraRDSSlave](#cdk-aurora-globaldatabase-golbalaurorardsslave)|*No description*
+[GolbalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfra)|*No description*
 [PasswordProvider](#cdk-aurora-globaldatabase-passwordprovider)|Random Password Provider.
 [VpcProvider](#cdk-aurora-globaldatabase-vpcprovider)|The VPC provider to create or import the VPC.
 
@@ -15,7 +15,8 @@ Name|Description
 Name|Description
 ----|-----------
 [GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)|*No description*
-[GolbalAuroraRDSSlaveProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveprops)|*No description*
+[GolbalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops)|*No description*
+[RegionalOptions](#cdk-aurora-globaldatabase-regionaloptions)|*No description*
 
 
 **Enums**
@@ -64,13 +65,42 @@ new GolbalAuroraRDSMaster(scope: Construct, id: string, props?: GolbalAuroraRDSM
 
 Name | Type | Description 
 -----|------|-------------
-**dbClusterpPG** | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | reture RDS Cluster ParameterGroup.
-**rdsCluster** | <code>[IDatabaseCluster](#aws-cdk-aws-rds-idatabasecluster)</code> | reture RDS Cluster.
-**rdsPassword** | <code>string</code> | reture RDS Cluster password.
+**dbClusterpPG** | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | return RDS Cluster ParameterGroup.
+**engine** | <code>string</code> | return RDS Cluster DB Engine .
+**engineVersion** | <code>string</code> | return RDS Cluster DB Engine Version.
+**globalClusterArn** | <code>string</code> | return Global RDS Cluster Resource ARN .
+**globalClusterIdentifier** | <code>string</code> | return Global RDS Cluster Identifier .
+**rdsCluster** | <code>[IDatabaseCluster](#aws-cdk-aws-rds-idatabasecluster)</code> | return RDS Cluster.
+**rdsClusterarn** | <code>string</code> | return RDS Cluster Resource ARN .
+**rdsInstanceType** | <code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code> | return Global RDS Cluster instance Type .
+**rdsIsPublic** | <code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code> | return RDS Cluster is Public ?
+**rdsPassword** | <code>string</code> | return RDS Cluster password.
+**secondRDSClusterArn** | <code>string</code> | return Second RDS Cluster Resource ARN .
+**seconddbInstanceIdentifier** | <code>string</code> | return Second RDS Instance Identifier .
+
+### Methods
+
+
+#### addRegionalCluster(scope, id, options) <a id="cdk-aurora-globaldatabase-golbalaurorardsmaster-addregionalcluster"></a>
 
 
 
-## class GolbalAuroraRDSSlave  <a id="cdk-aurora-globaldatabase-golbalaurorardsslave"></a>
+```ts
+addRegionalCluster(scope: Construct, id: string, options: RegionalOptions): void
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **id** (<code>string</code>)  *No description*
+* **options** (<code>[RegionalOptions](#cdk-aurora-globaldatabase-regionaloptions)</code>)  *No description*
+  * **region** (<code>string</code>)  *No description* 
+  * **dbSubnetGroupName** (<code>string</code>)  *No description* __*Optional*__
+
+
+
+
+
+
+## class GolbalAuroraRDSSlaveInfra  <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveinfra"></a>
 
 
 
@@ -83,18 +113,26 @@ __Extends__: [Construct](#aws-cdk-core-construct)
 
 
 ```ts
-new GolbalAuroraRDSSlave(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveProps)
+new GolbalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps)
 ```
 
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
-* **props** (<code>[GolbalAuroraRDSSlaveProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveprops)</code>)  *No description*
+* **props** (<code>[GolbalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops)</code>)  *No description*
   * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
   * **stack** (<code>[Stack](#aws-cdk-core-stack)</code>)  RDS Stack. __*Optional*__
   * **storageEncrypted** (<code>boolean</code>)  Global RDS Database Cluster Engine Storage Encrypted Option . __*Default*__: true
   * **subnetType** (<code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code>)  Slave region. __*Optional*__
   * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  Slave region VPC. __*Default*__: new VPC
 
+
+
+### Properties
+
+
+Name | Type | Description 
+-----|------|-------------
+**dbSubnetGroup** | <code>[CfnDBSubnetGroup](#aws-cdk-aws-rds-cfndbsubnetgroup)</code> | <span></span>
 
 
 
@@ -187,7 +225,7 @@ Name | Type | Description
 
 
 
-## struct GolbalAuroraRDSSlaveProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveprops"></a>
+## struct GolbalAuroraRDSSlaveInfraProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops"></a>
 
 
 
@@ -201,6 +239,20 @@ Name | Type | Description
 **storageEncrypted**? | <code>boolean</code> | Global RDS Database Cluster Engine Storage Encrypted Option .<br/>__*Default*__: true
 **subnetType**? | <code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code> | Slave region.<br/>__*Optional*__
 **vpc**? | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | Slave region VPC.<br/>__*Default*__: new VPC
+
+
+
+## struct RegionalOptions  <a id="cdk-aurora-globaldatabase-regionaloptions"></a>
+
+
+
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**region** | <code>string</code> | <span></span>
+**dbSubnetGroupName**? | <code>string</code> | __*Optional*__
 
 
 

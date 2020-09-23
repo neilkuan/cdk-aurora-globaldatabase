@@ -1,4 +1,4 @@
-import { GolbalAuroraRDSMaster, GolbalAuroraRDSSlave } from '../src/index';
+import { GolbalAuroraRDSMaster, GolbalAuroraRDSSlaveInfra } from '../src/index';
 import { App, Stack } from '@aws-cdk/core';
 import { Vpc, SubnetType } from '@aws-cdk/aws-ec2';
 import '@aws-cdk/assert/jest';
@@ -38,14 +38,14 @@ test('test create Matser Vpc Public', () => {
 test('test create Slave region vpc', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack',{env: envTokyo});
-  new GolbalAuroraRDSSlave(stack, 'GolbalAuroraRDS');
+  new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS');
   expect(stack).toHaveResource('AWS::EC2::VPC')
 });
 
 test('test create Slave region vpc default Private Subnet', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack',{env: envTokyo});
-  new GolbalAuroraRDSSlave(stack, 'GolbalAuroraRDS');
+  new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS');
   expect(stack).toHaveResource('AWS::RDS::DBSubnetGroup',{
     DBSubnetGroupDescription: 'Private Subnets for database',
   })
@@ -55,7 +55,7 @@ test('test create Slave region vpc default Private Subnet', () => {
 test('test create Slave region vpc use Public Subnet', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack',{env: envTokyo});
-  new GolbalAuroraRDSSlave(stack, 'GolbalAuroraRDS',{
+  new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS',{
     subnetType: SubnetType.PUBLIC,
   });
   expect(stack).toHaveResource('AWS::RDS::DBSubnetGroup',{

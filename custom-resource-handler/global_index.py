@@ -21,8 +21,6 @@ def on_create(event):
     props = event["ResourceProperties"]
     GlobalClusterIdentifier_value = props['GlobalClusterIdentifier']
     SourceDBClusterIdentifier_value = props['SourceDBClusterIdentifier']
-    #DeletionProtection_value = props['DeletionProtection']
-    #StorageEncrypted_value = props['StorageEncrypted']
     response = rds.create_global_cluster(
     GlobalClusterIdentifier=GlobalClusterIdentifier_value,
     SourceDBClusterIdentifier=SourceDBClusterIdentifier_value)
@@ -31,29 +29,33 @@ def on_create(event):
       'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value,
       'Engine': response['GlobalCluster']['Engine'],
       'EngineVersion': response['GlobalCluster']['EngineVersion'],
-      'GlobalClusterArn': response['GlobalCluster']['GlobalClusterArn']
+      'GlobalClusterArn': response['GlobalCluster']['GlobalClusterArn'],
     }
     if (data):
-      output = {'Status': data}
+      output = {'Data': data}
     else:
       output = {'Status': 'Created'}
-    return {'Data': output}
+    return output
 
 
 def on_update(event):
+    print("[INFO]", "Update Event")
+    props = event["ResourceProperties"]
+    print("update resource with props %s" % (props))
     output = {'Status': 'Updated'}
-    return {'Data': output}
+    return output
 
 
 
 def on_delete(event):
+    print("[INFO]", "Delete Event")
     props = event["ResourceProperties"]
     GlobalClusterIdentifier_value = props['GlobalClusterIdentifier']
     SourceDBClusterIdentifier_value = props['SourceDBClusterIdentifier']
     response = rds.remove_from_global_cluster(
     GlobalClusterIdentifier=GlobalClusterIdentifier_value,
     DbClusterIdentifier=SourceDBClusterIdentifier_value)
-    
+    print(response)
     time.sleep(5)
     if not response['GlobalCluster']['GlobalClusterMembers']:
        rds.delete_global_cluster(
@@ -67,7 +69,7 @@ def on_delete(event):
       'Status': removeCluster
     }
     if (data):
-      output = {'Status': data}
+      output = {'Data': data}
     else:
       output = {'Status': 'deleted'}
-    return {'Data': output}
+    return output
