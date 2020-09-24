@@ -12,7 +12,6 @@ cdk-aurora-globaldatabase is an AWS CDK construct library that Global Aurora Dat
 # Why
 `cdk-aurora-globaldatabase`  can help you create Global Aurora Database Cluster via one line .
 
-
 ## Now Try It !!!
 # Sample
 ```ts
