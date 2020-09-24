@@ -20,6 +20,7 @@ const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
 const  GdbM = new GolbalAuroraRDSMaster(stackM, 'testing',{
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
+  rdsPassword: '1qaz2wsx',
 });
 GdbM.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(`${process.env.MYIP}/32`))
 

@@ -186,6 +186,11 @@ export interface GolbalAuroraRDSMasterProps {
   * @default - true
   */
   readonly storageEncrypted?: boolean;
+
+  /**
+   * return RDS Cluster password
+   */
+  readonly rdsPassword?: string;
 }
 
 export interface RegionalOptions {
@@ -243,16 +248,6 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
    * return Global RDS Cluster instance Type .
    */
   readonly rdsInstanceType: InstanceTypeEnum;
-
-  /**
-   * return Second RDS Cluster Resource ARN .
-   */
-  public secondRDSClusterArn: string;
-
-  /**
-   * return Second RDS Instance Identifier .
-   */
-  public seconddbInstanceIdentifier: string;
   
   /**
    * CustomResource for Second Regional .
@@ -279,7 +274,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       natGateways: 1,
     });
 
-    this.rdsPassword = PasswordProvider.genRdsPassword();
+    this.rdsPassword = props?.rdsPassword ?? PasswordProvider.genRdsPassword();
 
     this.dbClusterpPG = props?.dbClusterpPG ?? new rds.ParameterGroup(this, 'dbClusterparametergroup', {
       engine: engineVersion,
@@ -341,8 +336,6 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
 
     this.crGlobalRDSProvider.node.addDependency(this.rdsCluster);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
-    this.secondRDSClusterArn = 'None';
-    this.seconddbInstanceIdentifier = 'None';
     this.rdsIsPublic = rdsVpcSubnetSelect
     new cdk.CfnOutput(this, 'RDSisPublic',{
       value: this.rdsIsPublic,
@@ -391,11 +384,20 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       runtime: lambda.Runtime.PYTHON_3_8,
       code: lambda.Code.fromAsset(path.join(__dirname, '../custom-resource-handler')),
       handler: 'add_region_index.on_event',
-      timeout: cdk.Duration.minutes(5),
+      timeout: cdk.Duration.minutes(10),
+    });
+
+    const isComplete = new lambda.Function(this, 'IsComplete', {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../custom-resource-handler')),
+      handler: 'add_region_index.is_complete',
+      runtime: lambda.Runtime.PYTHON_3_8,
+      timeout: cdk.Duration.minutes(10),
+      role: onEvent.role,
     });
   
     const addRegionalProvider = new cr.Provider(scope, `${id}-addRegionalProvider`, {
       onEventHandler: onEvent,
+      isCompleteHandler: isComplete,
       logRetention: logs.RetentionDays.ONE_DAY,
     });
     
@@ -404,28 +406,26 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       properties: {
         SourceDBClusterIdentifier: this.rdsClusterarn,
         GlobalClusterIdentifier: this.globalClusterIdentifier,
-        REGION: options?.region,
-        DBSubnetGroupName: options?.dbSubnetGroupName,
+        REGION: options.region,
+        DBSubnetGroupName: options.dbSubnetGroupName,
         Engine: this.engine,
         EngineVersion: this.engineVersion,
-        ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options?.region}`,
+        ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options.region}`,
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
-        secondRDSClusterArn: this.secondRDSClusterArn,
-        seconddbInstanceIdentifier: this.seconddbInstanceIdentifier,
+        secondRDSClusterArn: `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`,
+        seconddbInstanceIdentifier:`${stack.stackName.toLowerCase()}-${options.region}-1`,
       },
     });
     CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
 
-    this.secondRDSClusterArn = cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn'));
     new cdk.CfnOutput(scope,'secondRDSClusterArn',{
-      value: this.secondRDSClusterArn,
+      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn')),
     });
 
-    this.seconddbInstanceIdentifier = cdk.Token.asString(CRSecondRDSProvider.getAtt('seconddbInstanceIdentifier'));
     new cdk.CfnOutput(scope,'seconddbInstanceIdentifier',{
-      value: this.seconddbInstanceIdentifier,
+      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('seconddbInstanceIdentifier')),
     });
   }
 }
