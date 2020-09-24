@@ -378,6 +378,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       actions: [
         'rds:CreateGlobalCluster','rds:DeleteGlobalCluster','rds:RemoveFromGlobalCluster','rds:ModifyGlobalCluster',
         'rds:CreateDBCluster','rds:CreateDBInstance','rds:DeleteDBCluster','rds:DeleteDBInstance','rds:DescribeDBInstances',
+        'rds:DescribeGlobalClusters',
       ]});
     // Upgrade database to Global.
     const onEvent = new lambda.Function(scope, `${id}-addRegionalonEvent`, {
@@ -387,7 +388,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       timeout: cdk.Duration.minutes(10),
     });
 
-    const isComplete = new lambda.Function(this, 'IsComplete', {
+    const isComplete = new lambda.Function(scope, `${id}-IsComplete`, {
       code: lambda.Code.fromAsset(path.join(__dirname, '../custom-resource-handler')),
       handler: 'add_region_index.is_complete',
       runtime: lambda.Runtime.PYTHON_3_8,
@@ -465,6 +466,11 @@ export interface  GolbalAuroraRDSSlaveInfraProps {
 }
 
 export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
+  /** 
+   * GolbalAuroraRDSSlaveInfra subnet group .
+   * 
+  * @default - true
+  */
   readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
   constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps ) {
     super(scope, id);

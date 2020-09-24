@@ -89,14 +89,16 @@ def on_delete(event):
     DbClusterIdentifier=secondRDSClusterArn_value)
     print(remove_from_global_cluster_res)
 
+    global_res_len = 0
     while True:
         try:
             print ("check global cluster only have one cluster")
             global_res = rds.describe_global_clusters(GlobalClusterIdentifier=GlobalClusterIdentifier_value)
-            print(len(global_res['GlobalClusters'][0]['GlobalClusterMembers']) == 1)
-        except:
-          pass
-        if len(global_res['GlobalClusters'][0]['GlobalClusterMembers']) == 1:
+            global_res_len = len(global_res['GlobalClusters'][0]['GlobalClusterMembers'])
+            print(global_res_len)
+        except botocore.exceptions.ClientError as e:
+          print (e)
+        if global_res_len < 2:
           break
         time.sleep(10)
     
@@ -112,13 +114,9 @@ def on_delete(event):
             print ("check remove second rds instance")
             describe_db_instances_res = rds.describe_db_instances(DBInstanceIdentifier=seconddbInstanceIdentifier_value)
             print(describe_db_instances_res)
-            check_instance_bool = False
         except botocore.exceptions.ClientError:
           print ("instance not found ")
-          check_instance_bool = True
-          pass
-          if check_instance_bool:
-              break
+          break
         time.sleep(10)
     
     print ("remove second rds cluster")
@@ -132,18 +130,13 @@ def on_delete(event):
             print ("check remove second rds cluster")
             describe_db_clusters_res = rds.describe_db_clusters(DBClusterIdentifier=ClusterIdentifier_value)
             print(describe_db_clusters_res)
-            check_cluster_bool = False
         except botocore.exceptions.ClientError:
-          print ("instance not found ")
-          check_cluster_bool = True
-          pass
-          if check_cluster_bool:
-              break
+          print ("cluster not found ")
+          break
         time.sleep(10)
 
-    if (check_instance_bool and check_cluster_bool):
-      output = {'Status': 'deleted'}
-      return output
+    output = {'Status': 'deleted'}
+    return output
 
 def is_complete(event, context):
   request_type = event["RequestType"]
@@ -156,22 +149,22 @@ def is_complete(event, context):
     try:
         describe_db_clusters_res = rds.describe_db_clusters(DBClusterIdentifier=ClusterIdentifier_value)
         print(describe_db_clusters_res)
-        cluster_bool = False
+        cluster_not_exist = False
     except botocore.exceptions.ClientError: 
         print ("cluster not found ")
-        cluster_bool = True
+        cluster_not_exist = True
         pass
 
     print ("try get instance")
     try:
         describe_db_instances_res = rds.describe_db_instances(DBInstanceIdentifier=seconddbInstanceIdentifier_value)
         print(describe_db_instances_res)
-        instance_bool = False
+        instance_not_exist = False
     except botocore.exceptions.ClientError: 
         print ("cluster not found ")
-        instance_bool = True
+        instance_not_exist = True
         pass
-    is_ready = cluster_bool and instance_bool
+    is_ready = cluster_not_exist and instance_not_exist
     return { 'IsComplete': is_ready }
   
   if request_type == 'Create':

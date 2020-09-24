@@ -131,7 +131,7 @@ new GolbalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GolbalAurora
 
 Name | Type | Description 
 -----|------|-------------
-**dbSubnetGroup** | <code>[CfnDBSubnetGroup](#aws-cdk-aws-rds-cfndbsubnetgroup)</code> | <span></span>
+**dbSubnetGroup** | <code>[CfnDBSubnetGroup](#aws-cdk-aws-rds-cfndbsubnetgroup)</code> | GolbalAuroraRDSSlaveInfra subnet group .
 
 
 

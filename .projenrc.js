@@ -12,7 +12,7 @@ const project = new ConstructLibraryAws({
   keywords: ['aws', 'cdk', 'rds', 'global'],
   catalog: {
     twitter: 'neil_kuan',
-    announce: false,
+    announce: true,
   },
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   cdkVersion: '1.63.0',

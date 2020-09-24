@@ -52,6 +52,7 @@ def on_delete(event):
     props = event["ResourceProperties"]
     GlobalClusterIdentifier_value = props['GlobalClusterIdentifier']
     SourceDBClusterIdentifier_value = props['SourceDBClusterIdentifier']
+    time.sleep(100)
     response = rds.remove_from_global_cluster(
     GlobalClusterIdentifier=GlobalClusterIdentifier_value,
     DbClusterIdentifier=SourceDBClusterIdentifier_value)
