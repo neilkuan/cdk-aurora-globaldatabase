@@ -1,7 +1,7 @@
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
-//import { GolbalAuroraRDSMaster, InstanceTypeEnum } from './index';
 import { App, Stack, CfnOutput } from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as _rds from '@aws-cdk/aws-rds';
 
 const mockApp = new App();
 const envSingapro  = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-southeast-1' };
@@ -21,6 +21,31 @@ const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
   rdsPassword: '1qaz2wsx',
+  engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({
+    version: _rds.AuroraPostgresEngineVersion.VER_11_7}),
+  dbClusterpPG: new _rds.ParameterGroup(stackM, 'dbClusterparametergroup', {
+    engine: _rds.DatabaseClusterEngine.auroraPostgres({
+      version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+    }),
+    parameters: {
+      'rds.force_ssl': '1',
+      'rds.log_retention_period': '10080',
+      'auto_explain.log_min_duration': '5000',
+      'auto_explain.log_verbose': '1',
+      'timezone': 'UTC+8',
+      'shared_preload_libraries': 'auto_explain,pg_stat_statements,pg_hint_plan,pgaudit',
+      'log_connections': '1',
+      'log_statement': 'ddl',
+      'log_disconnections': '1',
+      'log_lock_waits': '1',
+      'log_min_duration_statement': '5000',
+      'log_rotation_age': '1440',
+      'log_rotation_size': '102400',
+      'random_page_cost': '1',
+      'track_activity_query_size': '16384',
+      'idle_in_transaction_session_timeout': '7200000',
+    },
+  }),
 });
 globaldbM.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(`${process.env.MYIP}/32`))
 
@@ -34,7 +59,9 @@ const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC });
+const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{
+  vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC, 
+});
 
 stackM.addDependency(stackS)
 

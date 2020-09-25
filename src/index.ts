@@ -9,7 +9,7 @@ import * as path from 'path';
 
 export enum MySQLtimeZone {
   UTC = 'UTC',
-  SIA_TAIPEI = 'Asia/Taipei',
+  ASIA_TAIPEI = 'Asia/Taipei',
   AFRICA_CAIRO = 'Africa/Cairo',
   ASIA_BANGKOK = 'Asia/Bangkok',
   AUSTRALIA_DARWIN = 'Australia/Darwin',
@@ -126,7 +126,7 @@ export interface GolbalAuroraRDSMasterProps {
   /**
    * RDS default Super User Name
    *
-   * @default - < Mysql: admin >, < Postgres: postgres >
+   * @default - sysadmin
    */
   readonly dbUserName?: string;
 
@@ -237,7 +237,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
   /**
    * return RDS Cluster DB Engine Version.
    */
-  readonly engineVersion: string;
+  readonly engineVersion: rds.IClusterEngine;
 
   /**
    * return Global RDS Cluster Resource ARN .
@@ -253,6 +253,11 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
    * CustomResource for Second Regional .
    */
   private crGlobalRDSProvider: cdk.CustomResource;
+
+  /**
+   * return RDS Cluster DB Engine Version.
+   */
+  readonly clusterEngineVersion: string;
   constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
@@ -262,9 +267,10 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     }
     
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
-    const engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
+    this.engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
       version: rds.AuroraMysqlEngineVersion.VER_2_07_1,
-    });    
+    });
+
     this.rdsInstanceType = props?.instanceType ?? InstanceTypeEnum.R5_LARGE;
     // Master region Vpc 
     const rdsVpc =  props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionMaster',{
@@ -277,7 +283,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     this.rdsPassword = props?.rdsPassword ?? PasswordProvider.genRdsPassword();
 
     this.dbClusterpPG = props?.dbClusterpPG ?? new rds.ParameterGroup(this, 'dbClusterparametergroup', {
-      engine: engineVersion,
+      engine: this.engineVersion,
       parameters: props?.parameters ?? {
         time_zone: props?.timeZone ?? MySQLtimeZone.UTC,
       },
@@ -287,14 +293,13 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     if(this.azOfSubnets(rdsVpc.privateSubnets) === 0){
       rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
     }
-
     this.rdsCluster = new rds.DatabaseCluster(this, 'RDSCluster', {
-      engine: engineVersion,
+      engine: this.engineVersion,
       parameterGroup: this.dbClusterpPG,
       clusterIdentifier: `${stack.stackName.toLowerCase()}-primary`,
       masterUser: {
         password:  new cdk.SecretValue(this.rdsPassword),
-        username: 'admin',
+        username: props?.dbUserName ?? 'sysadmin',
       },
       instances: 1,
       instanceProps: {
@@ -327,9 +332,10 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     });
     
     this.crGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
+      resourceType: 'Custom::UpgradeGlobalClusterProvider',
       serviceToken: UpgradeglobaldbProvider.serviceToken,
       properties: {
-        SourceDBClusterIdentifier: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}` ?? undefined,
+        SourceDBClusterIdentifier: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`,
         GlobalClusterIdentifier: `global-${stack.stackName.toLowerCase()}`,
       },
     });
@@ -341,7 +347,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       value: this.rdsIsPublic,
     });
 
-    this.rdsClusterarn = `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}` ?? undefined
+    this.rdsClusterarn = `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`
     new cdk.CfnOutput(this, 'RDSClusterarn',{
       value: this.rdsClusterarn,
     });
@@ -356,9 +362,9 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       value: this.engine,
     });
 
-    this.engineVersion = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('EngineVersion'));
-    new cdk.CfnOutput(this, 'EngineVersion',{
-      value: this.engineVersion,
+    this.clusterEngineVersion = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('EngineVersion'));
+    new cdk.CfnOutput(this, 'clusterEngineVersion',{
+      value: this.clusterEngineVersion,
     });
 
     this.globalClusterArn = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('GlobalClusterArn'));
@@ -403,6 +409,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     });
     
     const CRSecondRDSProvider = new cdk.CustomResource(scope, `${id}-addRegionalCustomResource`, {
+      resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
       properties: {
         SourceDBClusterIdentifier: this.rdsClusterarn,
@@ -410,7 +417,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
         REGION: options.region,
         DBSubnetGroupName: options.dbSubnetGroupName,
         Engine: this.engine,
-        EngineVersion: this.engineVersion,
+        EngineVersion: this.clusterEngineVersion,
         ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options.region}`,
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
@@ -522,19 +529,5 @@ export class PasswordProvider{
     // random password gen ~~
     const randomString: string = Math.random().toString(36).slice(-8);
     return randomString
-  }
-}
-
-/**
- * The VPC provider to create or import the VPC
- */
-export class VpcProvider {
-  public static getOrCreate(scope: cdk.Construct) {
-    const vpc = scope.node.tryGetContext('use_default_vpc') === '1' ?
-      ec2.Vpc.fromLookup(scope, 'Vpc', { isDefault: true }) :
-      scope.node.tryGetContext('use_vpc_id') ?
-        ec2.Vpc.fromLookup(scope, 'Vpc', { vpcId: scope.node.tryGetContext('use_vpc_id') }) :
-        new ec2.Vpc(scope, 'Vpc', { maxAzs: 3, natGateways: 1 });
-    return vpc    
   }
 }

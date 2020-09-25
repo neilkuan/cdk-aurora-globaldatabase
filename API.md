@@ -7,7 +7,6 @@ Name|Description
 [GolbalAuroraRDSMaster](#cdk-aurora-globaldatabase-golbalaurorardsmaster)|*No description*
 [GolbalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfra)|*No description*
 [PasswordProvider](#cdk-aurora-globaldatabase-passwordprovider)|Random Password Provider.
-[VpcProvider](#cdk-aurora-globaldatabase-vpcprovider)|The VPC provider to create or import the VPC.
 
 
 **Structs**
@@ -48,7 +47,7 @@ new GolbalAuroraRDSMaster(scope: Construct, id: string, props?: GolbalAuroraRDSM
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)</code>)  *No description*
   * **dbClusterpPG** (<code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code>)  RDS ParameterGroup. __*Default*__: Aurora MySQL ParameterGroup
-  * **dbUserName** (<code>string</code>)  RDS default Super User Name. __*Default*__: < Mysql: admin >, < Postgres: postgres >
+  * **dbUserName** (<code>string</code>)  RDS default Super User Name. __*Default*__: sysadmin
   * **defaultDatabaseName** (<code>string</code>)  RDS default Database Name. __*Default*__: globaldatabase
   * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
   * **engineVersion** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  RDS Database Cluster Engine . __*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
@@ -66,9 +65,10 @@ new GolbalAuroraRDSMaster(scope: Construct, id: string, props?: GolbalAuroraRDSM
 
 Name | Type | Description 
 -----|------|-------------
+**clusterEngineVersion** | <code>string</code> | return RDS Cluster DB Engine Version.
 **dbClusterpPG** | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | return RDS Cluster ParameterGroup.
 **engine** | <code>string</code> | return RDS Cluster DB Engine .
-**engineVersion** | <code>string</code> | return RDS Cluster DB Engine Version.
+**engineVersion** | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | return RDS Cluster DB Engine Version.
 **globalClusterArn** | <code>string</code> | return Global RDS Cluster Resource ARN .
 **globalClusterIdentifier** | <code>string</code> | return Global RDS Cluster Identifier .
 **rdsCluster** | <code>[IDatabaseCluster](#aws-cdk-aws-rds-idatabasecluster)</code> | return RDS Cluster.
@@ -168,40 +168,6 @@ __Returns__:
 
 
 
-## class VpcProvider  <a id="cdk-aurora-globaldatabase-vpcprovider"></a>
-
-The VPC provider to create or import the VPC.
-
-
-### Initializer
-
-
-
-
-```ts
-new VpcProvider()
-```
-
-
-
-### Methods
-
-
-#### *static* getOrCreate(scope) <a id="cdk-aurora-globaldatabase-vpcprovider-getorcreate"></a>
-
-
-
-```ts
-static getOrCreate(scope: Construct): IVpc
-```
-
-* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
-
-__Returns__:
-* <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>
-
-
-
 ## struct GolbalAuroraRDSMasterProps  <a id="cdk-aurora-globaldatabase-golbalaurorardsmasterprops"></a>
 
 
@@ -212,7 +178,7 @@ __Returns__:
 Name | Type | Description 
 -----|------|-------------
 **dbClusterpPG**? | <code>[IParameterGroup](#aws-cdk-aws-rds-iparametergroup)</code> | RDS ParameterGroup.<br/>__*Default*__: Aurora MySQL ParameterGroup
-**dbUserName**? | <code>string</code> | RDS default Super User Name.<br/>__*Default*__: < Mysql: admin >, < Postgres: postgres >
+**dbUserName**? | <code>string</code> | RDS default Super User Name.<br/>__*Default*__: sysadmin
 **defaultDatabaseName**? | <code>string</code> | RDS default Database Name.<br/>__*Default*__: globaldatabase
 **deletionProtection**? | <code>boolean</code> | Global RDS Database Cluster Engine Deletion Protection Option .<br/>__*Default*__: false
 **engineVersion**? | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | RDS Database Cluster Engine .<br/>__*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
@@ -285,7 +251,7 @@ Name | Description
 Name | Description
 -----|-----
 **UTC** |
-**SIA_TAIPEI** |
+**ASIA_TAIPEI** |
 **AFRICA_CAIRO** |
 **ASIA_BANGKOK** |
 **AUSTRALIA_DARWIN** |
