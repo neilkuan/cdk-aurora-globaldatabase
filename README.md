@@ -20,7 +20,7 @@
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
 import { App, Stack, CfnOutput } from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
-//new app .
+// new app .
 const mockApp = new App();
 
 // setting two region env config .
