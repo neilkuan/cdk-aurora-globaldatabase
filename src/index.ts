@@ -371,6 +371,10 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     new cdk.CfnOutput(this, 'GlobalClusterArn',{
       value: this.globalClusterArn,
     });
+
+    new cdk.CfnOutput(this, 'GlobalClusterPrimaryEndpoint',{
+      value: `${this.rdsCluster.clusterEndpoint}`,
+    });
   }
   private azOfSubnets(subnets: ec2.ISubnet[]): number {
     return new Set(subnets.map(subnet => subnet.availabilityZone)).size;
@@ -517,6 +521,10 @@ export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
     }
     new cdk.CfnOutput(this,'newDBSubnetGroup',{
       value: `${this.dbSubnetGroup.dbSubnetGroupName}`,
+    });
+
+    new cdk.CfnOutput(this,'stackRegion',{
+      value: `${stack.region}`,
     });
   }
 }
