@@ -7,10 +7,12 @@
 ![PyPI](https://img.shields.io/pypi/dm/cdk-aurora-globaldatabase?label=pypi&color=blue)
 
 # cdk-aurora-globaldatabase
-cdk-aurora-globaldatabase is an AWS CDK construct library that Global Aurora Database Cluster.
+`cdk-aurora-globaldatabase` is an AWS CDK construct library that allows you to create [Amazon Aurora Global Databases](https://aws.amazon.com/rds/aurora/global-database/) with AWS CDK in Typescript or Python.
 
 # Why
-`cdk-aurora-globaldatabase`  can help you create Global Aurora Database Cluster via one line .
+**Amazon Aurora Global Databases** is designed for multi-regional **Amazon Aurora Global Databases** clusters that span across different AWS regions. Due to the lack of native cloudformation support, it has been very challenging to build with cloudformation or AWS CDK with the native `aws-rds` construct from the upstream.
+
+`cdk-aurora-globaldatabase` aims to offload the heavy-lifting and helps you provision and deploy cross-regional **Amazon Aurora Global Databases** simply with one or two CDK statements.
 
 ## Now Try It !!!
 # Sample for Mysql 
