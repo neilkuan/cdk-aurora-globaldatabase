@@ -87,6 +87,44 @@ test('test change default dbUserName and default database Name', () => {
     MasterUserPassword: '1qaz2wsx',
   });
 });
+
+test('test no default rdsPassword', () => {
+  const app = new App();
+  const stack = new Stack(app, 'testing-stack',{env: envTokyo});;
+  new GolbalAuroraRDSMaster(stack, 'GolbalAuroraRDS',{
+    defaultDatabaseName: 'superdb',
+  });
+  expect(stack).toHaveResource('AWS::RDS::DBCluster',{
+    Engine: 'aurora-mysql',
+    DatabaseName: 'superdb',
+    EngineVersion: '5.7.mysql_aurora.2.07.1',
+    MasterUsername: {
+      'Fn::Join': [
+        '',
+        [
+          '{{resolve:secretsmanager:',
+          {
+            Ref: 'GolbalAuroraRDSRDSClusterSecret55AE520F',
+          },
+          ':SecretString:username::}}',
+        ],
+      ],
+    },
+    MasterUserPassword: {
+      'Fn::Join': [
+        '',
+        [
+          '{{resolve:secretsmanager:',
+          {
+            Ref: 'GolbalAuroraRDSRDSClusterSecret55AE520F',
+          },
+          ':SecretString:password::}}',
+        ],
+      ],
+    },
+  });
+});
+
 test('test create Slave region vpc', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack',{env: envTokyo});

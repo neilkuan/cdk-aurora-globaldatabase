@@ -6,7 +6,6 @@ Name|Description
 ----|-----------
 [GolbalAuroraRDSMaster](#cdk-aurora-globaldatabase-golbalaurorardsmaster)|*No description*
 [GolbalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfra)|*No description*
-[PasswordProvider](#cdk-aurora-globaldatabase-passwordprovider)|Random Password Provider.
 
 
 **Structs**
@@ -71,11 +70,11 @@ Name | Type | Description
 **engineVersion** | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | return RDS Cluster DB Engine Version.
 **globalClusterArn** | <code>string</code> | return Global RDS Cluster Resource ARN .
 **globalClusterIdentifier** | <code>string</code> | return Global RDS Cluster Identifier .
-**rdsCluster** | <code>[IDatabaseCluster](#aws-cdk-aws-rds-idatabasecluster)</code> | return RDS Cluster.
+**rdsCluster** | <code>[DatabaseCluster](#aws-cdk-aws-rds-databasecluster)</code> | return RDS Cluster.
 **rdsClusterarn** | <code>string</code> | return RDS Cluster Resource ARN .
 **rdsInstanceType** | <code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code> | return Global RDS Cluster instance Type .
 **rdsIsPublic** | <code>[SubnetType](#aws-cdk-aws-ec2-subnettype)</code> | return RDS Cluster is Public ?
-**rdsPassword** | <code>string</code> | return RDS Cluster password.
+**rdsPassword**? | <code>string</code> | return RDS Cluster password.<br/>__*Optional*__
 
 ### Methods
 
@@ -132,39 +131,6 @@ new GolbalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GolbalAurora
 Name | Type | Description 
 -----|------|-------------
 **dbSubnetGroup** | <code>[CfnDBSubnetGroup](#aws-cdk-aws-rds-cfndbsubnetgroup)</code> | GolbalAuroraRDSSlaveInfra subnet group .
-
-
-
-## class PasswordProvider  <a id="cdk-aurora-globaldatabase-passwordprovider"></a>
-
-Random Password Provider.
-
-
-### Initializer
-
-
-
-
-```ts
-new PasswordProvider()
-```
-
-
-
-### Methods
-
-
-#### *static* genRdsPassword() <a id="cdk-aurora-globaldatabase-passwordprovider-genrdspassword"></a>
-
-
-
-```ts
-static genRdsPassword(): string
-```
-
-
-__Returns__:
-* <code>string</code>
 
 
 
@@ -228,20 +194,20 @@ Name | Type | Description
 
 Name | Description
 -----|-----
-**R4_LARGE** |
-**R4_XLARGE** |
-**R4_2XLARGE** |
-**R4_4XLARGE** |
-**R4_8XLARGE** |
-**R4_16XLARGE** |
-**R5_LARGE** |
-**R5_XLARGE** |
-**R5_2XLARGE** |
-**R5_4XLARGE** |
-**R5_8XLARGE** |
-**R5_12XLARGE** |
-**R5_16XLARGE** |
-**R5_24XLARGE** |
+**R4_LARGE** |db Instance Type r4.large.
+**R4_XLARGE** |db Instance Type r4.xlarge.
+**R4_2XLARGE** |db Instance Type r4.2xlarge.
+**R4_4XLARGE** |db Instance Type r4.4xlarge.
+**R4_8XLARGE** |db Instance Type r4.8xlarge.
+**R4_16XLARGE** |db Instance Type r4.16xlarge.
+**R5_LARGE** |db Instance Type r5.large.
+**R5_XLARGE** |db Instance Type r5.xlarge.
+**R5_2XLARGE** |db Instance Type r5.2xlarge.
+**R5_4XLARGE** |db Instance Type r5.4xlarge.
+**R5_8XLARGE** |db Instance Type r5.8xlarge.
+**R5_12XLARGE** |db Instance Type r5.12xlarge.
+**R5_16XLARGE** |db Instance Type r5.16xlarge.
+**R5_24XLARGE** |db Instance Type r5.24xlarge.
 
 
 ## enum MySQLtimeZone  <a id="cdk-aurora-globaldatabase-mysqltimezone"></a>
@@ -250,89 +216,89 @@ Name | Description
 
 Name | Description
 -----|-----
-**UTC** |
-**ASIA_TAIPEI** |
-**AFRICA_CAIRO** |
-**ASIA_BANGKOK** |
-**AUSTRALIA_DARWIN** |
-**AFRICA_CASABLANCA** |
-**ASIA_BEIRUT** |
-**AUSTRALIA_HOBART** |
-**AFRICA_HARARE** |
-**ASIA_CALCUTTA** |
-**AUSTRALIA_PERTH** |
-**AFRICA_MONROVIA** |
-**ASIA_DAMASCUS** |
-**AUSTRALIA_SYDNEY** |
-**AFRICA_NAIROBI** |
-**ASIA_DHAKA** |
-**BRAZIL_EAST** |
-**AFRICA_TRIPOLI** |
-**ASIA_IRKUTSK** |
-**CANADA_NEWFOUNDLAND** |
-**AFRICA_WINDHOEK** |
-**ASIA_JERUSALEM** |
-**CANADA_SASKATCHEWAN** |
-**AMERICA_ARAGUAINA** |
-**ASIA_KABUL** |
-**EUROPE_AMSTERDAM** |
-**AMERICA_ASUNCION** |
-**ASIA_KARACHI** |
-**EUROPE_ATHENS** |
-**AMERICA_BOGOTA** |
-**ASIA_KATHMANDU** |
-**EUROPE_DUBLIN** |
-**AMERICA_CARACAS** |
-**ASIA_KRASNOYARSK** |
-**EUROPE_HELSINKI** |
-**AMERICA_CHIHUAHUA** |
-**ASIA_MAGADAN** |
-**EUROPE_ISTANBUL** |
-**AMERICA_CUIABA** |
-**ASIA_MUSCAT** |
-**EUROPE_KALININGRAD** |
-**AMERICA_DENVER** |
-**ASIA_NOVOSIBIRSK** |
-**EUROPE_MOSCOW** |
-**AMERICA_FORTALEZA** |
-**ASIA_RIYADH** |
-**EUROPE_PARIS** |
-**AMERICA_GUATEMALA** |
-**ASIA_SEOUL** |
-**EUROPE_PRAGUE** |
-**AMERICA_HALIFAX** |
-**ASIA_SHANGHAI** |
-**EUROPE_SARAJEVO** |
-**AMERICA_MANAUS** |
-**ASIA_SINGAPORE** |
-**PACIFIC_AUCKLAND** |
-**AMERICA_MATAMOROS** |
-**PACIFIC_FIJI** |
-**AMERICA_MONTERREY** |
-**ASIA_TEHRAN** |
-**PACIFIC_GUAM** |
-**AMERICA_MONTEVIDEO** |
-**ASIA_TOKYO** |
-**PACIFIC_HONOLULU** |
-**AMERICA_PHOENIX** |
-**ASIA_ULAANBAATAR** |
-**PACIFIC_SAMOA** |
-**AMERICA_SANTIAGO** |
-**ASIA_VLADIVOSTOK** |
-**US_ALASKA** |
-**AMERICA_TIJUANA** |
-**ASIA_YAKUTSK** |
-**US_CENTRAL** |
-**ASIA_AMMAN** |
-**ASIA_YEREVAN** |
-**US_EASTERN** |
-**ASIA_ASHGABAT** |
-**ATLANTIC_AZORES** |
-**US_EAST_INDIANA** |
-**ASIA_BAGHDAD** |
-**AUSTRALIA_ADELAIDE** |
-**US_PACIFIC** |
-**ASIA_BAKU** |
-**AUSTRALIA_BRISBANE** |
+**UTC** |TIME ZONE UTC.
+**ASIA_TAIPEI** |TIME ZONE Asia/Taipei.
+**AFRICA_CAIRO** |TIME ZONE Africa/Cairo.
+**ASIA_BANGKOK** |TIME ZONE Asia/Bangkok.
+**AUSTRALIA_DARWIN** |TIME ZONE Australia/Darwin.
+**AFRICA_CASABLANCA** |TIME ZONE Africa/Casablanca.
+**ASIA_BEIRUT** |TIME ZONE Asia/Beirut.
+**AUSTRALIA_HOBART** |TIME ZONE Australia/Hobart.
+**AFRICA_HARARE** |TIME ZONE Africa/Harare.
+**ASIA_CALCUTTA** |TIME ZONE Asia/Calcutta.
+**AUSTRALIA_PERTH** |TIME ZONE Australia/Perth.
+**AFRICA_MONROVIA** |TIME ZONE Africa/Monrovia.
+**ASIA_DAMASCUS** |TIME ZONE Asia/Damascus.
+**AUSTRALIA_SYDNEY** |TIME ZONE Australia/Sydney.
+**AFRICA_NAIROBI** |TIME ZONE Africa/Nairobi.
+**ASIA_DHAKA** |TIME ZONE Asia/Dhaka.
+**BRAZIL_EAST** |TIME ZONE Brazil/East.
+**AFRICA_TRIPOLI** |TIME ZONE Africa/Tripoli.
+**ASIA_IRKUTSK** |TIME ZONE Asia/Irkutsk.
+**CANADA_NEWFOUNDLAND** |TIME ZONE Canada/Newfoundland.
+**AFRICA_WINDHOEK** |TIME ZONE Africa/Windhoek.
+**ASIA_JERUSALEM** |TIME ZONE Asia/Jerusalem.
+**CANADA_SASKATCHEWAN** |TIME ZONE Canada/Saskatchewan.
+**AMERICA_ARAGUAINA** |TIME ZONE America/Araguaina.
+**ASIA_KABUL** |TIME ZONE Asia/Kabul.
+**EUROPE_AMSTERDAM** |TIME ZONE Europe/Amsterdam.
+**AMERICA_ASUNCION** |TIME ZONE America/Asuncion.
+**ASIA_KARACHI** |TIME ZONE Asia/Karachi.
+**EUROPE_ATHENS** |TIME ZONE Europe/Athens.
+**AMERICA_BOGOTA** |TIME ZONE America/Bogota.
+**ASIA_KATHMANDU** |TIME ZONE Asia/Kathmandu.
+**EUROPE_DUBLIN** |TIME ZONE Europe/Dublin.
+**AMERICA_CARACAS** |TIME ZONE America/Caracas.
+**ASIA_KRASNOYARSK** |TIME ZONE Asia/Krasnoyarsk.
+**EUROPE_HELSINKI** |TIME ZONE Europe/Helsinki.
+**AMERICA_CHIHUAHUA** |TIME ZONE America/Chihuahua.
+**ASIA_MAGADAN** |TIME ZONE Asia/Magadan.
+**EUROPE_ISTANBUL** |TIME ZONE Europe/Istanbul.
+**AMERICA_CUIABA** |TIME ZONE America/Cuiaba.
+**ASIA_MUSCAT** |TIME ZONE Asia/Muscat.
+**EUROPE_KALININGRAD** |TIME ZONE Europe/Kaliningrad.
+**AMERICA_DENVER** |TIME ZONE America/Denver.
+**ASIA_NOVOSIBIRSK** |TIME ZONE Asia/Novosibirsk.
+**EUROPE_MOSCOW** |TIME ZONE Europe/Moscow'.
+**AMERICA_FORTALEZA** |TIME ZONE America/Fortaleza.
+**ASIA_RIYADH** |TIME ZONE Asia/Riyadh.
+**EUROPE_PARIS** |TIME ZONE Europe/Paris.
+**AMERICA_GUATEMALA** |TIME ZONE America/Guatemala.
+**ASIA_SEOUL** |TIME ZONE Asia/Seoul.
+**EUROPE_PRAGUE** |TIME ZONE Europe/Prague.
+**AMERICA_HALIFAX** |TIME ZONE America/Halifax.
+**ASIA_SHANGHAI** |TIME ZONE Asia/Shanghai.
+**EUROPE_SARAJEVO** |TIME ZONE Europe/Sarajevo.
+**AMERICA_MANAUS** |TIME ZONE America/Manaus.
+**ASIA_SINGAPORE** |TIME ZONE Asia/Singapore.
+**PACIFIC_AUCKLAND** |TIME ZONE Pacific/Auckland.
+**AMERICA_MATAMOROS** |TIME ZONE America/Matamoros.
+**PACIFIC_FIJI** |TIME ZONE Pacific/Fiji.
+**AMERICA_MONTERREY** |TIME ZONE America/Monterrey.
+**ASIA_TEHRAN** |TIME ZONE Asia/Tehran.
+**PACIFIC_GUAM** |TIME ZONE Pacific/Guam.
+**AMERICA_MONTEVIDEO** |TIME ZONE America/Montevideo.
+**ASIA_TOKYO** |TIME ZONE Asia/Tokyo.
+**PACIFIC_HONOLULU** |TIME ZONE Pacific/Honolulu.
+**AMERICA_PHOENIX** |TIME ZONE America/Phoenix.
+**ASIA_ULAANBAATAR** |TIME ZONE Asia/Ulaanbaatar.
+**PACIFIC_SAMOA** |TIME ZONE Pacific/Samoa.
+**AMERICA_SANTIAGO** |TIME ZONE America/Santiago.
+**ASIA_VLADIVOSTOK** |TIME ZONE Asia/Vladivostok.
+**US_ALASKA** |TIME ZONE US/Alaska.
+**AMERICA_TIJUANA** |TIME ZONE America/Tijuana.
+**ASIA_YAKUTSK** |TIME ZONE Asia/Yakutsk.
+**US_CENTRAL** |TIME ZONE US/Central.
+**ASIA_AMMAN** |TIME ZONE Asia/Amman.
+**ASIA_YEREVAN** |TIME ZONE Asia/Yerevan.
+**US_EASTERN** |TIME ZONE US/Eastern.
+**ASIA_ASHGABAT** |TIME ZONE Asia/Ashgabat.
+**ATLANTIC_AZORES** |TIME ZONE Atlantic/Azores.
+**US_EAST_INDIANA** |TIME ZONE US/East-Indiana.
+**ASIA_BAGHDAD** |TIME ZONE Asia/Baghdad.
+**AUSTRALIA_ADELAIDE** |TIME ZONE Australia/Adelaide.
+**US_PACIFIC** |TIME ZONE US/Pacific.
+**ASIA_BAKU** |TIME ZONE Asia/Baku.
+**AUSTRALIA_BRISBANE** |TIME ZONE Australia/Brisbane.
 
 

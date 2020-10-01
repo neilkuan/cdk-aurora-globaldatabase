@@ -8,106 +8,400 @@ import * as iam from '@aws-cdk/aws-iam';
 import * as path from 'path';
 
 export enum MySQLtimeZone {
+  /**
+   * TIME ZONE UTC
+   */
   UTC = 'UTC',
+  /**
+   * TIME ZONE Asia/Taipei
+   */
   ASIA_TAIPEI = 'Asia/Taipei',
+  /**
+   * TIME ZONE Africa/Cairo
+   */
   AFRICA_CAIRO = 'Africa/Cairo',
+  /**
+   * TIME ZONE Asia/Bangkok
+   */
   ASIA_BANGKOK = 'Asia/Bangkok',
+  /**
+   * TIME ZONE Australia/Darwin
+   */
   AUSTRALIA_DARWIN = 'Australia/Darwin',
+  /**
+   * TIME ZONE Africa/Casablanca
+   */
   AFRICA_CASABLANCA = 'Africa/Casablanca',
+  /**
+   * TIME ZONE Asia/Beirut
+   */
   ASIA_BEIRUT = 'Asia/Beirut',
+  /**
+   * TIME ZONE Australia/Hobart
+   */
   AUSTRALIA_HOBART = 'Australia/Hobart',
+  /**
+   * TIME ZONE Africa/Harare
+   */
   AFRICA_HARARE = 'Africa/Harare',
+  /**
+   * TIME ZONE Asia/Calcutta
+   */
   ASIA_CALCUTTA = 'Asia/Calcutta',
+  /**
+   * TIME ZONE Australia/Perth
+   */
   AUSTRALIA_PERTH = 'Australia/Perth',
+  /**
+   * TIME ZONE Africa/Monrovia
+   */
   AFRICA_MONROVIA = 'Africa/Monrovia',
+  /**
+   * TIME ZONE Asia/Damascus
+   */
   ASIA_DAMASCUS = 'Asia/Damascus',
+  /**
+   * TIME ZONE Australia/Sydney
+   */
   AUSTRALIA_SYDNEY = 'Australia/Sydney',
+  /**
+   * TIME ZONE Africa/Nairobi
+   */
   AFRICA_NAIROBI = 'Africa/Nairobi',
+  /**
+   * TIME ZONE Asia/Dhaka
+   */
   ASIA_DHAKA = 'Asia/Dhaka',
+  /**
+   * TIME ZONE Brazil/East
+   */
   BRAZIL_EAST = 'Brazil/East',
+  /**
+   * TIME ZONE Africa/Tripoli
+   */
   AFRICA_TRIPOLI = 'Africa/Tripoli',
+  /**
+   * TIME ZONE Asia/Irkutsk
+   */
   ASIA_IRKUTSK = 'Asia/Irkutsk',
+  /**
+   * TIME ZONE Canada/Newfoundland
+   */
   CANADA_NEWFOUNDLAND = 'Canada/Newfoundland',
+  /**
+   * TIME ZONE Africa/Windhoek
+   */
   AFRICA_WINDHOEK = 'Africa/Windhoek',
+  /**
+   * TIME ZONE Asia/Jerusalem
+   */
   ASIA_JERUSALEM = 'Asia/Jerusalem',
+  /**
+   * TIME ZONE Canada/Saskatchewan
+   */
   CANADA_SASKATCHEWAN = 'Canada/Saskatchewan',
+  /**
+   * TIME ZONE America/Araguaina
+   */
   AMERICA_ARAGUAINA = 'America/Araguaina',
+  /**
+   * TIME ZONE Asia/Kabul
+   */
   ASIA_KABUL = 'Asia/Kabul',
+  /**
+   * TIME ZONE Europe/Amsterdam
+   */
   EUROPE_AMSTERDAM = 'Europe/Amsterdam',
+  /**
+   * TIME ZONE America/Asuncion
+   */
   AMERICA_ASUNCION = 'America/Asuncion',
+  /**
+   * TIME ZONE Asia/Karachi
+   */
   ASIA_KARACHI = 'Asia/Karachi',
+  /**
+   * TIME ZONE Europe/Athens
+   */
   EUROPE_ATHENS = 'Europe/Athens',
+  /**
+   * TIME ZONE America/Bogota
+   */
   AMERICA_BOGOTA = 'America/Bogota',
+  /**
+   * TIME ZONE Asia/Kathmandu
+   */
   ASIA_KATHMANDU = 'Asia/Kathmandu',
+  /**
+   * TIME ZONE Europe/Dublin
+   */
   EUROPE_DUBLIN = 'Europe/Dublin',
+  /**
+   * TIME ZONE America/Caracas
+   */
   AMERICA_CARACAS = 'America/Caracas',
+  /**
+  * TIME ZONE Asia/Krasnoyarsk
+  */
   ASIA_KRASNOYARSK = 'Asia/Krasnoyarsk',
+  /**
+   * TIME ZONE Europe/Helsinki
+   */
   EUROPE_HELSINKI = 'Europe/Helsinki',
+  /**
+   * TIME ZONE America/Chihuahua
+   */
   AMERICA_CHIHUAHUA = 'America/Chihuahua',
+  /**
+   * TIME ZONE Asia/Magadan
+   */
   ASIA_MAGADAN = 'Asia/Magadan',
+  /**
+   * TIME ZONE Europe/Istanbul
+   */
   EUROPE_ISTANBUL = 'Europe/Istanbul',
+  /**
+   * TIME ZONE America/Cuiaba
+   */
   AMERICA_CUIABA = 'America/Cuiaba',
+  /**
+   * TIME ZONE Asia/Muscat
+   */
   ASIA_MUSCAT = 'Asia/Muscat',
+  /**
+   * TIME ZONE Europe/Kaliningrad
+   */
   EUROPE_KALININGRAD = 'Europe/Kaliningrad',
+  /**
+   * TIME ZONE America/Denver
+   */
   AMERICA_DENVER = 'America/Denver',
+  /**
+   * TIME ZONE Asia/Novosibirsk
+   */
   ASIA_NOVOSIBIRSK = 'Asia/Novosibirsk',
+  /**
+   * TIME ZONE Europe/Moscow'
+   */
   EUROPE_MOSCOW = 'Europe/Moscow',
+  /**
+   * TIME ZONE America/Fortaleza
+   */
   AMERICA_FORTALEZA = 'America/Fortaleza',
+  /**
+   * TIME ZONE Asia/Riyadh
+   */
   ASIA_RIYADH = 'Asia/Riyadh',
+  /**
+   * TIME ZONE Europe/Paris
+   */
   EUROPE_PARIS = 'Europe/Paris',
+  /**
+   * TIME ZONE America/Guatemala
+   */
   AMERICA_GUATEMALA = 'America/Guatemala',
+  /**
+   * TIME ZONE Asia/Seoul
+   */
   ASIA_SEOUL = 'Asia/Seoul',
+  /**
+   * TIME ZONE Europe/Prague
+   */
   EUROPE_PRAGUE = 'Europe/Prague',
+  /**
+   * TIME ZONE America/Halifax
+   */
   AMERICA_HALIFAX = 'America/Halifax',
+  /**
+   * TIME ZONE Asia/Shanghai
+   */
   ASIA_SHANGHAI = 'Asia/Shanghai',
+  /**
+   * TIME ZONE Europe/Sarajevo
+   */
   EUROPE_SARAJEVO = 'Europe/Sarajevo',
+  /**
+   * TIME ZONE America/Manaus
+   */
   AMERICA_MANAUS = 'America/Manaus',
+  /**
+   * TIME ZONE Asia/Singapore
+   */
   ASIA_SINGAPORE = 'Asia/Singapore',
+  /**
+   * TIME ZONE Pacific/Auckland
+   */
   PACIFIC_AUCKLAND = 'Pacific/Auckland',
+  /**
+   * TIME ZONE America/Matamoros
+   */
   AMERICA_MATAMOROS = 'America/Matamoros',
+  /**
+   * TIME ZONE Pacific/Fiji
+   */
   PACIFIC_FIJI = 'Pacific/Fiji',
+  /**
+   * TIME ZONE America/Monterrey
+   */
   AMERICA_MONTERREY = 'America/Monterrey',
+  /**
+   * TIME ZONE Asia/Tehran
+   */
   ASIA_TEHRAN = 'Asia/Tehran',
+  /**
+   * TIME ZONE Pacific/Guam
+   */
   PACIFIC_GUAM = 'Pacific/Guam',
+  /**
+   * TIME ZONE America/Montevideo
+   */
   AMERICA_MONTEVIDEO = 'America/Montevideo',
+  /**
+   * TIME ZONE Asia/Tokyo
+   */
   ASIA_TOKYO = 'Asia/Tokyo',
+  /**
+   * TIME ZONE Pacific/Honolulu
+   */
   PACIFIC_HONOLULU = 'Pacific/Honolulu',
+  /**
+   * TIME ZONE America/Phoenix
+   */
   AMERICA_PHOENIX = 'America/Phoenix',
+  /**
+   * TIME ZONE Asia/Ulaanbaatar
+   */
   ASIA_ULAANBAATAR = 'Asia/Ulaanbaatar',
+  /**
+   * TIME ZONE Pacific/Samoa
+   */
   PACIFIC_SAMOA = 'Pacific/Samoa',
+  /**
+   * TIME ZONE America/Santiago
+   */
   AMERICA_SANTIAGO = 'America/Santiago',
+  /**
+   * TIME ZONE Asia/Vladivostok
+   */
   ASIA_VLADIVOSTOK = 'Asia/Vladivostok',
+  /**
+   * TIME ZONE US/Alaska
+   */
   US_ALASKA = 'US/Alaska',
+  /**
+   * TIME ZONE America/Tijuana
+   */
   AMERICA_TIJUANA = 'America/Tijuana',
+  /**
+   * TIME ZONE Asia/Yakutsk
+   */
   ASIA_YAKUTSK = 'Asia/Yakutsk',
+  /**
+   * TIME ZONE US/Central
+   */
   US_CENTRAL = 'US/Central',
+  /**
+   * TIME ZONE Asia/Amman
+   */
   ASIA_AMMAN = 'Asia/Amman',
+  /**
+   * TIME ZONE Asia/Yerevan
+   */
   ASIA_YEREVAN = 'Asia/Yerevan',
+  /**
+  * TIME ZONE US/Eastern
+  */
   US_EASTERN = 'US/Eastern',
+  /**
+   * TIME ZONE Asia/Ashgabat
+   */
   ASIA_ASHGABAT = 'Asia/Ashgabat',
+  /**
+   * TIME ZONE Atlantic/Azores
+   */
   ATLANTIC_AZORES = 'Atlantic/Azores',
+  /**
+   * TIME ZONE US/East-Indiana
+   */
   US_EAST_INDIANA = 'US/East-Indiana',
+  /**
+   * TIME ZONE Asia/Baghdad
+   */
   ASIA_BAGHDAD = 'Asia/Baghdad',
+  /**
+   * TIME ZONE Australia/Adelaide
+   */
   AUSTRALIA_ADELAIDE = 'Australia/Adelaide',
+  /**
+   * TIME ZONE US/Pacific
+   */
   US_PACIFIC = 'US/Pacific',
+  /**
+   * TIME ZONE Asia/Baku
+   */
   ASIA_BAKU = 'Asia/Baku',
+  /**
+   * TIME ZONE Australia/Brisbane
+   */
   AUSTRALIA_BRISBANE = 'Australia/Brisbane',
 }
 
 export enum InstanceTypeEnum{
+  /**
+   * db Instance Type r4.large
+   */
   R4_LARGE = 'r4.large',
+  /**
+   * db Instance Type r4.xlarge
+   */
   R4_XLARGE = 'r4.xlarge',
+  /**
+   * db Instance Type r4.2xlarge
+   */
   R4_2XLARGE = 'r4.2xlarge',
+  /**
+   * db Instance Type r4.4xlarge
+   */
   R4_4XLARGE = 'r4.4xlarge',
+  /**
+   * db Instance Type r4.8xlarge 
+   */
   R4_8XLARGE = 'r4.8xlarge',
+  /**
+   * db Instance Type r4.16xlarge 
+   */
   R4_16XLARGE = 'r4.16xlarge',
+  /**
+   * db Instance Type r5.large 
+   */
   R5_LARGE = 'r5.large',
+  /**
+   * db Instance Type r5.xlarge 
+   */
   R5_XLARGE = 'r5.xlarge',
+  /**
+   * db Instance Type r5.2xlarge 
+   */
   R5_2XLARGE = 'r5.2xlarge',
+  /**
+   * db Instance Type r5.4xlarge 
+   */
   R5_4XLARGE = 'r5.4xlarge',
+  /**
+   * db Instance Type r5.8xlarge 
+   */
   R5_8XLARGE = 'r5.8xlarge',
+  /**
+   * db Instance Type r5.12xlarge
+   */
   R5_12XLARGE = 'r5.12xlarge',
+  /**
+   * db Instance Type r5.16xlarge 
+   */
   R5_16XLARGE = 'r5.16xlarge',
+  /**
+   * db Instance Type r5.24xlarge
+   */
   R5_24XLARGE = 'r5.24xlarge',
 }
 
@@ -202,12 +496,15 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
   /**
    * return RDS Cluster
    */
-  readonly rdsCluster: rds.IDatabaseCluster;
+  readonly rdsCluster: rds.DatabaseCluster;
   
   /**
-   * return RDS Cluster password
+   * return RDS Cluster password 
+   * 
+   * if not define props.rdsPassword , password will stored in Secret Manager 
+   * Please use this command get password back , "aws secretsmanager get-secret-value --secret-id secret name"
    */
-  readonly rdsPassword: string;
+  readonly rdsPassword: string | undefined;
   
   /**
    * return RDS Cluster ParameterGroup
@@ -265,6 +562,17 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ){
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
+    let rdsCredentials: rds.Credentials;
+    if(props?.rdsPassword){
+      rdsCredentials = {
+        username: props?.dbUserName ?? 'sysadmin',
+        password: cdk.SecretValue.plainText(props?.rdsPassword),
+      }
+    }else {
+      rdsCredentials = {
+        username: props?.dbUserName ?? 'sysadmin',
+      }
+    };
     
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
     this.engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
@@ -279,8 +587,6 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       enableDnsSupport: true,
       natGateways: 1,
     });
-
-    this.rdsPassword = props?.rdsPassword ?? PasswordProvider.genRdsPassword();
 
     this.dbClusterpPG = props?.dbClusterpPG ?? new rds.ParameterGroup(this, 'dbClusterparametergroup', {
       engine: this.engineVersion,
@@ -297,10 +603,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       engine: this.engineVersion,
       parameterGroup: this.dbClusterpPG,
       clusterIdentifier: `${stack.stackName.toLowerCase()}-primary`,
-      masterUser: {
-        password:  new cdk.SecretValue(this.rdsPassword),
-        username: props?.dbUserName ?? 'sysadmin',
-      },
+      credentials: rdsCredentials!,
       instances: 1,
       instanceProps: {
         // if want publicAccess , need to define vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC } ,
@@ -311,6 +614,9 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       defaultDatabaseName:  props?.defaultDatabaseName ?? 'globaldatabase',
     });
+
+    this.rdsPassword = `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret?.secretName}` ?? props?.rdsPassword;;
+
     this.rdsCluster.node.addDependency(rdsVpc);
     this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock));
 
@@ -373,7 +679,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     });
 
     new cdk.CfnOutput(this, 'GlobalClusterPrimaryEndpoint',{
-      value: `${this.rdsCluster.clusterEndpoint}`,
+      value: this.rdsCluster.clusterEndpoint.hostname,
     });
   }
   private azOfSubnets(subnets: ec2.ISubnet[]): number {
@@ -526,16 +832,5 @@ export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
     new cdk.CfnOutput(this,'stackRegion',{
       value: `${stack.region}`,
     });
-  }
-}
-
-/**
- * Random Password Provider
- */
-export class PasswordProvider{
-  public static genRdsPassword(){
-    // random password gen ~~
-    const randomString: string = Math.random().toString(36).slice(-8);
-    return randomString
   }
 }

@@ -20,7 +20,7 @@ const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
 const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
-  rdsPassword: '1qaz2wsx',
+  //rdsPassword: '1qaz2wsx',
   engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({
     version: _rds.AuroraPostgresEngineVersion.VER_11_7}),
   dbClusterpPG: new _rds.ParameterGroup(stackM, 'dbClusterparametergroup', {
@@ -66,7 +66,7 @@ const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{
 stackM.addDependency(stackS)
 
 
-new CfnOutput(stackM, 'password', { value: globaldbM.rdsPassword });
+new CfnOutput(stackM, 'password', { value: `${globaldbM.rdsPassword}`});
 // add second region cluster
 globaldbM.addRegionalCluster(stackM,'addregionalrds',{
   region: 'ap-southeast-1',
