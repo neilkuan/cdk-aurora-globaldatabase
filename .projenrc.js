@@ -12,10 +12,12 @@ const project = new ConstructLibraryAws({
   keywords: ['aws', 'cdk', 'rds', 'global'],
   catalog: {
     twitter: 'neil_kuan',
-    announce: false,
+    announce: true,
   },
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
-  cdkVersion: '1.65.0',
+  cdkVersion: '1.66.0',
+  stability: 'experimental',
+  autoReleaseSchedule: 'never',
   cdkDependencies: [
     '@aws-cdk/aws-iam',
     '@aws-cdk/aws-ec2',
@@ -31,15 +33,8 @@ const project = new ConstructLibraryAws({
     module: 'cdk_aurora_globaldatabase',
   },
 });
+const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
+project.gitignore.exclude(...common_exclude);
 
-project.gitignore.exclude('cdk.context.json', 'cdk.out', 'venv');
-
-project.npmignore.exclude(
-  'cdk.context.json',
-  'cdk.out',
-  'coverage',
-  'yarn-error.log',
-  'image',
-  'venv',
-);
+project.npmignore.exclude(...common_exclude);
 project.synth();

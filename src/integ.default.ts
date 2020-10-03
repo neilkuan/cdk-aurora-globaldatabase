@@ -1,14 +1,15 @@
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
-import { App, Stack, CfnOutput } from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as _rds from '@aws-cdk/aws-rds';
+import { App, Stack, CfnOutput } from '@aws-cdk/core';
+import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
+
 
 const mockApp = new App();
-const envSingapro  = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-southeast-1' };
+const envSingapro = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-southeast-1' };
 const envTokyo = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-northeast-1' };
 
-const stackM = new Stack(mockApp, 'testing-stackM',{env: envTokyo});
-const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
+const stackM = new Stack(mockApp, 'testing-stackM', { env: envTokyo });
+const vpcPublic = new ec2.Vpc(stackM, 'defaultVpc', {
   natGateways: 0,
   maxAzs: 3,
   subnetConfiguration: [{
@@ -17,12 +18,11 @@ const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
+const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster', {
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
   //rdsPassword: '1qaz2wsx',
-  engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({
-    version: _rds.AuroraPostgresEngineVersion.VER_11_7}),
+  engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_11_7 }),
   dbClusterpPG: new _rds.ParameterGroup(stackM, 'dbClusterparametergroup', {
     engine: _rds.DatabaseClusterEngine.auroraPostgres({
       version: _rds.AuroraPostgresEngineVersion.VER_11_7,
@@ -47,10 +47,10 @@ const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
     },
   }),
 });
-globaldbM.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(`${process.env.MYIP}/32`))
+globaldbM.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(`${process.env.MYIP}/32`));
 
-const stackS = new Stack(mockApp, 'testing-stackS',{env: envSingapro});
-const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
+const stackS = new Stack(mockApp, 'testing-stackS', { env: envSingapro });
+const vpcPublic2 = new ec2.Vpc(stackS, 'defaultVpc2', {
   natGateways: 0,
   maxAzs: 3,
   subnetConfiguration: [{
@@ -59,16 +59,17 @@ const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{
-  vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC, 
+const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion', {
+  vpc: vpcPublic2,
+  subnetType: ec2.SubnetType.PUBLIC,
 });
 
-stackM.addDependency(stackS)
+stackM.addDependency(stackS);
 
 
-new CfnOutput(stackM, 'password', { value: `${globaldbM.rdsPassword}`});
+new CfnOutput(stackM, 'password', { value: `${globaldbM.rdsPassword}` });
 // add second region cluster
-globaldbM.addRegionalCluster(stackM,'addregionalrds',{
+globaldbM.addRegionalCluster(stackM, 'addregionalrds', {
   region: 'ap-southeast-1',
   dbSubnetGroupName: globaldbS.dbSubnetGroup.dbSubnetGroupName,
 });

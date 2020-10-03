@@ -1,11 +1,11 @@
-import * as cdk from '@aws-cdk/core';
-import * as rds from '@aws-cdk/aws-rds';
+import * as path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
+import * as rds from '@aws-cdk/aws-rds';
+import * as cdk from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
-import * as iam from '@aws-cdk/aws-iam';
-import * as path from 'path';
 
 export enum MySQLtimeZone {
   /**
@@ -364,31 +364,31 @@ export enum InstanceTypeEnum{
    */
   R4_4XLARGE = 'r4.4xlarge',
   /**
-   * db Instance Type r4.8xlarge 
+   * db Instance Type r4.8xlarge
    */
   R4_8XLARGE = 'r4.8xlarge',
   /**
-   * db Instance Type r4.16xlarge 
+   * db Instance Type r4.16xlarge
    */
   R4_16XLARGE = 'r4.16xlarge',
   /**
-   * db Instance Type r5.large 
+   * db Instance Type r5.large
    */
   R5_LARGE = 'r5.large',
   /**
-   * db Instance Type r5.xlarge 
+   * db Instance Type r5.xlarge
    */
   R5_XLARGE = 'r5.xlarge',
   /**
-   * db Instance Type r5.2xlarge 
+   * db Instance Type r5.2xlarge
    */
   R5_2XLARGE = 'r5.2xlarge',
   /**
-   * db Instance Type r5.4xlarge 
+   * db Instance Type r5.4xlarge
    */
   R5_4XLARGE = 'r5.4xlarge',
   /**
-   * db Instance Type r5.8xlarge 
+   * db Instance Type r5.8xlarge
    */
   R5_8XLARGE = 'r5.8xlarge',
   /**
@@ -396,7 +396,7 @@ export enum InstanceTypeEnum{
    */
   R5_12XLARGE = 'r5.12xlarge',
   /**
-   * db Instance Type r5.16xlarge 
+   * db Instance Type r5.16xlarge
    */
   R5_16XLARGE = 'r5.16xlarge',
   /**
@@ -406,8 +406,7 @@ export enum InstanceTypeEnum{
 }
 
 const GlobalAuroraRDSSupportRegion = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-central-1',
-  'ap-south-1', 'ap-southeast-1', 'ap-southeast-2' , 'ap-northeast-1' , 'ap-northeast-2' , 'ca-central-1',
-];
+  'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'ap-northeast-2', 'ca-central-1'];
 
 export interface GolbalAuroraRDSMasterProps {
   /**
@@ -439,7 +438,7 @@ export interface GolbalAuroraRDSMasterProps {
   readonly dbClusterpPG?: rds.IParameterGroup;
 
   /**
-   * RDS Instance Type only can use r4 or r5 type 
+   * RDS Instance Type only can use r4 or r5 type
    * see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations
    *
    * @default - r5.large
@@ -451,32 +450,32 @@ export interface GolbalAuroraRDSMasterProps {
    *
    * @default - MySQLtimeZone.UTC
    */
-  readonly timeZone?: MySQLtimeZone; 
+  readonly timeZone?: MySQLtimeZone;
 
   /**
    * RDS Parameters
    *
    * @default - {time_zone: 'UTC'}
    */
-  readonly parameters?: {[key: string]: string;} | undefined;
+  readonly parameters?: {[key: string]: string} | undefined;
 
-  /** 
+  /**
    * RDS Database Cluster Engine .
-   * 
+   *
    * @default - rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
   */
   readonly engineVersion?: rds.IClusterEngine;
 
-  /** 
+  /**
    * Global RDS Database Cluster Engine Deletion Protection Option .
-   * 
+   *
    * @default - false
   */
   readonly deletionProtection?: boolean;
-    
-  /** 
+
+  /**
    * Global RDS Database Cluster Engine Storage Encrypted Option .
-   * 
+   *
   * @default - true
   */
   readonly storageEncrypted?: boolean;
@@ -497,15 +496,15 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
    * return RDS Cluster
    */
   readonly rdsCluster: rds.DatabaseCluster;
-  
+
   /**
-   * return RDS Cluster password 
-   * 
-   * if not define props.rdsPassword , password will stored in Secret Manager 
+   * return RDS Cluster password
+   *
+   * if not define props.rdsPassword , password will stored in Secret Manager
    * Please use this command get password back , "aws secretsmanager get-secret-value --secret-id secret name"
    */
   readonly rdsPassword: string | undefined;
-  
+
   /**
    * return RDS Cluster ParameterGroup
    */
@@ -545,7 +544,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
    * return Global RDS Cluster instance Type .
    */
   readonly rdsInstanceType: InstanceTypeEnum;
-  
+
   /**
    * CustomResource for Second Regional .
    */
@@ -559,29 +558,29 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     super(scope, id);
     const stack = cdk.Stack.of(this);
 
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ){
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
     let rdsCredentials: rds.Credentials;
-    if(props?.rdsPassword){
+    if (props?.rdsPassword) {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
         password: cdk.SecretValue.plainText(props?.rdsPassword),
-      }
-    }else {
+      };
+    } else {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
-      }
+      };
     };
-    
+
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
     this.engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
       version: rds.AuroraMysqlEngineVersion.VER_2_07_1,
     });
 
     this.rdsInstanceType = props?.instanceType ?? InstanceTypeEnum.R5_LARGE;
-    // Master region Vpc 
-    const rdsVpc =  props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionMaster',{
+    // Master region Vpc
+    const rdsVpc = props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionMaster', {
       cidr: '10.108.0.0/16',
       enableDnsHostnames: true,
       enableDnsSupport: true,
@@ -596,7 +595,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     });
 
     let rdsVpcSubnetSelect = ec2.SubnetType.PRIVATE;
-    if(this.azOfSubnets(rdsVpc.privateSubnets) === 0){
+    if (this.azOfSubnets(rdsVpc.privateSubnets) === 0) {
       rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
     }
     this.rdsCluster = new rds.DatabaseCluster(this, 'RDSCluster', {
@@ -612,7 +611,7 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
         instanceType: new ec2.InstanceType(this.rdsInstanceType),
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      defaultDatabaseName:  props?.defaultDatabaseName ?? 'globaldatabase',
+      defaultDatabaseName: props?.defaultDatabaseName ?? 'globaldatabase',
     });
 
     this.rdsPassword = `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret?.secretName}` ?? props?.rdsPassword;;
@@ -623,7 +622,8 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
       resources: ['*'],
-      actions: ['rds:CreateGlobalCluster','rds:DeleteGlobalCluster','rds:RemoveFromGlobalCluster','rds:ModifyGlobalCluster']});
+      actions: ['rds:CreateGlobalCluster', 'rds:DeleteGlobalCluster', 'rds:RemoveFromGlobalCluster', 'rds:ModifyGlobalCluster'],
+    });
     // Upgrade database to Global.
     const onEvent = new lambda.Function(this, 'onEventHandler', {
       runtime: lambda.Runtime.PYTHON_3_8,
@@ -631,12 +631,12 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       handler: 'global_index.on_event',
       timeout: cdk.Duration.minutes(5),
     });
-  
+
     const UpgradeglobaldbProvider = new cr.Provider(this, 'UpgradeglobaldbProvider', {
       onEventHandler: onEvent,
       logRetention: logs.RetentionDays.ONE_DAY,
     });
-    
+
     this.crGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
       resourceType: 'Custom::UpgradeGlobalClusterProvider',
       serviceToken: UpgradeglobaldbProvider.serviceToken,
@@ -648,37 +648,37 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
 
     this.crGlobalRDSProvider.node.addDependency(this.rdsCluster);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
-    this.rdsIsPublic = rdsVpcSubnetSelect
-    new cdk.CfnOutput(this, 'RDSisPublic',{
+    this.rdsIsPublic = rdsVpcSubnetSelect;
+    new cdk.CfnOutput(this, 'RDSisPublic', {
       value: this.rdsIsPublic,
     });
 
-    this.rdsClusterarn = `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`
-    new cdk.CfnOutput(this, 'RDSClusterarn',{
+    this.rdsClusterarn = `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
+    new cdk.CfnOutput(this, 'RDSClusterarn', {
       value: this.rdsClusterarn,
     });
 
     this.globalClusterIdentifier = `global-${stack.stackName.toLowerCase()}`;
-    new cdk.CfnOutput(this, 'GlobalClusterIdentifier',{
-      value: this.globalClusterIdentifier ,
+    new cdk.CfnOutput(this, 'GlobalClusterIdentifier', {
+      value: this.globalClusterIdentifier,
     });
 
     this.engine = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('Engine'));
-    new cdk.CfnOutput(this, 'Engine',{
+    new cdk.CfnOutput(this, 'Engine', {
       value: this.engine,
     });
 
     this.clusterEngineVersion = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('EngineVersion'));
-    new cdk.CfnOutput(this, 'clusterEngineVersion',{
+    new cdk.CfnOutput(this, 'clusterEngineVersion', {
       value: this.clusterEngineVersion,
     });
 
     this.globalClusterArn = cdk.Token.asString(this.crGlobalRDSProvider.getAtt('GlobalClusterArn'));
-    new cdk.CfnOutput(this, 'GlobalClusterArn',{
+    new cdk.CfnOutput(this, 'GlobalClusterArn', {
       value: this.globalClusterArn,
     });
 
-    new cdk.CfnOutput(this, 'GlobalClusterPrimaryEndpoint',{
+    new cdk.CfnOutput(this, 'GlobalClusterPrimaryEndpoint', {
       value: this.rdsCluster.clusterEndpoint.hostname,
     });
   }
@@ -686,16 +686,17 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
     return new Set(subnets.map(subnet => subnet.availabilityZone)).size;
   }
 
-  public addRegionalCluster(scope: cdk.Construct,id: string, options: RegionalOptions){
+  public addRegionalCluster(scope: cdk.Construct, id: string, options: RegionalOptions) {
     const stack = cdk.Stack.of(scope);
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
       resources: ['*'],
       actions: [
-        'rds:CreateGlobalCluster','rds:DeleteGlobalCluster','rds:RemoveFromGlobalCluster','rds:ModifyGlobalCluster',
-        'rds:CreateDBCluster','rds:CreateDBInstance','rds:DeleteDBCluster','rds:DeleteDBInstance','rds:DescribeDBInstances',
+        'rds:CreateGlobalCluster', 'rds:DeleteGlobalCluster', 'rds:RemoveFromGlobalCluster', 'rds:ModifyGlobalCluster',
+        'rds:CreateDBCluster', 'rds:CreateDBInstance', 'rds:DeleteDBCluster', 'rds:DeleteDBInstance', 'rds:DescribeDBInstances',
         'rds:DescribeGlobalClusters',
-      ]});
+      ],
+    });
     // Upgrade database to Global.
     const onEvent = new lambda.Function(scope, `${id}-addRegionalonEvent`, {
       runtime: lambda.Runtime.PYTHON_3_8,
@@ -711,13 +712,13 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
       timeout: cdk.Duration.minutes(10),
       role: onEvent.role,
     });
-  
+
     const addRegionalProvider = new cr.Provider(scope, `${id}-addRegionalProvider`, {
       onEventHandler: onEvent,
       isCompleteHandler: isComplete,
       logRetention: logs.RetentionDays.ONE_DAY,
     });
-    
+
     const CRSecondRDSProvider = new cdk.CustomResource(scope, `${id}-addRegionalCustomResource`, {
       resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
@@ -732,33 +733,33 @@ export class GolbalAuroraRDSMaster extends cdk.Construct {
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
         secondRDSClusterArn: `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`,
-        seconddbInstanceIdentifier:`${stack.stackName.toLowerCase()}-${options.region}-1`,
+        seconddbInstanceIdentifier: `${stack.stackName.toLowerCase()}-${options.region}-1`,
       },
     });
     CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
 
-    new cdk.CfnOutput(scope,'secondRDSClusterArn',{
+    new cdk.CfnOutput(scope, 'secondRDSClusterArn', {
       value: cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn')),
     });
 
-    new cdk.CfnOutput(scope,'seconddbInstanceIdentifier',{
+    new cdk.CfnOutput(scope, 'seconddbInstanceIdentifier', {
       value: cdk.Token.asString(CRSecondRDSProvider.getAtt('seconddbInstanceIdentifier')),
     });
   }
 }
 
-export interface  GolbalAuroraRDSSlaveInfraProps {
+export interface GolbalAuroraRDSSlaveInfraProps {
   /**
    *  Slave region VPC
-   * 
+   *
    *  @default - new VPC
    */
   readonly vpc?: ec2.IVpc;
 
   /**
    *  Slave region
-   * 
+   *
    */
   readonly subnetType?: ec2.SubnetType;
 
@@ -767,36 +768,36 @@ export interface  GolbalAuroraRDSSlaveInfraProps {
    */
   readonly stack?: cdk.Stack;
 
-  /** 
+  /**
    * Global RDS Database Cluster Engine Deletion Protection Option .
-   * 
+   *
    * @default - false
   */
-  readonly deletionProtection?: boolean,
-   
-  /** 
+  readonly deletionProtection?: boolean;
+
+  /**
    * Global RDS Database Cluster Engine Storage Encrypted Option .
-   * 
+   *
   * @default - true
   */
-  readonly storageEncrypted?: boolean,
+  readonly storageEncrypted?: boolean;
 }
 
 export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
-  /** 
+  /**
    * GolbalAuroraRDSSlaveInfra subnet group .
-   * 
+   *
   * @default - true
   */
   readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
   constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ){
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
-    // Slave region Vpc 
-    const rdsVpcSecond =  props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionSlave',{
+    // Slave region Vpc
+    const rdsVpcSecond = props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionSlave', {
       cidr: '10.109.0.0/16',
       enableDnsHostnames: true,
       enableDnsSupport: true,
@@ -804,7 +805,7 @@ export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
     });
 
     const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE;
-    if (DBsubnetType === ec2.SubnetType.PRIVATE){
+    if (DBsubnetType === ec2.SubnetType.PRIVATE) {
       const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
         dbSubnetGroupName: `${stack.stackName.toLowerCase()}-privatesubnetgroup`,
@@ -812,9 +813,9 @@ export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
         subnetIds: PrivateSubnet.subnetIds,
       });
 
-      cdk.Tags.of(this.dbSubnetGroup).add('Name','PrivateDBSubnetGroup')
-      this.dbSubnetGroup.node.addDependency(rdsVpcSecond)  
-    }else {
+      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PrivateDBSubnetGroup');
+      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
+    } else {
       const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
         dbSubnetGroupName: `${stack.stackName.toLowerCase()}-publicsubnetgroup`,
@@ -822,14 +823,14 @@ export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
         subnetIds: PublicSubnet.subnetIds,
       });
 
-      cdk.Tags.of(this.dbSubnetGroup).add('Name','PublicDBSubnetGroup')
-      this.dbSubnetGroup.node.addDependency(rdsVpcSecond)
+      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PublicDBSubnetGroup');
+      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
     }
-    new cdk.CfnOutput(this,'newDBSubnetGroup',{
+    new cdk.CfnOutput(this, 'newDBSubnetGroup', {
       value: `${this.dbSubnetGroup.dbSubnetGroupName}`,
     });
 
-    new cdk.CfnOutput(this,'stackRegion',{
+    new cdk.CfnOutput(this, 'stackRegion', {
       value: `${stack.region}`,
     });
   }

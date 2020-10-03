@@ -40,8 +40,11 @@ jspm_packages/
 /coverage
 .jsii
 tsconfig.json
-cdk.context.json
 cdk.out
+cdk.context.json
+image
+yarn-error.log
+coverage
 venv
 !/package.json
 !/.npmignore
@@ -55,7 +58,7 @@ venv
 !/.github/dependabot.yml
 !/.github/workflows/projenupgrade.yml
 !/src
-!/.eslintrc.json
 !/tsconfig.jest.json
 !/test
+!/.eslintrc.json
 !/API.md
