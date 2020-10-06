@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.8 (2020-10-06)
+
 ### 0.1.7 (2020-10-05)
 
 ### [0.1.6](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.4...v0.1.6) (2020-10-03)
