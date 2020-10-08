@@ -55,7 +55,6 @@ venv
 !/.github/workflows/build.yml
 !/.github/workflows/release.yml
 !/.mergify.yml
-!/.github/dependabot.yml
 !/.github/workflows/projenupgrade.yml
 !/src
 !/tsconfig.jest.json
