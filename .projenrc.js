@@ -15,7 +15,7 @@ const project = new ConstructLibraryAws({
     announce: true,
   },
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
-  cdkVersion: '1.67.0',
+  cdkVersion: '1.68.0',
   stability: 'experimental',
   autoReleaseSchedule: 'never',
   dependabot: false,
