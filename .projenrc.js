@@ -35,7 +35,8 @@ const project = new ConstructLibraryAws({
   },
 });
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
-project.gitignore.exclude(...common_exclude);
+const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv'];
+project.gitignore.exclude(...common_exclude_image);
 
 project.npmignore.exclude(...common_exclude);
 project.synth();

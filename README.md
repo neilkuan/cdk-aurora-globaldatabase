@@ -69,6 +69,7 @@ globaldbM.addRegionalCluster(stackM,'addregionalrds',{
   dbSubnetGroupName: globaldbS.dbSubnetGroup.dbSubnetGroupName,
 });
 ```
+![like this ](./image/Mysql-cluster.jpg)
 # Sample for Postgres
 
 ```ts
