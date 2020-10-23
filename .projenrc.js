@@ -1,9 +1,9 @@
-const { ConstructLibraryAws } = require('projen');
+const { AwsCdkConstructLibrary } = require('projen');
 
 const PROJECT_NAME = 'cdk-aurora-globaldatabase';
 const PROJECT_DESCRIPTION = 'cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.';
 
-const project = new ConstructLibraryAws({
+const project = new AwsCdkConstructLibrary({
   name: PROJECT_NAME,
   description: PROJECT_DESCRIPTION,
   repository: 'https://github.com/guan840912/cdk-aurora-globaldatabase.git',
