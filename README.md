@@ -159,3 +159,7 @@ cdk deploy
 ```bash
 cdk destroy
 ```
+
+## :clap:  Supporters
+[![Stargazers repo roster for @guan840912/cdk-aurora-globaldatabase](https://reporoster.com/stars/guan840912/cdk-aurora-globaldatabase)](https://github.com/guan840912/cdk-aurora-globaldatabase/stargazers)
+[![Forkers repo roster for @guan840912/cdk-aurora-globaldatabase](https://reporoster.com/forks/guan840912/cdk-aurora-globaldatabase)](https://github.com/guan840912/cdk-aurora-globaldatabase/network/members)

@@ -55,8 +55,10 @@ venv
 !/.github/workflows/release.yml
 !/.mergify.yml
 !/.github/workflows/projenupgrade.yml
+!/.github/pull_request_template.md
 !/src
 !/tsconfig.jest.json
 !/test
 !/.eslintrc.json
 !/API.md
+!/.github/workflows/projenyarnupgrade.yml
