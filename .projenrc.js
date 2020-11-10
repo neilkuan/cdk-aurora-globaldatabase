@@ -3,7 +3,7 @@ const { AwsCdkConstructLibrary, GithubWorkflow } = require('projen');
 const PROJECT_NAME = 'cdk-aurora-globaldatabase';
 const PROJECT_DESCRIPTION = 'cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.';
 const AUTOMATION_TOKEN = 'AUTOMATION_GITHUB_TOKEN';
-const CDK_VERSION = '1.71.0';
+const CDK_VERSION = '1.72.0';
 
 const project = new AwsCdkConstructLibrary({
   name: PROJECT_NAME,
@@ -21,17 +21,7 @@ const project = new AwsCdkConstructLibrary({
   cdkVersion: CDK_VERSION,
   stability: 'experimental',
   dependabot: false,
-  deps: [
-    `@aws-cdk/aws-iam@^${CDK_VERSION}`,
-    `@aws-cdk/aws-ec2@^${CDK_VERSION}`,
-    `@aws-cdk/aws-rds@^${CDK_VERSION}`,
-    `@aws-cdk/aws-lambda@^${CDK_VERSION}`,
-    `@aws-cdk/aws-logs@^${CDK_VERSION}`,
-    `@aws-cdk/core@^${CDK_VERSION}`,
-    `@aws-cdk/custom-resources@^${CDK_VERSION}`,
-    `@aws-cdk/aws-iam@^${CDK_VERSION}`,
-  ],
-  peerDeps: [
+  cdkDependencies: [
     `@aws-cdk/aws-iam@^${CDK_VERSION}`,
     `@aws-cdk/aws-ec2@^${CDK_VERSION}`,
     `@aws-cdk/aws-rds@^${CDK_VERSION}`,
