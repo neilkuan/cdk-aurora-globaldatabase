@@ -14,7 +14,7 @@ const project = new AwsCdkConstructLibrary({
   keywords: ['aws', 'cdk', 'rds', 'global'],
   catalog: {
     twitter: 'neil_kuan',
-    announce: true,
+    announce: false,
   },
   compat: true,
   projenUpgradeSecret: AUTOMATION_TOKEN,
