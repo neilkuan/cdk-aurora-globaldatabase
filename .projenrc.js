@@ -42,7 +42,7 @@ workflow = project.github.addWorkflow('ProjenYarnUpgrade');
 
 workflow.on({
   schedule: [{
-    cron: '11 0 * * *'
+    cron: '11 0 * * *',
   }], // 0:11am every day
   workflow_dispatch: {}, // allow manual triggering
 });
@@ -52,14 +52,14 @@ workflow.addJobs({
     'runs-on': 'ubuntu-latest',
     'steps': [
       { uses: 'actions/checkout@v2' },
-      { 
+      {
         uses: 'actions/setup-node@v1',
         with: {
           'node-version': '10.17.0',
-        }
+        },
       },
-      { run: `yarn upgrade` },
-      { run: `yarn projen:upgrade` },
+      { run: 'yarn upgrade' },
+      { run: 'yarn projen:upgrade' },
       // submit a PR
       {
         name: 'Create Pull Request',
@@ -71,7 +71,7 @@ workflow.addJobs({
           'title': 'chore: upgrade projen and yarn',
           'body': 'This PR upgrades projen and yarn upgrade to the latest version',
           'labels': 'auto-merge',
-        }
+        },
       },
     ],
   },
