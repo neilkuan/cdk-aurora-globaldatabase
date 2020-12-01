@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.49](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.43...v0.1.49) (2020-12-01)
+
+### [0.1.48](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.47...v0.1.48) (2020-12-01)
+
+### [0.1.47](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.46...v0.1.47) (2020-11-30)
+
+### [0.1.46](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.45...v0.1.46) (2020-11-29)
+
+### [0.1.45](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.44...v0.1.45) (2020-11-28)
+
+### [0.1.44](https://github.com/guan840912/cdk-aurora-globaldatabase/compare/v0.1.42...v0.1.44) (2020-11-28)
+
 ### 0.1.48 (2020-12-01)
 
 ### 0.1.47 (2020-11-30)
