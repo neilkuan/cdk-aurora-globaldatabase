@@ -21,6 +21,7 @@ const project = new AwsCdkConstructLibrary({
   cdkVersion: CDK_VERSION,
   stability: 'experimental',
   dependabot: false,
+  defaultReleaseBranch: 'master',
   cdkDependencies: [
     '@aws-cdk/aws-iam',
     '@aws-cdk/aws-ec2',
