@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "@aws-cdk/assert",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "build"
     },
     {
@@ -89,43 +89,47 @@
       "type": "build"
     },
     {
+      "name": "projen-automate-it",
+      "type": "bundled"
+    },
+    {
       "name": "@aws-cdk/aws-ec2",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-lambda",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-logs",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-rds",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "peer"
     },
     {
@@ -135,42 +139,46 @@
     },
     {
       "name": "@aws-cdk/aws-ec2",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-lambda",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-logs",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-rds",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "^1.84.0",
+      "version": "^1.94.1",
+      "type": "runtime"
+    },
+    {
+      "name": "projen-automate-it",
       "type": "runtime"
     }
   ],
