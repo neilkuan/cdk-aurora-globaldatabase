@@ -4,7 +4,7 @@ const { Automation } = require('projen-automate-it');
 const PROJECT_NAME = 'cdk-aurora-globaldatabase';
 const PROJECT_DESCRIPTION = 'cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.';
 const AUTOMATION_TOKEN = 'AUTOMATION_GITHUB_TOKEN';
-const CDK_VERSION = '1.94.1';
+const CDK_VERSION = '1.96.0';
 
 const project = new AwsCdkConstructLibrary({
   name: PROJECT_NAME,
@@ -44,8 +44,6 @@ const project = new AwsCdkConstructLibrary({
 const automation = new Automation(project, {
   automationToken: AUTOMATION_TOKEN,
 });
-automation.autoApprove();
-automation.autoMerge();
 automation.projenYarnUpgrade();
 
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
