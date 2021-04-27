@@ -3,7 +3,7 @@
   "description": "cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/guan840912/cdk-aurora-globaldatabase.git"
+    "url": "https://github.com/neilkuan/cdk-aurora-globaldatabase.git"
   },
   "scripts": {
     "clobber": "npx projen clobber",

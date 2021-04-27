@@ -1,6 +1,6 @@
 [![NPM version](https://badge.fury.io/js/cdk-aurora-globaldatabase.svg)](https://badge.fury.io/js/cdk-aurora-globaldatabase)
 [![PyPI version](https://badge.fury.io/py/cdk-aurora-globaldatabase.svg)](https://badge.fury.io/py/cdk-aurora-globaldatabase)
-![Release](https://github.com/guan840912/cdk-aurora-globaldatabase/workflows/Release/badge.svg)
+![Release](https://github.com/neilkuan/cdk-aurora-globaldatabase/workflows/Release/badge.svg)
 
 ![Downloads](https://img.shields.io/badge/-DOWNLOADS:-brightgreen?color=gray)
 ![npm](https://img.shields.io/npm/dt/cdk-aurora-globaldatabase?label=npm&color=orange)
@@ -161,5 +161,5 @@ cdk destroy
 ```
 
 ## :clap:  Supporters
-[![Stargazers repo roster for @guan840912/cdk-aurora-globaldatabase](https://reporoster.com/stars/guan840912/cdk-aurora-globaldatabase)](https://github.com/guan840912/cdk-aurora-globaldatabase/stargazers)
-[![Forkers repo roster for @guan840912/cdk-aurora-globaldatabase](https://reporoster.com/forks/guan840912/cdk-aurora-globaldatabase)](https://github.com/guan840912/cdk-aurora-globaldatabase/network/members)
+[![Stargazers repo roster for @neilkuan/cdk-aurora-globaldatabase](https://reporoster.com/stars/neilkuan/cdk-aurora-globaldatabase)](https://github.com/neilkuan/cdk-aurora-globaldatabase/stargazers)
+[![Forkers repo roster for @neilkuan/cdk-aurora-globaldatabase](https://reporoster.com/forks/neilkuan/cdk-aurora-globaldatabase)](https://github.com/neilkuan/cdk-aurora-globaldatabase/network/members)
