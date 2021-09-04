@@ -2,7 +2,7 @@ const { AwsCdkConstructLibrary, DependenciesUpgradeMechanism } = require('projen
 
 const PROJECT_NAME = 'cdk-aurora-globaldatabase';
 const PROJECT_DESCRIPTION = 'cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.';
-const CDK_VERSION = '1.105.0';
+const CDK_VERSION = '1.121.0';
 
 const project = new AwsCdkConstructLibrary({
   name: PROJECT_NAME,
@@ -15,6 +15,7 @@ const project = new AwsCdkConstructLibrary({
     twitter: 'neil_kuan',
     announce: false,
   },
+  minNodeVersion: '12.19.0',
   compat: true,
   cdkVersion: CDK_VERSION,
   stability: 'experimental',
