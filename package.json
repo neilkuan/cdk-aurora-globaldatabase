@@ -15,16 +15,18 @@
     "test:update": "npx projen test:update",
     "bump": "npx projen bump",
     "unbump": "npx projen unbump",
-    "upgrade-dependencies": "npx projen upgrade-dependencies",
-    "upgrade-projen": "npx projen upgrade-projen",
+    "publish:github": "npx projen publish:github",
+    "upgrade": "npx projen upgrade",
     "default": "npx projen default",
     "watch": "npx projen watch",
     "package": "npx projen package",
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
+    "publish:npm": "npx projen publish:npm",
+    "publish:pypi": "npx projen publish:pypi",
     "docgen": "npx projen docgen",
-    "projen": "npx projen",
-    "start": "npx projen start"
+    "release": "npx projen release",
+    "projen": "npx projen"
   },
   "author": {
     "name": "Neil Kuan",
@@ -32,9 +34,9 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.121.0",
+    "@aws-cdk/assert": "^1.122.0",
     "@types/jest": "^26.0.24",
-    "@types/node": "^12.19.0",
+    "@types/node": "^14.17.0",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "eslint": "^6.8.0",
@@ -49,29 +51,29 @@
     "jsii-pacmak": "^1.34.0",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.22.13",
+    "projen": "^0.28.1",
     "standard-version": "^9",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
   },
   "peerDependencies": {
-    "@aws-cdk/aws-ec2": "^1.121.0",
-    "@aws-cdk/aws-iam": "^1.121.0",
-    "@aws-cdk/aws-lambda": "^1.121.0",
-    "@aws-cdk/aws-logs": "^1.121.0",
-    "@aws-cdk/aws-rds": "^1.121.0",
-    "@aws-cdk/core": "^1.121.0",
-    "@aws-cdk/custom-resources": "^1.121.0",
+    "@aws-cdk/aws-ec2": "^1.122.0",
+    "@aws-cdk/aws-iam": "^1.122.0",
+    "@aws-cdk/aws-lambda": "^1.122.0",
+    "@aws-cdk/aws-logs": "^1.122.0",
+    "@aws-cdk/aws-rds": "^1.122.0",
+    "@aws-cdk/core": "^1.122.0",
+    "@aws-cdk/custom-resources": "^1.122.0",
     "constructs": "^3.2.27"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.121.0",
-    "@aws-cdk/aws-iam": "^1.121.0",
-    "@aws-cdk/aws-lambda": "^1.121.0",
-    "@aws-cdk/aws-logs": "^1.121.0",
-    "@aws-cdk/aws-rds": "^1.121.0",
-    "@aws-cdk/core": "^1.121.0",
-    "@aws-cdk/custom-resources": "^1.121.0"
+    "@aws-cdk/aws-ec2": "^1.122.0",
+    "@aws-cdk/aws-iam": "^1.122.0",
+    "@aws-cdk/aws-lambda": "^1.122.0",
+    "@aws-cdk/aws-logs": "^1.122.0",
+    "@aws-cdk/aws-rds": "^1.122.0",
+    "@aws-cdk/core": "^1.122.0",
+    "@aws-cdk/custom-resources": "^1.122.0"
   },
   "bundledDependencies": [],
   "keywords": [
@@ -80,9 +82,6 @@
     "global",
     "rds"
   ],
-  "engines": {
-    "node": ">= 12.19.0"
-  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.0.0",

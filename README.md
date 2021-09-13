@@ -1,6 +1,6 @@
 [![NPM version](https://badge.fury.io/js/cdk-aurora-globaldatabase.svg)](https://badge.fury.io/js/cdk-aurora-globaldatabase)
 [![PyPI version](https://badge.fury.io/py/cdk-aurora-globaldatabase.svg)](https://badge.fury.io/py/cdk-aurora-globaldatabase)
-![Release](https://github.com/neilkuan/cdk-aurora-globaldatabase/workflows/Release/badge.svg)
+![Release](https://github.com/neilkuan/cdk-aurora-globaldatabase/workflows/release/badge.svg)
 
 ![Downloads](https://img.shields.io/badge/-DOWNLOADS:-brightgreen?color=gray)
 ![npm](https://img.shields.io/npm/dt/cdk-aurora-globaldatabase?label=npm&color=orange)
