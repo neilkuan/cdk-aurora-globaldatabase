@@ -41,7 +41,7 @@ const project = new AwsCdkConstructLibrary({
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['neilkuan'],
   },
-  python: {
+  publishToPypi: {
     distName: 'cdk-aurora-globaldatabase',
     module: 'cdk_aurora_globaldatabase',
   },
