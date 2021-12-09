@@ -23,7 +23,7 @@ cdk-aurora-globaldatabase start at version: 2.x.x, support aws-cdk version: 2.xx
 # Sample for Mysql 
 ```ts
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
-import { App, Stack, CfnOutput } from 'aws-cdk-lib/core';
+import { App, Stack, CfnOutput } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // new app .
 const mockApp = new App();
@@ -79,7 +79,7 @@ globaldbM.addRegionalCluster(stackM,'addregionalrds',{
 
 ```ts
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
-import { App, Stack, CfnOutput } from 'aws-cdk-lib/core';
+import { App, Stack, CfnOutput } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as _rds from 'aws-cdk-lib/aws-rds';
 
