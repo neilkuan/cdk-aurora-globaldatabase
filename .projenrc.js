@@ -2,7 +2,7 @@ const { awscdk } = require('projen');
 
 const PROJECT_NAME = 'cdk-aurora-globaldatabase';
 const PROJECT_DESCRIPTION = 'cdk-aurora-globaldatabase is an AWS CDK construct library that provides Cross Region Create Global Aurora RDS Databases.';
-const CDK_VERSION = '1.134.0';
+const CDK_VERSION = '2.1.0';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   name: PROJECT_NAME,
@@ -19,16 +19,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   cdkVersion: CDK_VERSION,
   stability: 'experimental',
   defaultReleaseBranch: 'master',
-  cdkDependencies: [
-    '@aws-cdk/aws-iam',
-    '@aws-cdk/aws-ec2',
-    '@aws-cdk/aws-rds',
-    '@aws-cdk/aws-lambda',
-    '@aws-cdk/aws-logs',
-    '@aws-cdk/core',
-    '@aws-cdk/custom-resources',
-    '@aws-cdk/aws-iam',
-  ],
   autoDetectBin: false,
   depsUpgradeOptions: {
     ignoreProjen: false,
@@ -46,6 +36,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_aurora_globaldatabase',
   },
   rebuildBot: false,
+  bundledDeps: ['@aws-cdk/assert'],
+  workflowNodeVersion: '^14.17.0',
 });
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',

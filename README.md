@@ -14,12 +14,17 @@
 
 `cdk-aurora-globaldatabase` aims to offload the heavy-lifting and helps you provision and deploy cross-regional **Amazon Aurora Global Databases** simply with just a few CDK statements.
 
+## !!! Usage Note !!!
+cdk-aurora-globaldatabase before version: 0.1.333, support aws-cdk version: 1.xxx.xxx.
+
+cdk-aurora-globaldatabase start at version: 2.x.x, support aws-cdk version: 2.xxx.xxx.
+
 ## Now Try It !!!
 # Sample for Mysql 
 ```ts
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
-import { App, Stack, CfnOutput } from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
+import { App, Stack, CfnOutput } from 'aws-cdk-lib/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // new app .
 const mockApp = new App();
 
@@ -73,10 +78,10 @@ globaldbM.addRegionalCluster(stackM,'addregionalrds',{
 # Sample for Postgres
 
 ```ts
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
-import { App, Stack, CfnOutput } from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as _rds from '@aws-cdk/aws-rds';
+import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
+import { App, Stack, CfnOutput } from 'aws-cdk-lib/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as _rds from 'aws-cdk-lib/aws-rds';
 
 const mockApp = new App();
 const envSingapro  = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-southeast-1' };

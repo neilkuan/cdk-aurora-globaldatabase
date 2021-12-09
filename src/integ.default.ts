@@ -1,6 +1,6 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as _rds from '@aws-cdk/aws-rds';
-import { App, Stack, CfnOutput } from '@aws-cdk/core';
+import { App, Stack, CfnOutput } from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as _rds from 'aws-cdk-lib/aws-rds';
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
 
 
