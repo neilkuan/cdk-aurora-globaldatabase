@@ -14,10 +14,19 @@
 
 `cdk-aurora-globaldatabase` aims to offload the heavy-lifting and helps you provision and deploy cross-regional **Amazon Aurora Global Databases** simply with just a few CDK statements.
 
-## !!! Usage Note !!!
-cdk-aurora-globaldatabase before version: 0.1.333, support aws-cdk version: 1.xxx.xxx.
+## Install
+```bash
+Use the npm dist tag to opt in CDKv1 or CDKv2:
 
-cdk-aurora-globaldatabase start at version: 2.x.x, support aws-cdk version: 2.xxx.xxx.
+// for CDKv2
+npm install cdk-aurora-globaldatabase
+or
+npm install cdk-aurora-globaldatabase@latest
+
+// for CDKv1
+npm install cdk-aurora-globaldatabase@cdkv1
+```
+💡💡💡 please click [here](https://github.com/neilkuan/cdk-aurora-globaldatabase/tree/cdkv1#readme), if you are using aws-cdk v1.x.x version.💡💡💡
 
 ## Now Try It !!!
 # Sample for Mysql 
