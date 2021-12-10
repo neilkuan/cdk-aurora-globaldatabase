@@ -26,14 +26,14 @@ npm install cdk-aurora-globaldatabase@latest
 // for CDKv1
 npm install cdk-aurora-globaldatabase@cdkv1
 ```
-💡💡💡 please click [here](https://github.com/neilkuan/cdk-aurora-globaldatabase/tree/cdkv1#readme), if you are using aws-cdk v1.x.x version.💡💡💡
+
 
 ## Now Try It !!!
 # Sample for Mysql 
 ```ts
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
-import { App, Stack, CfnOutput } from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { App, Stack, CfnOutput } from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
 // new app .
 const mockApp = new App();
 
@@ -88,9 +88,9 @@ globaldbM.addRegionalCluster(stackM,'addregionalrds',{
 
 ```ts
 import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
-import { App, Stack, CfnOutput } from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as _rds from 'aws-cdk-lib/aws-rds';
+import { App, Stack, CfnOutput } from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as _rds from '@aws-cdk/aws-rds';
 
 const mockApp = new App();
 const envSingapro  = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-southeast-1' };

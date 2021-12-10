@@ -1,6 +1,6 @@
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as _rds from 'aws-cdk-lib/aws-rds';
-import { App, Stack } from 'aws-cdk-lib/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as _rds from '@aws-cdk/aws-rds';
+import { App, Stack } from '@aws-cdk/core';
 import { GolbalAuroraRDSMaster, GolbalAuroraRDSSlaveInfra, InstanceTypeEnum, MySQLtimeZone } from '../src/index';
 import '@aws-cdk/assert/jest';
 

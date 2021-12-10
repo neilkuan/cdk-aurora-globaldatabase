@@ -1,12 +1,12 @@
 import * as path from 'path';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as logs from 'aws-cdk-lib/aws-logs';
-import * as rds from 'aws-cdk-lib/aws-rds';
-import * as cdk from 'aws-cdk-lib/core';
-import * as cr from 'aws-cdk-lib/custom-resources';
-import { Construct } from 'constructs';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as logs from '@aws-cdk/aws-logs';
+import * as rds from '@aws-cdk/aws-rds';
+import * as cdk from '@aws-cdk/core';
+import * as cr from '@aws-cdk/custom-resources';
+
 
 export enum MySQLtimeZone {
   /**
@@ -492,7 +492,7 @@ export interface RegionalOptions {
   readonly dbSubnetGroupName?: string;
 }
 
-export class GolbalAuroraRDSMaster extends Construct {
+export class GolbalAuroraRDSMaster extends cdk.Construct {
   /**
    * return RDS Cluster
    */
@@ -555,7 +555,7 @@ export class GolbalAuroraRDSMaster extends Construct {
    * return RDS Cluster DB Engine Version.
    */
   readonly clusterEngineVersion: string;
-  constructor(scope: Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
+  constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
 
@@ -687,7 +687,7 @@ export class GolbalAuroraRDSMaster extends Construct {
     return new Set(subnets.map(subnet => subnet.availabilityZone)).size;
   }
 
-  public addRegionalCluster(scope: Construct, id: string, options: RegionalOptions) {
+  public addRegionalCluster(scope: cdk.Construct, id: string, options: RegionalOptions) {
     const stack = cdk.Stack.of(scope);
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
@@ -784,14 +784,14 @@ export interface GolbalAuroraRDSSlaveInfraProps {
   readonly storageEncrypted?: boolean;
 }
 
-export class GolbalAuroraRDSSlaveInfra extends Construct {
+export class GolbalAuroraRDSSlaveInfra extends cdk.Construct {
   /**
    * GolbalAuroraRDSSlaveInfra subnet group .
    *
   * @default - true
   */
   readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
-  constructor(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps ) {
+  constructor(scope: cdk.Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
     if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
