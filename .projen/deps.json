@@ -93,9 +93,14 @@
       "type": "build"
     },
     {
-      "name": "@aws-cdk/assert",
+      "name": "@aws-cdk/aws-ec2",
       "version": "^1.134.0",
-      "type": "bundled"
+      "type": "peer"
+    },
+    {
+      "name": "@aws-cdk/aws-rds",
+      "version": "^1.134.0",
+      "type": "peer"
     },
     {
       "name": "@aws-cdk/core",
@@ -106,11 +111,6 @@
       "name": "constructs",
       "version": "^3.2.27",
       "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/assert",
-      "version": "^1.134.0",
-      "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-ec2",

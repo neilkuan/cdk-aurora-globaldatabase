@@ -55,16 +55,17 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@aws-cdk/aws-lambda@^1.134.0',
     '@aws-cdk/aws-logs@^1.134.0',
     '@aws-cdk/core@^1.134.0',
-    '@aws-cdk/assert@^1.134.0',
     '@aws-cdk/aws-iam@^1.134.0',
     '@aws-cdk/custom-resources@^1.134.0',
     'constructs',
   ],
-  peerDeps: [
-    '@aws-cdk/core@^1.134.0',
+  devDeps: [
+    '@types/node',
   ],
-  bundledDeps: [
-    '@aws-cdk/assert@^1.134.0',
+  peerDeps: [
+    '@aws-cdk/aws-rds@^1.134.0',
+    '@aws-cdk/core@^1.134.0',
+    '@aws-cdk/aws-ec2@^1.134.0',
   ],
 });
 project.package.addField('resolutions', {

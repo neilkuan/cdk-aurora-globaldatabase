@@ -1,22 +1,22 @@
+import * as assertions from '@aws-cdk/assertions';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as _rds from '@aws-cdk/aws-rds';
 import { App, Stack } from '@aws-cdk/core';
 import { GolbalAuroraRDSMaster, GolbalAuroraRDSSlaveInfra, InstanceTypeEnum, MySQLtimeZone } from '../src/index';
-import '@aws-cdk/assert/jest';
 
 const envTokyo = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-northeast-1' };
 test('test create Matser RDS', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envTokyo });
   new GolbalAuroraRDSMaster(stack, 'GolbalAuroraRDS');
-  expect(stack).toHaveResource('AWS::RDS::DBCluster');
-  expect(stack).toHaveResource('AWS::RDS::DBClusterParameterGroup', {
+  assertions.Template.fromStack(stack).findResources('AWS::RDS::DBCluster');
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBClusterParameterGroup', {
     Family: 'aurora-mysql5.7',
     Parameters: {
       time_zone: 'UTC',
     },
   });
-  expect(stack).toHaveResource('AWS::RDS::DBInstance', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBInstance', {
     PubliclyAccessible: false,
   });
 });
@@ -34,10 +34,10 @@ test('test create Matser Vpc Public', () => {
     }],
   });
   new GolbalAuroraRDSMaster(stack, 'GolbalAuroraRDS', { vpc: VPCPublic });
-  expect(stack).toHaveResource('AWS::EC2::Subnet', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::EC2::Subnet', {
     MapPublicIpOnLaunch: true,
   });
-  expect(stack).toHaveResource('AWS::RDS::DBInstance', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBInstance', {
     PubliclyAccessible: true,
   });
 });
@@ -50,7 +50,7 @@ test('test update Parameter Group', () => {
       time_zone: MySQLtimeZone.ASIA_TAIPEI,
     },
   });
-  expect(stack).toHaveResource('AWS::RDS::DBClusterParameterGroup', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBClusterParameterGroup', {
     Parameters: {
       time_zone: 'Asia/Taipei',
     },
@@ -63,7 +63,7 @@ test('test update timeZone', () => {
   new GolbalAuroraRDSMaster(stack, 'GolbalAuroraRDS', {
     timeZone: MySQLtimeZone.ASIA_TAIPEI,
   });
-  expect(stack).toHaveResource('AWS::RDS::DBClusterParameterGroup', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBClusterParameterGroup', {
     Parameters: {
       time_zone: 'Asia/Taipei',
     },
@@ -78,7 +78,7 @@ test('test change default dbUserName and default database Name', () => {
     defaultDatabaseName: 'superdb',
     rdsPassword: '1qaz2wsx',
   });
-  expect(stack).toHaveResource('AWS::RDS::DBCluster', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-mysql',
     DatabaseName: 'superdb',
     EngineVersion: '5.7.mysql_aurora.2.07.1',
@@ -93,7 +93,7 @@ test('test no default rdsPassword', () => {
   new GolbalAuroraRDSMaster(stack, 'GolbalAuroraRDS', {
     defaultDatabaseName: 'superdb',
   });
-  expect(stack).toHaveResource('AWS::RDS::DBCluster', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-mysql',
     DatabaseName: 'superdb',
     EngineVersion: '5.7.mysql_aurora.2.07.1',
@@ -128,7 +128,7 @@ test('test create Slave region vpc', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envTokyo });
   new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS');
-  expect(stack).toHaveResource('AWS::EC2::VPC');
+  assertions.Template.fromStack(stack).findResources('AWS::EC2::VPC');
 });
 
 test('test create Slave region use self vpc', () => {
@@ -143,14 +143,14 @@ test('test create Slave region use self vpc', () => {
   new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS', {
     vpc: rdsVpcSecond,
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC');
+  assertions.Template.fromStack(stack).findResources('AWS::EC2::VPC');
 });
 
 test('test create Slave region vpc default Private Subnet', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envTokyo });
   new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS');
-  expect(stack).toHaveResource('AWS::RDS::DBSubnetGroup', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBSubnetGroup', {
     DBSubnetGroupDescription: 'Private Subnets for database',
   });
 });
@@ -162,7 +162,7 @@ test('test create Slave region vpc use Public Subnet', () => {
   new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS', {
     subnetType: ec2.SubnetType.PUBLIC,
   });
-  expect(stack).toHaveResource('AWS::RDS::DBSubnetGroup', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBSubnetGroup', {
     DBSubnetGroupDescription: 'Public Subnets for database',
   });
 });
@@ -184,13 +184,13 @@ test('test create Main region vpc use Postgres cluster', () => {
       },
     }),
   });
-  expect(stack).toHaveResource('AWS::RDS::DBCluster', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-postgresql',
     DatabaseName: 'globaldatabase',
     MasterUsername: 'sysadmin',
     MasterUserPassword: '1qaz2wsx',
   });
-  expect(stack).toHaveResource('AWS::RDS::DBClusterParameterGroup', {
+  assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBClusterParameterGroup', {
     Parameters: {
       'timezone': 'UTC+8',
       'rds.force_ssl': '1',
@@ -211,7 +211,7 @@ test('test Create Custom Resource', () => {
       }),
     }),
   });
-  expect(stack).toHaveResource('Custom::UpgradeGlobalClusterProvider');
+  assertions.Template.fromStack(stack).findResources('Custom::UpgradeGlobalClusterProvider');
 });
 
 test('test add Regional Function', () => {
@@ -233,8 +233,8 @@ test('test add Regional Function', () => {
     dbSubnetGroupName: 'mock-db-subnet-group-name',
   });
 
-  expect(stack).toHaveResource('Custom::UpgradeGlobalClusterProvider');
-  expect(stack).toHaveResource('Custom::addRegionalClusterProvider');
+  assertions.Template.fromStack(stack).findResources('Custom::UpgradeGlobalClusterProvider');
+  assertions.Template.fromStack(stack).findResources('Custom::addRegionalClusterProvider');
 });
 
 const envErrorRegion = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'sa-east-1' };
@@ -265,6 +265,6 @@ test('test error Region input addRegional Function', () => {
   const stack = new Stack(app, 'testing-stack', { env: envErrorRegion });
   expect(()=>{
     new GolbalAuroraRDSSlaveInfra(stack, 'GolbalAuroraRDS');
-    expect(stack).toHaveResource('AWS::EC2::VPC');
+    assertions.Template.fromStack(stack).findResources('AWS::EC2::VPC');
   }).toThrowError(/This region sa-east-1 not Support Global RDS !!!/);
 });
