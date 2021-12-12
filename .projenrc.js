@@ -46,7 +46,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_aurora_globaldatabase',
   },
   rebuildBot: false,
-  bundledDeps: ['@aws-cdk/assert'],
   workflowNodeVersion: '^14.17.0',
 });
 project.package.addField('resolutions', {
