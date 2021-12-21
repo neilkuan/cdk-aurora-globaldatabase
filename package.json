@@ -72,7 +72,7 @@
     "@aws-cdk/aws-rds": "^1.134.0",
     "@aws-cdk/core": "^1.134.0",
     "@aws-cdk/custom-resources": "^1.134.0",
-    "constructs": "^3.3.167"
+    "constructs": "^3.3.168"
   },
   "bundledDependencies": [],
   "keywords": [
