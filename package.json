@@ -48,12 +48,12 @@
     "eslint-plugin-import": "^2.25.4",
     "jest": "^26.6.3",
     "jest-junit": "^13",
-    "jsii": "^1.50.0",
-    "jsii-diff": "^1.50.0",
+    "jsii": "^1.51.0",
+    "jsii-diff": "^1.51.0",
     "jsii-docgen": "^1.8.110",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
-    "projen": "^0.50.9",
+    "projen": "^0.50.10",
     "standard-version": "^9",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
@@ -74,7 +74,7 @@
     "@aws-cdk/aws-rds": "^1.134.0",
     "@aws-cdk/core": "^1.134.0",
     "@aws-cdk/custom-resources": "^1.134.0",
-    "constructs": "^3.3.181"
+    "constructs": "^3.3.182"
   },
   "keywords": [
     "aws",
