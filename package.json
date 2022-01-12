@@ -19,6 +19,7 @@
     "package:js": "npx projen package:js",
     "package:python": "npx projen package:python",
     "post-compile": "npx projen post-compile",
+    "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
     "release": "npx projen release",
     "release:cdkv1": "npx projen release:cdkv1",
@@ -53,7 +54,7 @@
     "jsii-docgen": "^1.8.110",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
-    "projen": "^0.50.20",
+    "projen": "^0.50.24",
     "standard-version": "^9",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
@@ -74,7 +75,7 @@
     "@aws-cdk/aws-rds": "^1.134.0",
     "@aws-cdk/core": "^1.134.0",
     "@aws-cdk/custom-resources": "^1.134.0",
-    "constructs": "^3.3.184"
+    "constructs": "^3.3.186"
   },
   "keywords": [
     "aws",
@@ -96,6 +97,7 @@
       "json",
       "lcov",
       "clover",
+      "cobertura",
       "text"
     ],
     "coverageDirectory": "coverage",
