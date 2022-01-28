@@ -55,7 +55,7 @@
     "jsii-docgen": "^1.8.110",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
-    "projen": "^0.52.4",
+    "projen": "^0.52.5",
     "standard-version": "^9",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
@@ -76,7 +76,7 @@
     "@aws-cdk/aws-rds": "^1.134.0",
     "@aws-cdk/core": "^1.134.0",
     "@aws-cdk/custom-resources": "^1.134.0",
-    "constructs": "^3.3.201"
+    "constructs": "^3.3.202"
   },
   "keywords": [
     "aws",
