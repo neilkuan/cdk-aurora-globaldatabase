@@ -103,7 +103,7 @@ test('test no default rdsPassword', () => {
         [
           '{{resolve:secretsmanager:',
           {
-            Ref: 'GlobalAuroraRDSRDSClusterSecret55AE520F',
+            Ref: 'GlobalAuroraRDSRDSClusterSecretE59E7C4B',
           },
           ':SecretString:username::}}',
         ],
