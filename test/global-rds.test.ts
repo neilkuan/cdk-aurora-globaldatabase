@@ -1,7 +1,7 @@
+import { App, Stack } from 'aws-cdk-lib';
 import * as assertions from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as _rds from 'aws-cdk-lib/aws-rds';
-import { App, Stack } from 'aws-cdk-lib/core';
 import { GlobalAuroraRDSMaster, GlobalAuroraRDSSlaveInfra, InstanceTypeEnum, MySQLtimeZone } from '../src/index';
 
 const envTokyo = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-northeast-1' };
