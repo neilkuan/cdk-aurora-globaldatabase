@@ -31,7 +31,7 @@ npm install cdk-aurora-globaldatabase@cdkv1
 ## Now Try It !!!
 # Sample for Mysql 
 ```ts
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
+import { GlobalAuroraRDSMaster, InstanceTypeEnum, GlobalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
 import { App, Stack, CfnOutput } from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 // new app .
@@ -52,7 +52,7 @@ const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const  globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
+const  globaldbM = new GlobalAuroraRDSMaster(stackM, 'globalAuroraRDSMaster',{
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
   rdsPassword: '1qaz2wsx',
@@ -70,7 +70,7 @@ const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC });
+const globaldbS = new GlobalAuroraRDSSlaveInfra(stackS, 'slaveregion',{vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC });
 
 // so we need to wait stack slave created first .
 stackM.addDependency(stackS)
@@ -87,7 +87,7 @@ globaldbM.addRegionalCluster(stackM,'addregionalrds',{
 # Sample for Postgres
 
 ```ts
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
+import { GlobalAuroraRDSMaster, InstanceTypeEnum, GlobalAuroraRDSSlaveInfra } from 'cdk-aurora-globaldatabase';
 import { App, Stack, CfnOutput } from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as _rds from '@aws-cdk/aws-rds';
@@ -108,7 +108,7 @@ const vpcPublic = new ec2.Vpc(stackM,'defaultVpc',{
 });
 
 // Note if you use postgres , need to give the same value in engineVersion and  dbClusterpPG's engine .
-const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster',{
+const globaldbM = new GlobalAuroraRDSMaster(stackM, 'globalAuroraRDSMaster',{
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
   rdsPassword: '1qaz2wsx',
@@ -150,7 +150,7 @@ const vpcPublic2 = new ec2.Vpc(stackS,'defaultVpc2',{
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion',{
+const globaldbS = new GlobalAuroraRDSSlaveInfra(stackS, 'slaveregion',{
   vpc: vpcPublic2,subnetType:ec2.SubnetType.PUBLIC, 
 });
 
