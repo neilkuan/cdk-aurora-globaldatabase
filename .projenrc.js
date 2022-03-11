@@ -52,7 +52,7 @@ project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',
 });
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
-const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv'];
+const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv','.history'];
 project.gitignore.exclude(...common_exclude_image);
 
 project.npmignore.exclude(...common_exclude);
