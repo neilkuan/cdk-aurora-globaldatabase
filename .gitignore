@@ -58,3 +58,4 @@ coverage
 venv
 !/.github/workflows/upgrade-master.yml
 !/.github/workflows/upgrade-cdkv1.yml
+.history/
