@@ -1,7 +1,7 @@
 import { App, Stack, CfnOutput } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as _rds from 'aws-cdk-lib/aws-rds';
-import { GlobalAuroraRDSMaster, InstanceTypeEnum, GlobalAuroraRDSSlaveInfra } from '../dist/js/package';
+import { GlobalAuroraRDSMaster, InstanceTypeEnum, GlobalAuroraRDSSlaveInfra } from './index';
 
 
 const mockApp = new App();
