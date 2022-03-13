@@ -1,10 +1,10 @@
 import * as path from 'path';
+import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as rds from 'aws-cdk-lib/aws-rds';
-import * as cdk from 'aws-cdk-lib/core';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 
@@ -409,7 +409,7 @@ export enum InstanceTypeEnum{
 const GlobalAuroraRDSSupportRegion = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-central-1',
   'ap-south-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'ap-northeast-2', 'ca-central-1'];
 
-export interface GolbalAuroraRDSMasterProps {
+export interface GlobalAuroraRDSMasterProps {
   /**
    * RDS default VPC
    *
@@ -492,7 +492,7 @@ export interface RegionalOptions {
   readonly dbSubnetGroupName?: string;
 }
 
-export class GolbalAuroraRDSMaster extends Construct {
+export class GlobalAuroraRDSMaster extends Construct {
   /**
    * return RDS Cluster
    */
@@ -555,7 +555,7 @@ export class GolbalAuroraRDSMaster extends Construct {
    * return RDS Cluster DB Engine Version.
    */
   readonly clusterEngineVersion: string;
-  constructor(scope: Construct, id: string, props?: GolbalAuroraRDSMasterProps ) {
+  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
 
@@ -750,7 +750,7 @@ export class GolbalAuroraRDSMaster extends Construct {
   }
 }
 
-export interface GolbalAuroraRDSSlaveInfraProps {
+export interface GlobalAuroraRDSSlaveInfraProps {
   /**
    *  Slave region VPC
    *
@@ -784,14 +784,14 @@ export interface GolbalAuroraRDSSlaveInfraProps {
   readonly storageEncrypted?: boolean;
 }
 
-export class GolbalAuroraRDSSlaveInfra extends Construct {
+export class GlobalAuroraRDSSlaveInfra extends Construct {
   /**
-   * GolbalAuroraRDSSlaveInfra subnet group .
+   * GlobalAuroraRDSSlaveInfra subnet group .
    *
   * @default - true
   */
   readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
-  constructor(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps ) {
+  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
     if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {

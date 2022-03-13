@@ -1,7 +1,7 @@
 import { App, Stack, CfnOutput } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as _rds from 'aws-cdk-lib/aws-rds';
-import { GolbalAuroraRDSMaster, InstanceTypeEnum, GolbalAuroraRDSSlaveInfra } from './index';
+import { GlobalAuroraRDSMaster, InstanceTypeEnum, GlobalAuroraRDSSlaveInfra } from '../dist/js/package';
 
 
 const mockApp = new App();
@@ -18,7 +18,7 @@ const vpcPublic = new ec2.Vpc(stackM, 'defaultVpc', {
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbM = new GolbalAuroraRDSMaster(stackM, 'golbalAuroraRDSMaster', {
+const globaldbM = new GlobalAuroraRDSMaster(stackM, 'globalAuroraRDSMaster', {
   instanceType: InstanceTypeEnum.R5_LARGE,
   vpc: vpcPublic,
   //rdsPassword: '1qaz2wsx',
@@ -59,7 +59,7 @@ const vpcPublic2 = new ec2.Vpc(stackS, 'defaultVpc2', {
     subnetType: ec2.SubnetType.PUBLIC,
   }],
 });
-const globaldbS = new GolbalAuroraRDSSlaveInfra(stackS, 'slaveregion', {
+const globaldbS = new GlobalAuroraRDSSlaveInfra(stackS, 'slaveregion', {
   vpc: vpcPublic2,
   subnetType: ec2.SubnetType.PUBLIC,
 });
