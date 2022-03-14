@@ -4,16 +4,16 @@
 
 Name|Description
 ----|-----------
-[GolbalAuroraRDSMaster](#cdk-aurora-globaldatabase-golbalaurorardsmaster)|*No description*
-[GolbalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfra)|*No description*
+[GlobalAuroraRDSMaster](#cdk-aurora-globaldatabase-globalaurorardsmaster)|*No description*
+[GlobalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-globalaurorardsslaveinfra)|*No description*
 
 
 **Structs**
 
 Name|Description
 ----|-----------
-[GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)|*No description*
-[GolbalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops)|*No description*
+[GlobalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-globalaurorardsmasterprops)|*No description*
+[GlobalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-globalaurorardsslaveinfraprops)|*No description*
 [RegionalOptions](#cdk-aurora-globaldatabase-regionaloptions)|*No description*
 
 
@@ -26,7 +26,7 @@ Name|Description
 
 
 
-## class GolbalAuroraRDSMaster 🔹 <a id="cdk-aurora-globaldatabase-golbalaurorardsmaster"></a>
+## class GlobalAuroraRDSMaster 🔹 <a id="cdk-aurora-globaldatabase-globalaurorardsmaster"></a>
 
 
 
@@ -39,12 +39,12 @@ __Extends__: [Construct](#constructs-construct)
 
 
 ```ts
-new GolbalAuroraRDSMaster(scope: Construct, id: string, props?: GolbalAuroraRDSMasterProps)
+new GlobalAuroraRDSMaster(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps)
 ```
 
 * **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
-* **props** (<code>[GolbalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-golbalaurorardsmasterprops)</code>)  *No description*
+* **props** (<code>[GlobalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-globalaurorardsmasterprops)</code>)  *No description*
   * **dbClusterpPG** (<code>[aws_rds.IParameterGroup](#aws-cdk-lib-aws-rds-iparametergroup)</code>)  RDS ParameterGroup. __*Default*__: Aurora MySQL ParameterGroup
   * **dbUserName** (<code>string</code>)  RDS default Super User Name. __*Default*__: sysadmin
   * **defaultDatabaseName** (<code>string</code>)  RDS default Database Name. __*Default*__: globaldatabase
@@ -79,7 +79,7 @@ Name | Type | Description
 ### Methods
 
 
-#### addRegionalCluster(scope, id, options)🔹 <a id="cdk-aurora-globaldatabase-golbalaurorardsmaster-addregionalcluster"></a>
+#### addRegionalCluster(scope, id, options)🔹 <a id="cdk-aurora-globaldatabase-globalaurorardsmaster-addregionalcluster"></a>
 
 
 
@@ -98,7 +98,7 @@ addRegionalCluster(scope: Construct, id: string, options: RegionalOptions): void
 
 
 
-## class GolbalAuroraRDSSlaveInfra 🔹 <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveinfra"></a>
+## class GlobalAuroraRDSSlaveInfra 🔹 <a id="cdk-aurora-globaldatabase-globalaurorardsslaveinfra"></a>
 
 
 
@@ -111,12 +111,12 @@ __Extends__: [Construct](#constructs-construct)
 
 
 ```ts
-new GolbalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GolbalAuroraRDSSlaveInfraProps)
+new GlobalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps)
 ```
 
 * **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
-* **props** (<code>[GolbalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops)</code>)  *No description*
+* **props** (<code>[GlobalAuroraRDSSlaveInfraProps](#cdk-aurora-globaldatabase-globalaurorardsslaveinfraprops)</code>)  *No description*
   * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
   * **stack** (<code>[Stack](#aws-cdk-lib-stack)</code>)  RDS Stack. __*Optional*__
   * **storageEncrypted** (<code>boolean</code>)  Global RDS Database Cluster Engine Storage Encrypted Option . __*Default*__: true
@@ -130,11 +130,11 @@ new GolbalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GolbalAurora
 
 Name | Type | Description 
 -----|------|-------------
-**dbSubnetGroup**🔹 | <code>[aws_rds.CfnDBSubnetGroup](#aws-cdk-lib-aws-rds-cfndbsubnetgroup)</code> | GolbalAuroraRDSSlaveInfra subnet group .
+**dbSubnetGroup**🔹 | <code>[aws_rds.CfnDBSubnetGroup](#aws-cdk-lib-aws-rds-cfndbsubnetgroup)</code> | GlobalAuroraRDSSlaveInfra subnet group .
 
 
 
-## struct GolbalAuroraRDSMasterProps 🔹 <a id="cdk-aurora-globaldatabase-golbalaurorardsmasterprops"></a>
+## struct GlobalAuroraRDSMasterProps 🔹 <a id="cdk-aurora-globaldatabase-globalaurorardsmasterprops"></a>
 
 
 
@@ -157,7 +157,7 @@ Name | Type | Description
 
 
 
-## struct GolbalAuroraRDSSlaveInfraProps 🔹 <a id="cdk-aurora-globaldatabase-golbalaurorardsslaveinfraprops"></a>
+## struct GlobalAuroraRDSSlaveInfraProps 🔹 <a id="cdk-aurora-globaldatabase-globalaurorardsslaveinfraprops"></a>
 
 
 

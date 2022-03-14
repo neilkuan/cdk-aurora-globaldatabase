@@ -1419,9 +1419,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001313:
-  version "1.0.30001315"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001315.tgz#f1b1efd1171ee1170d52709a7252632dacbd7c77"
-  integrity sha512-5v7LFQU4Sb/qvkz7JcZkvtSH1Ko+1x2kgo3ocdBeMGZSOFpuE1kkm0kpTwLtWeFrw5qw08ulLxJjVIXIS8MkiQ==
+  version "1.0.30001316"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001316.tgz#b44a1f419f82d2e119aa0bbdab5ec15471796358"
+  integrity sha512-JgUdNoZKxPZFzbzJwy4hDSyGuH/gXz2rN51QmoR8cBQsVo58llD3A0vlRKKRt8FGf5u69P9eQyIH8/z9vN/S0Q==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -1888,10 +1888,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-format@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/date-format/-/date-format-4.0.4.tgz#b58036e29e74121fca3e1b3e0dc4a62c65faa233"
-  integrity sha512-/jyf4rhB17ge328HJuJjAcmRtCsGd+NDeAtahRBTaK6vSPR6MO5HlrAit3Nn7dVjaa6sowW0WXt8yQtLyZQFRg==
+date-format@^4.0.4, date-format@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/date-format/-/date-format-4.0.5.tgz#ba385f89782c6cb114cf45dfa4704c6bb29fca51"
+  integrity sha512-zBhRiN/M0gDxUoM2xRtzTjJzSg0XEi1ofYpF84PfXeS3hN2PsGxmc7jw3DNQtFlimRbMmob5FC3G0cJq6jQQpw==
 
 dateformat@^3.0.0:
   version "3.0.3"
@@ -4312,9 +4312,9 @@ lru-cache@^6.0.0:
     yallist "^4.0.0"
 
 lru-cache@^7.3.1, lru-cache@^7.4.1:
-  version "7.4.4"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.4.4.tgz#a3dabc394ec07e2285af52fd24d0d74b3ac71c29"
-  integrity sha512-2XbUJmlpIbmc9JvNNmtLzHlF31srxoDxuiQiwBHic7RZyHyltbTdzoO6maRqpdEhOOG5GD80EXvzAU0wR15ccg==
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.5.0.tgz#5e14318d64e6f180a5cf3b9b955b2e89376c0efe"
+  integrity sha512-8neUvdgNtubJ+VNNqrqOLjUoIlN+NRPFtv1Vne2rQ4uPCxhp0W4TlqntzTLnVVezGXcSSdXTrKCTYooEQA7X6g==
 
 make-dir@^3.0.0:
   version "3.1.0"
@@ -5212,10 +5212,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.52.69:
-  version "0.52.69"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.52.69.tgz#5ca0216bec16c9eabf6756d7d9cf17e208de7ffd"
-  integrity sha512-DPl3r+leuZ+TjqPNFvffUipiaMnTjP6wSI1yVEJXeHsx8F1mseFJuk3nbyI9MohHTrzkrBuXjPIEdXY6HE6pkg==
+projen@^0.52.70:
+  version "0.52.70"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.52.70.tgz#a0e6ffe87b300ae74f4f456612abe4b89c8047d0"
+  integrity sha512-e/HADsRPNq1zSyerkkgGBjeoic/RWt8EZ2f8UA/lX4WYZqjZkJ9KQYj9k0Ny4rFfOxau2SnBMIVhyb4tZpTJ0Q==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
@@ -5925,11 +5925,11 @@ static-extend@^0.1.1:
     object-copy "^0.1.0"
 
 streamroller@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/streamroller/-/streamroller-3.0.4.tgz#27ad87339d829483f89c5f33fd60ea6731e4183c"
-  integrity sha512-GI9NzeD+D88UFuIlJkKNDH/IsuR+qIN7Qh8EsmhoRZr9bQoehTraRgwtLUkZbpcAw+hLPfHOypmppz8YyGK68w==
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/streamroller/-/streamroller-3.0.5.tgz#17e348dc2a662f9f325373549ab91d55316051ab"
+  integrity sha512-5uzTEUIi4OB5zy/H30kbUN/zpDNJsFUA+Z47ZL8EfrP93lcZvRLEqdbhdunEPa7CouuAzXXsHpCJ9dg90Umw7g==
   dependencies:
-    date-format "^4.0.4"
+    date-format "^4.0.5"
     debug "^4.3.3"
     fs-extra "^10.0.1"
 

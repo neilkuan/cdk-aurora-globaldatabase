@@ -56,5 +56,6 @@ cdk.context.json
 yarn-error.log
 coverage
 venv
+.history
 !/.github/workflows/upgrade-master.yml
 !/.github/workflows/upgrade-cdkv1.yml
