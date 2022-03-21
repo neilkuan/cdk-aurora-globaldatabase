@@ -1444,9 +1444,9 @@
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
-  version "7.1.18"
-  resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.18.tgz#1a29abcc411a9c05e2094c98f9a1b7da6cdf49f8"
-  integrity sha512-S7unDjm/C7z2A2R9NzfKCK1I+BAALDtxEmsJBwlB3EzNfb929ykjL++1CK9LO++EIp2fQrC8O+BwjKvz6UeDyQ==
+  version "7.1.19"
+  resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.19.tgz#7b497495b7d1b4812bdb9d02804d0576f43ee460"
+  integrity sha512-WEOTgRsbYkvA/KCsDwVEGkd7WAr1e3g31VHQ8zy5gul/V1qKullU/BU5I68X5v7V3GnB9eotmom4v5a5gjxorw==
   dependencies:
     "@babel/parser" "^7.1.0"
     "@babel/types" "^7.0.0"
@@ -2410,7 +2410,7 @@ console-control-strings@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
-constructs@^3.3.245, constructs@^3.3.69:
+constructs@^3.3.246, constructs@^3.3.69:
   version "3.3.246"
   resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.246.tgz#8ca8ab9ca78e5173825db31f97a75fc03eaca383"
   integrity sha512-Oxn8VTY7j0tZujcZhQM1WWYuwDsPlImnnFfGUEq8SPxIyPMywxlYUwNLtEYhuyXUHBR/BTxWyCPE8s6/0kkrRA==
@@ -6083,7 +6083,7 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.53.1:
+projen@^0.53.4:
   version "0.53.4"
   resolved "https://registry.yarnpkg.com/projen/-/projen-0.53.4.tgz#543517627124f1c6aaba84094c79495ec6720a24"
   integrity sha512-RYirTMyo8LJPIvSUy6pH56CK0jXgENmNclagH9aAyBRrhUny8jLhGL486B8CtFZoH4qCI+mPnZgtVToUfvJCyg==
