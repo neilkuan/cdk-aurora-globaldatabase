@@ -61,16 +61,18 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   devDeps: [
     '@types/node',
+    '@types/prettier@2.6.0',
   ],
   peerDeps: [
     '@aws-cdk/aws-rds@^1.134.0',
     '@aws-cdk/core@^1.134.0',
     '@aws-cdk/aws-ec2@^1.134.0',
   ],
+  typescriptVersion: '4.6.2',
 });
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',
-  '@types/prettier': '2.6.0',
+
 });
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
 const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv'];
