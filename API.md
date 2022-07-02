@@ -208,6 +208,13 @@ Name | Description
 **R5_12XLARGE** 🔹|db Instance Type r5.12xlarge.
 **R5_16XLARGE** 🔹|db Instance Type r5.16xlarge.
 **R5_24XLARGE** 🔹|db Instance Type r5.24xlarge.
+**R6G_LARGE** 🔹|db Instance Type r6g.large.
+**R6G_XLARGE** 🔹|db Instance Type r6g.xlarge.
+**R6G_2XLARGE** 🔹|db Instance Type r6g.2xlarge.
+**R6G_4XLARGE** 🔹|db Instance Type r6g.4xlarge.
+**R6G_8XLARGE** 🔹|db Instance Type r6g.8xlarge.
+**R6G_12XLARGE** 🔹|db Instance Type r6g.12xlarge.
+**R6G_16XLARGE** 🔹|db Instance Type r6g.16xlarge.
 
 
 ## enum MySQLtimeZone 🔹 <a id="cdk-aurora-globaldatabase-mysqltimezone"></a>
