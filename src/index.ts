@@ -404,6 +404,34 @@ export enum InstanceTypeEnum{
    * db Instance Type r5.24xlarge
    */
   R5_24XLARGE = 'r5.24xlarge',
+  /**
+   * db Instance Type r6g.large
+   */
+  R6G_LARGE = 'r6g.large',
+  /**
+   * db Instance Type r6g.xlarge
+   */
+  R6G_XLARGE = 'r6g.xlarge',
+  /**
+   * db Instance Type r6g.2xlarge
+   */
+  R6G_2XLARGE = 'r6g.2xlarge',
+  /**
+   * db Instance Type r6g.4xlarge
+   */
+  R6G_4XLARGE = 'r6g.4xlarge',
+  /**
+   * db Instance Type r6g.8xlarge
+   */
+  R6G_8XLARGE = 'r6g.8xlarge',
+  /**
+   * db Instance Type r6g.12xlarge
+   */
+  R6G_12XLARGE = 'r6g.12xlarge',
+  /**
+   * db Instance Type r6g.16xlarge
+   */
+  R6G_16XLARGE = 'r6g.16xlarge',
 }
 
 const GlobalAuroraRDSSupportRegion = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'eu-central-1',
