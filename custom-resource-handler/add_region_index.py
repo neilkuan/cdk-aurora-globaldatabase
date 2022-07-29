@@ -33,6 +33,7 @@ def on_create(event):
     InstanceType_value = props['InstanceType']
     rdsIsPublic_value = props['rdsIsPublic']
     seconddbInstanceIdentifier_value = props['seconddbInstanceIdentifier']
+    securityGroup_value = props['securityGroup']
     data ={
       'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
       'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value
@@ -43,7 +44,8 @@ def on_create(event):
         Engine=Engine_value,
         EngineVersion=EngineVersion_value,
         GlobalClusterIdentifier=GlobalClusterIdentifier_value,
-        DBSubnetGroupName=DBSubnetGroupName_value
+        DBSubnetGroupName=DBSubnetGroupName_value,
+        VpcSecurityGroupIds=[securityGroup_value],
     )
     data['secondRDSClusterArn'] = create_db_cluster_res['DBCluster']['DBClusterArn']
     time.sleep(5)
@@ -55,7 +57,6 @@ def on_create(event):
         Engine=Engine_value,
         PubliclyAccessible= str2bool(rdsIsPublic_value) or False
     )
-    data['seconddbInstanceIdentifier']=seconddbInstanceIdentifier_value
     if (data):
       output = {'Data': data}
     else:

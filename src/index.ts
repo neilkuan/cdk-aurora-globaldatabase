@@ -518,6 +518,7 @@ export interface GlobalAuroraRDSMasterProps {
 export interface RegionalOptions {
   readonly region: string;
   readonly dbSubnetGroupName?: string;
+  readonly securityGroupId?: string;
 }
 
 export class GlobalAuroraRDSMaster extends cdk.Construct {
@@ -748,6 +749,9 @@ export class GlobalAuroraRDSMaster extends cdk.Construct {
       logRetention: logs.RetentionDays.ONE_DAY,
     });
 
+    const secondRDSClusterArn = `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`;
+    const seconddbInstanceIdentifier = `${stack.stackName.toLowerCase()}-${options.region}-1`;
+
     const CRSecondRDSProvider = new cdk.CustomResource(scope, `${id}-addRegionalCustomResource`, {
       resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
@@ -761,19 +765,20 @@ export class GlobalAuroraRDSMaster extends cdk.Construct {
         ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options.region}`,
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
-        secondRDSClusterArn: `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`,
-        seconddbInstanceIdentifier: `${stack.stackName.toLowerCase()}-${options.region}-1`,
+        secondRDSClusterArn,
+        seconddbInstanceIdentifier,
+        securityGroup: options.securityGroupId,
       },
     });
     CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
 
     new cdk.CfnOutput(scope, 'secondRDSClusterArn', {
-      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn')),
+      value: secondRDSClusterArn
     });
 
     new cdk.CfnOutput(scope, 'seconddbInstanceIdentifier', {
-      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('seconddbInstanceIdentifier')),
+      value: seconddbInstanceIdentifier
     });
   }
 }
