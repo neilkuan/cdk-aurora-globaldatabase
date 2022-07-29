@@ -91,7 +91,9 @@ addRegionalCluster(scope: Construct, id: string, options: RegionalOptions): void
 * **id** (<code>string</code>)  *No description*
 * **options** (<code>[RegionalOptions](#cdk-aurora-globaldatabase-regionaloptions)</code>)  *No description*
   * **region** (<code>string</code>)  *No description* 
+  * **dbClusterpPG** (<code>string</code>)  *No description* __*Optional*__
   * **dbSubnetGroupName** (<code>string</code>)  *No description* __*Optional*__
+  * **securityGroupId** (<code>string</code>)  *No description* __*Optional*__
 
 
 
@@ -184,7 +186,9 @@ Name | Type | Description
 Name | Type | Description 
 -----|------|-------------
 **region**🔹 | <code>string</code> | <span></span>
+**dbClusterpPG**?🔹 | <code>string</code> | __*Optional*__
 **dbSubnetGroupName**?🔹 | <code>string</code> | __*Optional*__
+**securityGroupId**?🔹 | <code>string</code> | __*Optional*__
 
 
 

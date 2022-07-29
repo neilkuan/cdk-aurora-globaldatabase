@@ -34,6 +34,7 @@ def on_create(event):
     rdsIsPublic_value = props['rdsIsPublic']
     seconddbInstanceIdentifier_value = props['seconddbInstanceIdentifier']
     securityGroup_value = props['securityGroup']
+    dbParameterGroup_value = props['dbParameterGroup']
     data ={
       'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
       'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value
@@ -46,6 +47,7 @@ def on_create(event):
         GlobalClusterIdentifier=GlobalClusterIdentifier_value,
         DBSubnetGroupName=DBSubnetGroupName_value,
         VpcSecurityGroupIds=[securityGroup_value],
+        DBClusterParameterGroupName=dbParameterGroup_value
     )
     data['secondRDSClusterArn'] = create_db_cluster_res['DBCluster']['DBClusterArn']
     time.sleep(5)
