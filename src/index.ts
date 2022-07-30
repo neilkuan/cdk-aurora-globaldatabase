@@ -518,6 +518,8 @@ export interface GlobalAuroraRDSMasterProps {
 export interface RegionalOptions {
   readonly region: string;
   readonly dbSubnetGroupName?: string;
+  readonly dbParameterGroup?: string;
+  readonly securityGroupId?: string;
 }
 
 export class GlobalAuroraRDSMaster extends Construct {
@@ -748,6 +750,9 @@ export class GlobalAuroraRDSMaster extends Construct {
       logRetention: logs.RetentionDays.ONE_DAY,
     });
 
+    const secondRDSClusterArn = `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`;
+    const seconddbInstanceIdentifier = `${stack.stackName.toLowerCase()}-${options.region}-1`;
+
     const CRSecondRDSProvider = new cdk.CustomResource(scope, `${id}-addRegionalCustomResource`, {
       resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
@@ -761,19 +766,21 @@ export class GlobalAuroraRDSMaster extends Construct {
         ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options.region}`,
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
-        secondRDSClusterArn: `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`,
-        seconddbInstanceIdentifier: `${stack.stackName.toLowerCase()}-${options.region}-1`,
+        secondRDSClusterArn,
+        seconddbInstanceIdentifier,
+        securityGroup: options.securityGroupId,
+        dbParameterGroup: options.dbParameterGroup,
       },
     });
     CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
     onEvent.role?.addToPrincipalPolicy(CustomResourcePolicy);
 
     new cdk.CfnOutput(scope, 'secondRDSClusterArn', {
-      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('secondRDSClusterArn')),
+      value: secondRDSClusterArn,
     });
 
     new cdk.CfnOutput(scope, 'seconddbInstanceIdentifier', {
-      value: cdk.Token.asString(CRSecondRDSProvider.getAtt('seconddbInstanceIdentifier')),
+      value: seconddbInstanceIdentifier,
     });
   }
 }
@@ -834,17 +841,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
     });
 
     const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE;
-    if (DBsubnetType === ec2.SubnetType.PRIVATE) {
-      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE });
-      this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
-        dbSubnetGroupName: `${stack.stackName.toLowerCase()}-privatesubnetgroup`,
-        dbSubnetGroupDescription: 'Private Subnets for database',
-        subnetIds: PrivateSubnet.subnetIds,
-      });
-
-      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PrivateDBSubnetGroup');
-      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
-    } else {
+    if (DBsubnetType === ec2.SubnetType.PUBLIC) {
       const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
         dbSubnetGroupName: `${stack.stackName.toLowerCase()}-publicsubnetgroup`,
@@ -853,6 +850,16 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
       });
 
       cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PublicDBSubnetGroup');
+      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
+    } else {
+      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE });
+      this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
+        dbSubnetGroupName: `${stack.stackName.toLowerCase()}-privatesubnetgroup`,
+        dbSubnetGroupDescription: 'Private Subnets for database',
+        subnetIds: PrivateSubnet.subnetIds,
+      });
+
+      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PrivateDBSubnetGroup');
       this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
     }
     new cdk.CfnOutput(this, 'newDBSubnetGroup', {
