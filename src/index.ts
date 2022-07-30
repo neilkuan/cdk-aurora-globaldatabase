@@ -518,7 +518,7 @@ export interface GlobalAuroraRDSMasterProps {
 export interface RegionalOptions {
   readonly region: string;
   readonly dbSubnetGroupName?: string;
-  readonly dbClusterpPG?: string;
+  readonly dbParameterGroup?: string;
   readonly securityGroupId?: string;
 }
 
@@ -769,7 +769,7 @@ export class GlobalAuroraRDSMaster extends cdk.Construct {
         secondRDSClusterArn,
         seconddbInstanceIdentifier,
         securityGroup: options.securityGroupId,
-        dbParameterGroup: options.dbClusterpPG,
+        dbParameterGroup: options.dbParameterGroup,
       },
     });
     CRSecondRDSProvider.node.addDependency(this.crGlobalRDSProvider);
