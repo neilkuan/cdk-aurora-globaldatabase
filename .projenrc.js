@@ -50,10 +50,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
   devDeps: [
     '@types/prettier@2.6.0',
   ],
-  typescriptVersion: '4.6.2',
+  typescriptVersion: '3.9.10',
 });
+
 project.package.addField('resolutions', {
   'trim-newlines': '3.0.1',
+  'got': '12.3.0',
 });
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
 const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv', '.history'];
