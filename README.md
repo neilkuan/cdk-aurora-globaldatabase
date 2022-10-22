@@ -26,7 +26,7 @@ npm install cdk-aurora-globaldatabase@latest
 // for CDKv1
 npm install cdk-aurora-globaldatabase@cdkv1
 ```
-💡💡💡 please click [here](https://github.com/neilkuan/cdk-aurora-globaldatabase/tree/cdkv1#readme), if you are using aws-cdk v1.x.x version.💡💡💡
+# ⛔️ Please do not use cdk v1, because lot of db engine version already not been update in @aws-cdk/aws-rds upstream. ⛔️
 
 ## Now Try It !!!
 # Sample for Mysql 
@@ -113,10 +113,10 @@ const globaldbM = new GlobalAuroraRDSMaster(stackM, 'globalAuroraRDSMaster',{
   vpc: vpcPublic,
   rdsPassword: '1qaz2wsx',
   engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({
-    version: _rds.AuroraPostgresEngineVersion.VER_11_7}),
+    version: _rds.AuroraPostgresEngineVersion.VER_12_11}),
   dbClusterpPG: new _rds.ParameterGroup(stackM, 'dbClusterparametergroup', {
     engine: _rds.DatabaseClusterEngine.auroraPostgres({
-      version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+      version: _rds.AuroraPostgresEngineVersion.VER_12_11,
     }),
     parameters: {
       'rds.force_ssl': '1',
