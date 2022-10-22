@@ -15,7 +15,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     announce: false,
   },
   compat: true,
-  cdkVersion: '1.134.0',
+  cdkVersion: '1.177.0',
   /**
    * we default release the main branch(cdkv2) with major version 2.
    */
@@ -46,29 +46,25 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_aurora_globaldatabase',
   },
   rebuildBot: false,
-  workflowNodeVersion: '^14.17.0',
+  workflowNodeVersion: '^16',
   deps: [
-    '@aws-cdk/aws-rds@^1.134.0',
-    '@aws-cdk/aws-ec2@^1.134.0',
-    '@aws-cdk/aws-events@^1.134.0',
-    '@aws-cdk/aws-events-targets@^1.134.0',
-    '@aws-cdk/aws-lambda@^1.134.0',
-    '@aws-cdk/aws-logs@^1.134.0',
-    '@aws-cdk/core@^1.134.0',
-    '@aws-cdk/aws-iam@^1.134.0',
-    '@aws-cdk/custom-resources@^1.134.0',
+    '@aws-cdk/aws-rds@^1.177.0',
+    '@aws-cdk/aws-ec2@^1.177.0',
+    '@aws-cdk/aws-events@^1.177.0',
+    '@aws-cdk/aws-events-targets@^1.177.0',
+    '@aws-cdk/aws-lambda@^1.177.0',
+    '@aws-cdk/aws-logs@^1.177.0',
+    '@aws-cdk/core@^1.177.0',
+    '@aws-cdk/aws-iam@^1.177.0',
+    '@aws-cdk/custom-resources@^1.177.0',
     'constructs',
   ],
-  devDeps: [
-    '@types/node',
-    '@types/prettier@2.6.0',
-  ],
   peerDeps: [
-    '@aws-cdk/aws-rds@^1.134.0',
-    '@aws-cdk/core@^1.134.0',
-    '@aws-cdk/aws-ec2@^1.134.0',
+    '@aws-cdk/aws-rds@^1.177.0',
+    '@aws-cdk/core@^1.177.0',
+    '@aws-cdk/aws-ec2@^1.177.0',
   ],
-  typescriptVersion: '3.9.10',
+  typescriptVersion: '4.8.4',
 });
 
 project.package.addField('resolutions', {
