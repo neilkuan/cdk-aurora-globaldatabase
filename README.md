@@ -6,7 +6,10 @@
 ![npm](https://img.shields.io/npm/dt/cdk-aurora-globaldatabase?label=npm&color=orange)
 ![PyPI](https://img.shields.io/pypi/dm/cdk-aurora-globaldatabase?label=pypi&color=blue)
 
-# cdk-aurora-globaldatabase
+# cdk-aurora-globaldatabase 
+
+# ⛔️ Please do not use cdk v1, because lot of db engine version already not been update in @aws-cdk/aws-rds upstream. ⛔️ 
+
 `cdk-aurora-globaldatabase` is an AWS CDK construct library that allows you to create [Amazon Aurora Global Databases](https://aws.amazon.com/rds/aurora/global-database/) with AWS CDK in Typescript or Python.
 
 # Why
