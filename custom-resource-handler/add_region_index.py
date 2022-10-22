@@ -33,22 +33,48 @@ def on_create(event):
     InstanceType_value = props['InstanceType']
     rdsIsPublic_value = props['rdsIsPublic']
     seconddbInstanceIdentifier_value = props['seconddbInstanceIdentifier']
-    securityGroup_value = props['securityGroup']
-    dbParameterGroup_value = props['dbParameterGroup']
+    securityGroup_value = props.get('securityGroup')
+    dbParameterGroup_value = props.get('dbParameterGroup')
+    
+    if securityGroup_value == None:
+      securityGroup_value = None
+    else:
+      securityGroup_value = [securityGroup_value]
+    kwargs = dict(
+      DBClusterIdentifier=ClusterIdentifier_value,
+      Engine=Engine_value,
+      EngineVersion=EngineVersion_value,
+      GlobalClusterIdentifier=GlobalClusterIdentifier_value,
+      DBSubnetGroupName=DBSubnetGroupName_value,
+      VpcSecurityGroupIds=securityGroup_value,
+      DBClusterParameterGroupName=dbParameterGroup_value
+    )
+    print(f'[INFO]: {kwargs}...')
+    print(f'[INFO]: remove key that value is None or null string...')
+    
+
+    need_del_keys = []
+    for k in kwargs.keys():
+      v = kwargs.get(k)
+      if v and v.strip():
+        print(f'[INFO]: check {k}...')
+        print(f'[INFO]: value is {v}...')
+      else:
+        print(f'[WARN]: check {k}...')
+        print(f'[WARN]: value is {v}...')
+        print(f'[INFO]: will remove from kwargs...')
+        need_del_keys.append(k)
+    
+    for k in need_del_keys:
+      kwargs.pop(k)
+
+
     data ={
       'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
       'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value
     }
     print("[INFO]", "Add second db cluster") 
-    create_db_cluster_res = rds.create_db_cluster(
-        DBClusterIdentifier=ClusterIdentifier_value,
-        Engine=Engine_value,
-        EngineVersion=EngineVersion_value,
-        GlobalClusterIdentifier=GlobalClusterIdentifier_value,
-        DBSubnetGroupName=DBSubnetGroupName_value,
-        VpcSecurityGroupIds=[securityGroup_value],
-        DBClusterParameterGroupName=dbParameterGroup_value
-    )
+    create_db_cluster_res = rds.create_db_cluster(**kwargs)
     data['secondRDSClusterArn'] = create_db_cluster_res['DBCluster']['DBClusterArn']
     time.sleep(5)
     print("[INFO]", "Add second db instance")

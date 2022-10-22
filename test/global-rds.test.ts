@@ -173,10 +173,10 @@ test('test create Main region vpc use Postgres cluster', () => {
   new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
     instanceType: InstanceTypeEnum.R5_LARGE,
     rdsPassword: '1qaz2wsx',
-    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_11_7 }),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
     dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
       engine: _rds.DatabaseClusterEngine.auroraPostgres({
-        version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
       }),
       parameters: {
         'rds.force_ssl': '1',
@@ -204,10 +204,10 @@ test('test Create Custom Resource', () => {
   new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
     instanceType: InstanceTypeEnum.R5_LARGE,
     rdsPassword: '1qaz2wsx',
-    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_11_7 }),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
     dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
       engine: _rds.DatabaseClusterEngine.auroraPostgres({
-        version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
       }),
     }),
   });
@@ -220,10 +220,10 @@ test('test add Regional Function', () => {
   const globalmainstack = new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
     instanceType: InstanceTypeEnum.R5_LARGE,
     rdsPassword: '1qaz2wsx',
-    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_11_7 }),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
     dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
       engine: _rds.DatabaseClusterEngine.auroraPostgres({
-        version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
       }),
     }),
   });
@@ -245,10 +245,10 @@ test('test error Region', () => {
     const globalmainstack = new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
       instanceType: InstanceTypeEnum.R5_LARGE,
       rdsPassword: '1qaz2wsx',
-      engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_11_7 }),
+      engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
       dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
         engine: _rds.DatabaseClusterEngine.auroraPostgres({
-          version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+          version: _rds.AuroraPostgresEngineVersion.VER_12_11,
         }),
       }),
     });

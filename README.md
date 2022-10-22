@@ -113,10 +113,10 @@ const globaldbM = new GlobalAuroraRDSMaster(stackM, 'globalAuroraRDSMaster',{
   vpc: vpcPublic,
   rdsPassword: '1qaz2wsx',
   engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({
-    version: _rds.AuroraPostgresEngineVersion.VER_11_7}),
+    version: _rds.AuroraPostgresEngineVersion.VER_12_11}),
   dbClusterpPG: new _rds.ParameterGroup(stackM, 'dbClusterparametergroup', {
     engine: _rds.DatabaseClusterEngine.auroraPostgres({
-      version: _rds.AuroraPostgresEngineVersion.VER_11_7,
+      version: _rds.AuroraPostgresEngineVersion.VER_12_11,
     }),
     parameters: {
       'rds.force_ssl': '1',
