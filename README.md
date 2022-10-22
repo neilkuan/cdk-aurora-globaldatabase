@@ -26,7 +26,7 @@ npm install cdk-aurora-globaldatabase@latest
 // for CDKv1
 npm install cdk-aurora-globaldatabase@cdkv1
 ```
-💡💡💡 please click [here](https://github.com/neilkuan/cdk-aurora-globaldatabase/tree/cdkv1#readme), if you are using aws-cdk v1.x.x version.💡💡💡
+# ⛔️ Please do not use cdk v1, because lot of db engine version already not been update in @aws-cdk/aws-rds upstream. ⛔️
 
 ## Now Try It !!!
 # Sample for Mysql 
