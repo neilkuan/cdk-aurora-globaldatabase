@@ -510,6 +510,14 @@ export interface GlobalAuroraRDSMasterProps {
   readonly storageEncrypted?: boolean;
 
   /**
+   * Credentials to use for the RDS database
+   *
+   * @default - creates new credentials
+   */
+  readonly credentials?: rds.Credentials;
+
+
+  /**
    * return RDS Cluster password
    */
   readonly rdsPassword?: string;
@@ -592,12 +600,15 @@ export class GlobalAuroraRDSMaster extends Construct {
     if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
+
     let rdsCredentials: rds.Credentials;
     if (props?.rdsPassword) {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
         password: cdk.SecretValue.plainText(props?.rdsPassword),
       };
+    } else if (props?.credentials) {
+      rdsCredentials = props?.credentials;
     } else {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
