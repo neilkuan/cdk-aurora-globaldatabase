@@ -512,6 +512,13 @@ export interface GlobalAuroraRDSMasterProps {
   /**
    * Credentials to use for the RDS database
    *
+   * @default - []
+   */
+  readonly securityGroups?: ec2.ISecurityGroup[];
+
+  /**
+   * Credentials to use for the RDS database
+   *
    * @default - creates new credentials
    */
   readonly credentials?: rds.Credentials;
@@ -637,6 +644,7 @@ export class GlobalAuroraRDSMaster extends Construct {
     });
 
     let rdsVpcSubnetSelect = ec2.SubnetType.PRIVATE_WITH_NAT;
+
     if (this.azOfSubnets(rdsVpc.privateSubnets) === 0) {
       rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
     }
@@ -650,6 +658,7 @@ export class GlobalAuroraRDSMaster extends Construct {
         // if want publicAccess , need to define vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC } ,
         vpc: rdsVpc,
         vpcSubnets: { subnetType: rdsVpcSubnetSelect },
+        securityGroups: props?.securityGroups,
         instanceType: new ec2.InstanceType(this.rdsInstanceType),
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,

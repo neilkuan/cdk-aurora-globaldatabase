@@ -45,6 +45,7 @@ new GlobalAuroraRDSMaster(scope: Construct, id: string, props?: GlobalAuroraRDSM
 * **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[GlobalAuroraRDSMasterProps](#cdk-aurora-globaldatabase-globalaurorardsmasterprops)</code>)  *No description*
+  * **credentials** (<code>[aws_rds.Credentials](#aws-cdk-lib-aws-rds-credentials)</code>)  Credentials to use for the RDS database. __*Default*__: creates new credentials
   * **dbClusterpPG** (<code>[aws_rds.IParameterGroup](#aws-cdk-lib-aws-rds-iparametergroup)</code>)  RDS ParameterGroup. __*Default*__: Aurora MySQL ParameterGroup
   * **dbUserName** (<code>string</code>)  RDS default Super User Name. __*Default*__: sysadmin
   * **defaultDatabaseName** (<code>string</code>)  RDS default Database Name. __*Default*__: globaldatabase
@@ -53,6 +54,7 @@ new GlobalAuroraRDSMaster(scope: Construct, id: string, props?: GlobalAuroraRDSM
   * **instanceType** (<code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code>)  RDS Instance Type only can use r4 or r5 type see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations. __*Default*__: r5.large
   * **parameters** (<code>Map<string, string></code>)  RDS Parameters. __*Default*__: {time_zone: 'UTC'}
   * **rdsPassword** (<code>string</code>)  return RDS Cluster password. __*Optional*__
+  * **securityGroups** (<code>Array<[aws_ec2.ISecurityGroup](#aws-cdk-lib-aws-ec2-isecuritygroup)></code>)  Credentials to use for the RDS database. __*Default*__: []
   * **storageEncrypted** (<code>boolean</code>)  Global RDS Database Cluster Engine Storage Encrypted Option . __*Default*__: true
   * **timeZone** (<code>[MySQLtimeZone](#cdk-aurora-globaldatabase-mysqltimezone)</code>)  RDS time zone. __*Default*__: MySQLtimeZone.UTC
   * **vpc** (<code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code>)  RDS default VPC. __*Default*__: new VPC
@@ -145,6 +147,7 @@ Name | Type | Description
 
 Name | Type | Description 
 -----|------|-------------
+**credentials**?🔹 | <code>[aws_rds.Credentials](#aws-cdk-lib-aws-rds-credentials)</code> | Credentials to use for the RDS database.<br/>__*Default*__: creates new credentials
 **dbClusterpPG**?🔹 | <code>[aws_rds.IParameterGroup](#aws-cdk-lib-aws-rds-iparametergroup)</code> | RDS ParameterGroup.<br/>__*Default*__: Aurora MySQL ParameterGroup
 **dbUserName**?🔹 | <code>string</code> | RDS default Super User Name.<br/>__*Default*__: sysadmin
 **defaultDatabaseName**?🔹 | <code>string</code> | RDS default Database Name.<br/>__*Default*__: globaldatabase
@@ -153,6 +156,7 @@ Name | Type | Description
 **instanceType**?🔹 | <code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code> | RDS Instance Type only can use r4 or r5 type see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations.<br/>__*Default*__: r5.large
 **parameters**?🔹 | <code>Map<string, string></code> | RDS Parameters.<br/>__*Default*__: {time_zone: 'UTC'}
 **rdsPassword**?🔹 | <code>string</code> | return RDS Cluster password.<br/>__*Optional*__
+**securityGroups**?🔹 | <code>Array<[aws_ec2.ISecurityGroup](#aws-cdk-lib-aws-ec2-isecuritygroup)></code> | Credentials to use for the RDS database.<br/>__*Default*__: []
 **storageEncrypted**?🔹 | <code>boolean</code> | Global RDS Database Cluster Engine Storage Encrypted Option .<br/>__*Default*__: true
 **timeZone**?🔹 | <code>[MySQLtimeZone](#cdk-aurora-globaldatabase-mysqltimezone)</code> | RDS time zone.<br/>__*Default*__: MySQLtimeZone.UTC
 **vpc**?🔹 | <code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code> | RDS default VPC.<br/>__*Default*__: new VPC
