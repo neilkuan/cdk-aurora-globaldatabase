@@ -510,6 +510,21 @@ export interface GlobalAuroraRDSMasterProps {
   readonly storageEncrypted?: boolean;
 
   /**
+   * Credentials to use for the RDS database
+   *
+   * @default - []
+   */
+  readonly securityGroups?: ec2.ISecurityGroup[];
+
+  /**
+   * Credentials to use for the RDS database
+   *
+   * @default - creates new credentials
+   */
+  readonly credentials?: rds.Credentials;
+
+
+  /**
    * return RDS Cluster password
    */
   readonly rdsPassword?: string;
@@ -592,12 +607,15 @@ export class GlobalAuroraRDSMaster extends Construct {
     if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
+
     let rdsCredentials: rds.Credentials;
     if (props?.rdsPassword) {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
         password: cdk.SecretValue.plainText(props?.rdsPassword),
       };
+    } else if (props?.credentials) {
+      rdsCredentials = props?.credentials;
     } else {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
@@ -625,7 +643,8 @@ export class GlobalAuroraRDSMaster extends Construct {
       },
     });
 
-    let rdsVpcSubnetSelect = ec2.SubnetType.PRIVATE_WITH_NAT;
+    let rdsVpcSubnetSelect = ec2.SubnetType.PRIVATE_WITH_EGRESS;
+
     if (this.azOfSubnets(rdsVpc.privateSubnets) === 0) {
       rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
     }
@@ -639,6 +658,7 @@ export class GlobalAuroraRDSMaster extends Construct {
         // if want publicAccess , need to define vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC } ,
         vpc: rdsVpc,
         vpcSubnets: { subnetType: rdsVpcSubnetSelect },
+        securityGroups: props?.securityGroups,
         instanceType: new ec2.InstanceType(this.rdsInstanceType),
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -840,7 +860,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
       natGateways: 1,
     });
 
-    const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE_WITH_NAT;
+    const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE_WITH_EGRESS;
     if (DBsubnetType === ec2.SubnetType.PUBLIC) {
       const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
@@ -852,7 +872,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
       cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PublicDBSubnetGroup');
       this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
     } else {
-      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE_WITH_NAT });
+      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
         dbSubnetGroupName: `${stack.stackName.toLowerCase()}-privatesubnetgroup`,
         dbSubnetGroupDescription: 'Private Subnets for database',
