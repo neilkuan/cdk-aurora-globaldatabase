@@ -52,6 +52,8 @@ new GlobalAuroraRDSMaster(scope: Construct, id: string, props?: GlobalAuroraRDSM
   * **deletionProtection** (<code>boolean</code>)  Global RDS Database Cluster Engine Deletion Protection Option . __*Default*__: false
   * **engineVersion** (<code>[aws_rds.IClusterEngine](#aws-cdk-lib-aws-rds-iclusterengine)</code>)  RDS Database Cluster Engine . __*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
   * **instanceType** (<code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code>)  RDS Instance Type only can use r4 or r5 type see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations. __*Default*__: r5.large
+  * **monitoringInterval** (<code>[Duration](#aws-cdk-lib-duration)</code>)  The interval, in seconds, between points when Amazon RDS collects enhanced monitoring metrics for the DB instances. __*Default*__: no enhanced monitoring
+  * **monitoringRole** (<code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code>)  Role that will be used to manage DB instances monitoring. __*Default*__: A role is automatically created for you
   * **parameters** (<code>Map<string, string></code>)  RDS Parameters. __*Default*__: {time_zone: 'UTC'}
   * **rdsPassword** (<code>string</code>)  return RDS Cluster password. __*Optional*__
   * **securityGroups** (<code>Array<[aws_ec2.ISecurityGroup](#aws-cdk-lib-aws-ec2-isecuritygroup)></code>)  Credentials to use for the RDS database. __*Default*__: []
@@ -154,6 +156,8 @@ Name | Type | Description
 **deletionProtection**?🔹 | <code>boolean</code> | Global RDS Database Cluster Engine Deletion Protection Option .<br/>__*Default*__: false
 **engineVersion**?🔹 | <code>[aws_rds.IClusterEngine](#aws-cdk-lib-aws-rds-iclusterengine)</code> | RDS Database Cluster Engine .<br/>__*Default*__: rds.DatabaseClusterEngine.auroraMysql({version: rds.AuroraMysqlEngineVersion.VER_2_07_1,})
 **instanceType**?🔹 | <code>[InstanceTypeEnum](#cdk-aurora-globaldatabase-instancetypeenum)</code> | RDS Instance Type only can use r4 or r5 type see more https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html#aurora-global-database.limitations.<br/>__*Default*__: r5.large
+**monitoringInterval**?🔹 | <code>[Duration](#aws-cdk-lib-duration)</code> | The interval, in seconds, between points when Amazon RDS collects enhanced monitoring metrics for the DB instances.<br/>__*Default*__: no enhanced monitoring
+**monitoringRole**?🔹 | <code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code> | Role that will be used to manage DB instances monitoring.<br/>__*Default*__: A role is automatically created for you
 **parameters**?🔹 | <code>Map<string, string></code> | RDS Parameters.<br/>__*Default*__: {time_zone: 'UTC'}
 **rdsPassword**?🔹 | <code>string</code> | return RDS Cluster password.<br/>__*Optional*__
 **securityGroups**?🔹 | <code>Array<[aws_ec2.ISecurityGroup](#aws-cdk-lib-aws-ec2-isecuritygroup)></code> | Credentials to use for the RDS database.<br/>__*Default*__: []
