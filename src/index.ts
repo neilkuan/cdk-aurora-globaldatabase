@@ -523,11 +523,25 @@ export interface GlobalAuroraRDSMasterProps {
    */
   readonly credentials?: rds.Credentials;
 
-
   /**
    * return RDS Cluster password
    */
   readonly rdsPassword?: string;
+
+  /**
+   * The interval, in seconds, between points when Amazon RDS collects enhanced
+   * monitoring metrics for the DB instances.
+   *
+   * @default no enhanced monitoring
+   */
+  readonly monitoringInterval?: cdk.Duration;
+
+  /**
+   * Role that will be used to manage DB instances monitoring.
+   *
+   * @default - A role is automatically created for you
+   */
+  readonly monitoringRole?: iam.IRole;
 }
 
 export interface RegionalOptions {
@@ -663,6 +677,8 @@ export class GlobalAuroraRDSMaster extends Construct {
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       defaultDatabaseName: props?.defaultDatabaseName ?? 'globaldatabase',
+      monitoringInterval: props?.monitoringInterval,
+      monitoringRole: props?.monitoringRole,
     });
 
     this.rdsPassword = `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret?.secretName}` ?? props?.rdsPassword;;
