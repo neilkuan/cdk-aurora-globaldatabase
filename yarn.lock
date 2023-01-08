@@ -2370,9 +2370,9 @@ combined-stream@^1.0.8:
     delayed-stream "~1.0.0"
 
 commander@^9.4.1:
-  version "9.4.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.1.tgz#d1dd8f2ce6faf93147295c0df13c7c21141cfbdd"
-  integrity sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
+  integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
 
 comment-json@4.2.2:
   version "4.2.2"
@@ -2442,10 +2442,10 @@ console-control-strings@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
-constructs@^3.3.69, constructs@^3.4.206:
-  version "3.4.206"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.206.tgz#7884308961cc4b6c63b67b36621280134ad7e04a"
-  integrity sha512-KAqhNg/r6ng/aKJ7pUNIv7lEniuWMW9BqWpRVndpcwokgkNHua4Rb+vB/8aivkmF9IZERf9vq62iV6zAjKml8g==
+constructs@^3.3.69, constructs@^3.4.207:
+  version "3.4.207"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.207.tgz#04b3461cb8dd43e35d6cf28e61460fa0b1bbd049"
+  integrity sha512-WTxVTdplK7VOz1t6id015l7PlSnyWD2FoayJ8zc8cvv2+VLVGkDOcGho0WslQNzNFJ0mt/B3x1WmZPcOPlZO8w==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
