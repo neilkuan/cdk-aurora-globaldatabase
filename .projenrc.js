@@ -64,13 +64,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@aws-cdk/core@^1.177.0',
     '@aws-cdk/aws-ec2@^1.177.0',
   ],
-  typescriptVersion: '4.8.4',
+  typescriptVersion: '^4.9.4',
 });
 
-project.package.addField('resolutions', {
-  'trim-newlines': '3.0.1',
-  'got': '12.3.0',
-});
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
 const common_exclude_image = ['cdk.out', 'cdk.context.json', 'yarn-error.log', 'coverage', 'venv'];
 project.gitignore.exclude(...common_exclude_image);

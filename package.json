@@ -57,7 +57,7 @@
     "projen": "^0.71.7",
     "standard-version": "^9",
     "ts-jest": "^27",
-    "typescript": "4.8.4"
+    "typescript": "^4.9.4"
   },
   "peerDependencies": {
     "@aws-cdk/aws-ec2": "^1.177.0",
@@ -78,8 +78,8 @@
     "constructs": "^3.4.293"
   },
   "resolutions": {
-    "trim-newlines": "3.0.1",
-    "got": "12.3.0"
+    "@types/prettier": "2.6.0",
+    "@types/babel__traverse": "7.18.2"
   },
   "keywords": [
     "aws",
