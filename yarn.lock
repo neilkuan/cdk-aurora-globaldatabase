@@ -1502,9 +1502,9 @@
   integrity sha512-a31EnjuIDSX8IXBUib3cYLDRlPMU36AWX4xS8ysLaNu4ZzUesDiPt83pgrW2X1YLMe5L2HbDyaKK5BrL4cNKaQ==
 
 "@sindresorhus/is@^5.2.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.4.0.tgz#b1bfbd6024311ade045093b424536cefcc8e3a42"
-  integrity sha512-Ggh6E9AnMpiNXlbXfFUcWE9qm408rL8jDi7+PMBBx7TMbwEmiqAiSmZ+zydYwxcJLqPGNDoLc9mXDuMDBZg0sA==
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.4.1.tgz#c4383ce702fb90531c3d310506bab89e70427c53"
+  integrity sha512-axlrvsHlHlFmKKMEg4VyvMzFr93JWJj4eIfXY1STVuO2fsImCa7ncaiG5gC8HKOX590AW5RtRsC41/B+OfrSqw==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.6"
@@ -2495,10 +2495,10 @@ console-control-strings@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
-constructs@^3.3.69, constructs@^3.4.315:
-  version "3.4.315"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.315.tgz#154430504573a8c459ec53c8ef800ffd6647c3cf"
-  integrity sha512-qKaRLfekfxFgmaE6Y029Vtc/9mCA7VBkux7aSJ5mH5FmX5Su9PhEJH2LZ00hEtRRNdn3tCmHbK7k5I+pWSmwyg==
+constructs@^3.3.69, constructs@^3.4.316:
+  version "3.4.316"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.316.tgz#a49b9d1df07b51e9e63eb8f455924fe7e941dbb5"
+  integrity sha512-SWN20/XXNf2y1f3ZqfNx3pRXlsnykIv0qiF7gs5xRXt2fYuSTxe2FhpIUs1hQTP6iDyAEAtEP7EhzGoS/Y9wcQ==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
