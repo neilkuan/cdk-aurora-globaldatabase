@@ -75,7 +75,7 @@
     "@aws-cdk/aws-rds": "^1.177.0",
     "@aws-cdk/core": "^1.177.0",
     "@aws-cdk/custom-resources": "^1.177.0",
-    "constructs": "^3.4.316"
+    "constructs": "^3.4.317"
   },
   "resolutions": {
     "@types/babel__traverse": "7.18.2",
