@@ -2463,10 +2463,10 @@ console-control-strings@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
-constructs@^3.3.69, constructs@^3.4.339:
-  version "3.4.339"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.339.tgz#e612301b1e3747d1d897af5e38b34d71b5d81094"
-  integrity sha512-kLXZCNbMcsJ4TNoBgNTEhB6msfRbWz25G58+wNrpcCiFhK7ccU59SfmYeGA1aQyeqdWsCMCfAEdVQwthta31Fg==
+constructs@^3.3.69, constructs@^3.4.340:
+  version "3.4.340"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.340.tgz#8e053f3c245b0fe4dcf538e1c4b158dcdabe8424"
+  integrity sha512-M304yYopqzUi48Sr2iiU06lwps2ugWkG7JjqXiIrl4pTimwJ2DmStf/fuhra8WUyMOrsE8LCwG0dZ84wgkhmhA==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
@@ -5801,10 +5801,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.71.118:
-  version "0.71.118"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.71.118.tgz#00fd1960259e792473fd4980e7244bce4e297a1c"
-  integrity sha512-j7FFgNpuo8KB4PUzx48GzQzdWH3XUYNjra6cDmOIEHHP1W4A8hF0Dg6UqWSE8gSM4JZyh9/ZtvdVU5XtthpxMA==
+projen@^0.71.119:
+  version "0.71.119"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.71.119.tgz#19e316570316f569225945a252a1cf6391631bf8"
+  integrity sha512-+F8w8xibFQpfTjJ2Mo8IzALVtT7ANOqMGKGkbgphYX0+myMU9R7S6FaXBnPemzGR4IbhSSOQej9c1lo2SX+95g==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
