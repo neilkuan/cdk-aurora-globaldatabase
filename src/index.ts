@@ -551,6 +551,56 @@ export interface RegionalOptions {
   readonly securityGroupId?: string;
 }
 
+export class StackParams {
+  private fakeStack: cdk.Stack;
+
+  private _params: {
+    region: string;
+    name: string;
+    account: string;
+  };
+
+  get params() {
+    return this._params;
+  }
+
+  constructor(
+    scope: Construct,
+  ) {
+    this.fakeStack = cdk.Stack.of(scope);
+    const isUnresolved = cdk.Token.isUnresolved(this.fakeStack.stackName);
+
+
+    this._params = {
+      region: this.fakeStack.region,
+      name: isUnresolved ? this.getRootNode()?.stackName! : this.fakeStack.stackName,
+      account: this.fakeStack.account,
+    };
+
+    if (!this.params.name) {
+      throw new Error(`This stack name is unsupported ${this.params.name}.`);
+    }
+
+    if (cdk.Token.isUnresolved(this.params.name)) {
+      throw new Error(`This stack name is unresolved ${this.params.name}.`);
+    }
+
+    if (GlobalAuroraRDSSupportRegion.indexOf(this.params.region) == -1) {
+      throw new Error(`This region ${this.params.region} not Support Global RDS !!!`);
+    }
+  }
+
+  private getRootNode() {
+    let root = this.fakeStack.node.scope;
+
+    while (root && !(root instanceof cdk.Stack)) {
+      root = root.node.scope;
+    }
+
+    return root;
+  }
+}
+
 export class GlobalAuroraRDSMaster extends Construct {
   /**
    * return RDS Cluster
@@ -616,17 +666,14 @@ export class GlobalAuroraRDSMaster extends Construct {
   readonly clusterEngineVersion: string;
   constructor(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps) {
     super(scope, id);
-    const stack = cdk.Stack.of(this);
 
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1) {
-      throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
-    }
+    const { params } = new StackParams(this);
 
     let rdsCredentials: rds.Credentials;
     if (props?.rdsPassword) {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
-        password: cdk.SecretValue.unsafePlainText(props?.rdsPassword),
+        password: cdk.SecretValue.unsafePlainText(props.rdsPassword),
       };
     } else if (props?.credentials) {
       rdsCredentials = props?.credentials;
@@ -662,10 +709,11 @@ export class GlobalAuroraRDSMaster extends Construct {
     if (this.azOfSubnets(rdsVpc.privateSubnets) === 0) {
       rdsVpcSubnetSelect = ec2.SubnetType.PUBLIC;
     }
+
     this.rdsCluster = new rds.DatabaseCluster(this, 'RDSCluster', {
       engine: this.engineVersion,
       parameterGroup: this.dbClusterpPG,
-      clusterIdentifier: `${stack.stackName.toLowerCase()}-primary`,
+      clusterIdentifier: `${params.name.toLowerCase()}-primary`,
       credentials: rdsCredentials!,
       instances: 1,
       instanceProps: {
@@ -704,12 +752,13 @@ export class GlobalAuroraRDSMaster extends Construct {
       logRetention: logs.RetentionDays.ONE_DAY,
     });
 
+    this.globalClusterIdentifier = `global-${params.name.toLowerCase()}`;
     this.crGlobalRDSProvider = new cdk.CustomResource(this, 'CRUpgradeglobaldbProvider', {
       resourceType: 'Custom::UpgradeGlobalClusterProvider',
       serviceToken: UpgradeglobaldbProvider.serviceToken,
       properties: {
-        SourceDBClusterIdentifier: `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`,
-        GlobalClusterIdentifier: `global-${stack.stackName.toLowerCase()}`,
+        SourceDBClusterIdentifier: `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`,
+        GlobalClusterIdentifier: this.globalClusterIdentifier,
       },
     });
 
@@ -720,12 +769,12 @@ export class GlobalAuroraRDSMaster extends Construct {
       value: this.rdsIsPublic,
     });
 
-    this.rdsClusterarn = `arn:aws:rds:${stack.region}:${stack.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
+    this.rdsClusterarn = `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
     new cdk.CfnOutput(this, 'RDSClusterarn', {
       value: this.rdsClusterarn,
     });
 
-    this.globalClusterIdentifier = `global-${stack.stackName.toLowerCase()}`;
+
     new cdk.CfnOutput(this, 'GlobalClusterIdentifier', {
       value: this.globalClusterIdentifier,
     });
@@ -754,7 +803,8 @@ export class GlobalAuroraRDSMaster extends Construct {
   }
 
   public addRegionalCluster(scope: Construct, id: string, options: RegionalOptions) {
-    const stack = cdk.Stack.of(scope);
+    const { params } = new StackParams(scope);
+
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
       resources: ['*'],
@@ -786,8 +836,8 @@ export class GlobalAuroraRDSMaster extends Construct {
       logRetention: logs.RetentionDays.ONE_DAY,
     });
 
-    const secondRDSClusterArn = `arn:aws:rds:${options.region}:${stack.account}:cluster:${stack.stackName.toLowerCase()}-${options.region}`;
-    const seconddbInstanceIdentifier = `${stack.stackName.toLowerCase()}-${options.region}-1`;
+    const secondRDSClusterArn = `arn:aws:rds:${options.region}:${params.account}:cluster:${params.name.toLowerCase()}-${options.region}`;
+    const seconddbInstanceIdentifier = `${params.name.toLowerCase()}-${options.region}-1`;
 
     const CRSecondRDSProvider = new cdk.CustomResource(scope, `${id}-addRegionalCustomResource`, {
       resourceType: 'Custom::addRegionalClusterProvider',
@@ -799,7 +849,7 @@ export class GlobalAuroraRDSMaster extends Construct {
         DBSubnetGroupName: options.dbSubnetGroupName,
         Engine: this.engine,
         EngineVersion: this.clusterEngineVersion,
-        ClusterIdentifier: `${stack.stackName.toLowerCase()}-${options.region}`,
+        ClusterIdentifier: `${params.name.toLowerCase()}-${options.region}`,
         InstanceType: this.rdsInstanceType,
         rdsIsPublic: this.rdsIsPublic,
         secondRDSClusterArn,
@@ -864,10 +914,9 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
   readonly dbSubnetGroup: rds.CfnDBSubnetGroup;
   constructor(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps) {
     super(scope, id);
-    const stack = cdk.Stack.of(this);
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1) {
-      throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
-    }
+
+    const { params } = new StackParams(this);
+
     // Slave region Vpc
     const rdsVpcSecond = props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionSlave', {
       cidr: '10.109.0.0/16',
@@ -880,7 +929,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
     if (DBsubnetType === ec2.SubnetType.PUBLIC) {
       const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
-        dbSubnetGroupName: `${stack.stackName.toLowerCase()}-publicsubnetgroup`,
+        dbSubnetGroupName: `${params.name.toLowerCase()}-publicsubnetgroup`,
         dbSubnetGroupDescription: 'Public Subnets for database',
         subnetIds: PublicSubnet.subnetIds,
       });
@@ -890,7 +939,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
     } else {
       const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS });
       this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
-        dbSubnetGroupName: `${stack.stackName.toLowerCase()}-privatesubnetgroup`,
+        dbSubnetGroupName: `${params.name.toLowerCase()}-privatesubnetgroup`,
         dbSubnetGroupDescription: 'Private Subnets for database',
         subnetIds: PrivateSubnet.subnetIds,
       });
@@ -903,7 +952,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
     });
 
     new cdk.CfnOutput(this, 'stackRegion', {
-      value: `${stack.region}`,
+      value: `${params.region}`,
     });
   }
 }
