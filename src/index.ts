@@ -554,15 +554,9 @@ export interface RegionalOptions {
 export class StackParams {
   private fakeStack: cdk.Stack;
 
-  private _params: {
-    region: string;
-    name: string;
-    account: string;
-  };
-
-  get params() {
-    return this._params;
-  }
+  public region: string;
+  public name: string;
+  public account: string;
 
   constructor(
     scope: Construct,
@@ -571,22 +565,20 @@ export class StackParams {
     const isUnresolved = cdk.Token.isUnresolved(this.fakeStack.stackName);
 
 
-    this._params = {
-      region: this.fakeStack.region,
-      name: isUnresolved ? this.getRootNode()?.stackName! : this.fakeStack.stackName,
-      account: this.fakeStack.account,
-    };
+    this.region = this.fakeStack.region;
+    this.name = isUnresolved ? this.getRootNode()?.stackName! : this.fakeStack.stackName;
+    this.account = this.fakeStack.account;
 
-    if (!this.params.name) {
-      throw new Error(`This stack name is unsupported ${this.params.name}.`);
+    if (!this.name) {
+      throw new Error(`This stack name is unsupported ${this.name}.`);
     }
 
-    if (cdk.Token.isUnresolved(this.params.name)) {
-      throw new Error(`This stack name is unresolved ${this.params.name}.`);
+    if (cdk.Token.isUnresolved(this.name)) {
+      throw new Error(`This stack name is unresolved ${this.name}.`);
     }
 
-    if (GlobalAuroraRDSSupportRegion.indexOf(this.params.region) == -1) {
-      throw new Error(`This region ${this.params.region} not Support Global RDS !!!`);
+    if (GlobalAuroraRDSSupportRegion.indexOf(this.region) == -1) {
+      throw new Error(`This region ${this.region} not Support Global RDS !!!`);
     }
   }
 
@@ -667,7 +659,7 @@ export class GlobalAuroraRDSMaster extends Construct {
   constructor(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps) {
     super(scope, id);
 
-    const { params } = new StackParams(this);
+    const params = new StackParams(this);
 
     let rdsCredentials: rds.Credentials;
     if (props?.rdsPassword) {
@@ -803,7 +795,7 @@ export class GlobalAuroraRDSMaster extends Construct {
   }
 
   public addRegionalCluster(scope: Construct, id: string, options: RegionalOptions) {
-    const { params } = new StackParams(scope);
+    const params = new StackParams(scope);
 
     // custom resource policy
     const CustomResourcePolicy = new iam.PolicyStatement({
@@ -915,7 +907,7 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
   constructor(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps) {
     super(scope, id);
 
-    const { params } = new StackParams(this);
+    const params = new StackParams(this);
 
     // Slave region Vpc
     const rdsVpcSecond = props?.vpc ?? new ec2.Vpc(this, 'RDSVpcRegionSlave', {

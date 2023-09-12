@@ -6,6 +6,7 @@ Name|Description
 ----|-----------
 [GlobalAuroraRDSMaster](#cdk-aurora-globaldatabase-globalaurorardsmaster)|*No description*
 [GlobalAuroraRDSSlaveInfra](#cdk-aurora-globaldatabase-globalaurorardsslaveinfra)|*No description*
+[StackParams](#cdk-aurora-globaldatabase-stackparams)|*No description*
 
 
 **Structs**
@@ -137,6 +138,35 @@ new GlobalAuroraRDSSlaveInfra(scope: Construct, id: string, props?: GlobalAurora
 Name | Type | Description 
 -----|------|-------------
 **dbSubnetGroup**🔹 | <code>[aws_rds.CfnDBSubnetGroup](#aws-cdk-lib-aws-rds-cfndbsubnetgroup)</code> | GlobalAuroraRDSSlaveInfra subnet group .
+
+
+
+## class StackParams 🔹 <a id="cdk-aurora-globaldatabase-stackparams"></a>
+
+
+
+
+### Initializer
+
+
+
+
+```ts
+new StackParams(scope: Construct)
+```
+
+* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
+
+
+
+### Properties
+
+
+Name | Type | Description 
+-----|------|-------------
+**account**🔹 | <code>string</code> | <span></span>
+**name**🔹 | <code>string</code> | <span></span>
+**region**🔹 | <code>string</code> | <span></span>
 
 
 

@@ -270,7 +270,7 @@ test('test error Region input addRegional Function', () => {
   }).toThrowError(/This region sa-east-1 not Support Global RDS !!!/);
 });
 
-test.only('test stack resources identifiers', () => {
+test('test stack resources identifiers', () => {
   const rootStackName = 'root-stack';
 
   const app = new App();
@@ -350,8 +350,8 @@ test('test StackParams', () => {
   expect(Token.isUnresolved(nestedStack.stackName)).toBeTruthy();
   expect(Token.isUnresolved(nestedStack.region)).toBeFalsy();
 
-  const { params: rootStackParams } = new StackParams(stack);
-  const { params: nestedStackParams } = new StackParams(nestedStack);
+  const rootStackParams = new StackParams(stack);
+  const nestedStackParams = new StackParams(nestedStack);
 
   expect(rootStackParams.region).toEqual(envTokyo.region);
   expect(rootStackParams.name).toEqual(rootStackName);
