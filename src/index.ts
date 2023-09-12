@@ -347,7 +347,7 @@ export enum MySQLtimeZone {
   AUSTRALIA_BRISBANE = 'Australia/Brisbane',
 }
 
-export enum InstanceTypeEnum{
+export enum InstanceTypeEnum {
   /**
    * db Instance Type r4.large
    */
@@ -486,7 +486,7 @@ export interface GlobalAuroraRDSMasterProps {
    *
    * @default - {time_zone: 'UTC'}
    */
-  readonly parameters?: {[key: string]: string} | undefined;
+  readonly parameters?: { [key: string]: string } | undefined;
 
   /**
    * RDS Database Cluster Engine .
@@ -614,11 +614,11 @@ export class GlobalAuroraRDSMaster extends Construct {
    * return RDS Cluster DB Engine Version.
    */
   readonly clusterEngineVersion: string;
-  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps ) {
+  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSMasterProps) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
 
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
 
@@ -626,7 +626,7 @@ export class GlobalAuroraRDSMaster extends Construct {
     if (props?.rdsPassword) {
       rdsCredentials = {
         username: props?.dbUserName ?? 'sysadmin',
-        password: cdk.SecretValue.plainText(props?.rdsPassword),
+        password: cdk.SecretValue.unsafePlainText(props?.rdsPassword),
       };
     } else if (props?.credentials) {
       rdsCredentials = props?.credentials;
@@ -861,11 +861,11 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
    *
   * @default - true
   */
-  readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
-  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps ) {
+  readonly dbSubnetGroup: rds.CfnDBSubnetGroup;
+  constructor(scope: Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
-    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1 ) {
+    if (GlobalAuroraRDSSupportRegion.indexOf(stack.region) == -1) {
       throw new Error(`This region ${stack.region} not Support Global RDS !!!`);
     }
     // Slave region Vpc
