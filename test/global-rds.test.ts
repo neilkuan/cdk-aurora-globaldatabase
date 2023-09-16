@@ -301,6 +301,39 @@ test('test stack resources identifiers', () => {
   expect(GlobalClusterIdentifier).toEqual(`global-${rootStackName}`);
 });
 
+test('test stack resources identifiers', () => {
+  const stackName = 'test-stack';
+
+  const app = new App();
+  const stack = new Stack(app, 'resource', { stackName, env: envTokyo });
+
+  expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
+  expect(Token.isUnresolved(stack.region)).toBeFalsy();
+  expect(stack.stackName).toEqual(stackName);
+
+  new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
+    instanceType: InstanceTypeEnum.R5_LARGE,
+    credentials: _rds.Credentials.fromGeneratedSecret('sysadmin'),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
+    dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
+      engine: _rds.DatabaseClusterEngine.auroraPostgres({
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
+      }),
+      parameters: {},
+    }),
+  });
+
+  const synthesized = assertions.Template.fromStack(stack);
+
+  const { Properties: { DBClusterIdentifier } } = Object.values(synthesized.findResources('AWS::RDS::DBCluster'))[0];
+
+  expect(DBClusterIdentifier).toEqual(`${stack.stackName}-primary`);
+
+  const { Properties: { GlobalClusterIdentifier } } = Object.values(synthesized.findResources('Custom::UpgradeGlobalClusterProvider'))[0];
+
+  expect(GlobalClusterIdentifier).toEqual(`global-${stack.stackName}`);
+});
+
 test('test nested stack resources identifiers', () => {
   const nestedStackName = 'nested-stack';
 

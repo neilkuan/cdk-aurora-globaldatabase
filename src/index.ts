@@ -557,11 +557,11 @@ export class StackParams {
   public readonly account: string;
 
   constructor(scope: Construct) {
-    const { region, account, node } = cdk.Stack.of(scope);
+    const { region, account, stackName, nested, node } = cdk.Stack.of(scope);
 
     this.region = region;
-    this.name = node.id;
     this.account = account;
+    this.name = nested ? node.id : stackName;
 
     this.validateParams();
   }
