@@ -1,11 +1,12 @@
-import { App, Stack } from 'aws-cdk-lib';
+import { App, NestedStack, Stack, Token } from 'aws-cdk-lib';
 import * as assertions from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as _rds from 'aws-cdk-lib/aws-rds';
-import { GlobalAuroraRDSMaster, GlobalAuroraRDSSlaveInfra, InstanceTypeEnum, MySQLtimeZone } from '../src/index';
+import { GlobalAuroraRDSMaster, GlobalAuroraRDSSlaveInfra, InstanceTypeEnum, MySQLtimeZone, StackParams } from '../src/index';
 
 const envTokyo = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'ap-northeast-1' };
-test('test create Matser RDS', () => {
+
+test('test create Master RDS', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envTokyo });
   new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS');
@@ -241,7 +242,7 @@ const envErrorRegion = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'sa-e
 test('test error Region', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envErrorRegion });
-  expect(()=>{
+  expect(() => {
     const globalmainstack = new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
       instanceType: InstanceTypeEnum.R5_LARGE,
       rdsPassword: '1qaz2wsx',
@@ -263,8 +264,132 @@ test('test error Region', () => {
 test('test error Region input addRegional Function', () => {
   const app = new App();
   const stack = new Stack(app, 'testing-stack', { env: envErrorRegion });
-  expect(()=>{
+  expect(() => {
     new GlobalAuroraRDSSlaveInfra(stack, 'GlobalAuroraRDS');
     assertions.Template.fromStack(stack).findResources('AWS::EC2::VPC');
   }).toThrowError(/This region sa-east-1 not Support Global RDS !!!/);
+});
+
+test('test stack resources identifiers', () => {
+  const rootStackName = 'root-stack';
+
+  const app = new App();
+  const stack = new Stack(app, rootStackName, { env: envTokyo });
+
+  expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
+  expect(Token.isUnresolved(stack.region)).toBeFalsy();
+
+  new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
+    instanceType: InstanceTypeEnum.R5_LARGE,
+    credentials: _rds.Credentials.fromGeneratedSecret('sysadmin'),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
+    dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
+      engine: _rds.DatabaseClusterEngine.auroraPostgres({
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
+      }),
+      parameters: {},
+    }),
+  });
+
+  const synthesized = assertions.Template.fromStack(stack);
+  const { Properties: { DBClusterIdentifier } } = Object.values(synthesized.findResources('AWS::RDS::DBCluster'))[0];
+
+  expect(DBClusterIdentifier).toEqual(`${rootStackName}-primary`);
+
+  const { Properties: { GlobalClusterIdentifier } } = Object.values(synthesized.findResources('Custom::UpgradeGlobalClusterProvider'))[0];
+
+  expect(GlobalClusterIdentifier).toEqual(`global-${rootStackName}`);
+});
+
+test('test stack resources identifiers', () => {
+  const stackName = 'test-stack';
+
+  const app = new App();
+  const stack = new Stack(app, 'resource', { stackName, env: envTokyo });
+
+  expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
+  expect(Token.isUnresolved(stack.region)).toBeFalsy();
+  expect(stack.stackName).toEqual(stackName);
+
+  new GlobalAuroraRDSMaster(stack, 'GlobalAuroraRDS', {
+    instanceType: InstanceTypeEnum.R5_LARGE,
+    credentials: _rds.Credentials.fromGeneratedSecret('sysadmin'),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
+    dbClusterpPG: new _rds.ParameterGroup(stack, 'dbClusterparametergroup', {
+      engine: _rds.DatabaseClusterEngine.auroraPostgres({
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
+      }),
+      parameters: {},
+    }),
+  });
+
+  const synthesized = assertions.Template.fromStack(stack);
+
+  const { Properties: { DBClusterIdentifier } } = Object.values(synthesized.findResources('AWS::RDS::DBCluster'))[0];
+
+  expect(DBClusterIdentifier).toEqual(`${stack.stackName}-primary`);
+
+  const { Properties: { GlobalClusterIdentifier } } = Object.values(synthesized.findResources('Custom::UpgradeGlobalClusterProvider'))[0];
+
+  expect(GlobalClusterIdentifier).toEqual(`global-${stack.stackName}`);
+});
+
+test('test nested stack resources identifiers', () => {
+  const nestedStackName = 'nested-stack';
+
+  const app = new App();
+  const stack = new Stack(app, 'root-stack', { env: envTokyo });
+
+  const nestedStack = new NestedStack(stack, nestedStackName);
+
+  expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
+  expect(Token.isUnresolved(stack.region)).toBeFalsy();
+
+  expect(Token.isUnresolved(nestedStack.stackName)).toBeTruthy();
+  expect(Token.isUnresolved(nestedStack.region)).toBeFalsy();
+
+  new GlobalAuroraRDSMaster(nestedStack, 'GlobalAuroraRDS', {
+    instanceType: InstanceTypeEnum.R5_LARGE,
+    credentials: _rds.Credentials.fromGeneratedSecret('sysadmin'),
+    engineVersion: _rds.DatabaseClusterEngine.auroraPostgres({ version: _rds.AuroraPostgresEngineVersion.VER_12_11 }),
+    dbClusterpPG: new _rds.ParameterGroup(nestedStack, 'dbClusterparametergroup', {
+      engine: _rds.DatabaseClusterEngine.auroraPostgres({
+        version: _rds.AuroraPostgresEngineVersion.VER_12_11,
+      }),
+      parameters: {},
+    }),
+  });
+
+  const synthesized = assertions.Template.fromStack(nestedStack);
+  const { Properties: { DBClusterIdentifier } } = Object.values(synthesized.findResources('AWS::RDS::DBCluster'))[0];
+
+  expect(DBClusterIdentifier).toEqual(`${nestedStackName}-primary`);
+
+  const { Properties: { GlobalClusterIdentifier } } = Object.values(synthesized.findResources('Custom::UpgradeGlobalClusterProvider'))[0];
+
+  expect(GlobalClusterIdentifier).toEqual(`global-${nestedStackName}`);
+});
+
+test('test StackParams', () => {
+  const rootStackName = 'root-stack';
+  const nestedStackName = 'nested-stack';
+
+  const app = new App();
+  const stack = new Stack(app, 'root-stack', { env: envTokyo });
+  const nestedStack = new NestedStack(stack, nestedStackName);
+
+  expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
+  expect(Token.isUnresolved(stack.region)).toBeFalsy();
+
+  expect(Token.isUnresolved(nestedStack.stackName)).toBeTruthy();
+  expect(Token.isUnresolved(nestedStack.region)).toBeFalsy();
+
+  const rootStackParams = new StackParams(stack);
+  const nestedStackParams = new StackParams(nestedStack);
+
+  expect(rootStackParams.region).toEqual(envTokyo.region);
+  expect(rootStackParams.name).toEqual(rootStackName);
+
+  expect(nestedStackParams.region).toEqual(nestedStackParams.region);
+  expect(nestedStackParams.name).toEqual(nestedStackName);
 });
