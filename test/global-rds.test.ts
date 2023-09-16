@@ -302,12 +302,12 @@ test('test stack resources identifiers', () => {
 });
 
 test('test nested stack resources identifiers', () => {
-  const rootStackName = 'root-stack';
+  const nestedStackName = 'nested-stack';
 
   const app = new App();
-  const stack = new Stack(app, rootStackName, { env: envTokyo });
+  const stack = new Stack(app, 'root-stack', { env: envTokyo });
 
-  const nestedStack = new NestedStack(stack, 'nested-stack');
+  const nestedStack = new NestedStack(stack, nestedStackName);
 
   expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
   expect(Token.isUnresolved(stack.region)).toBeFalsy();
@@ -330,19 +330,20 @@ test('test nested stack resources identifiers', () => {
   const synthesized = assertions.Template.fromStack(nestedStack);
   const { Properties: { DBClusterIdentifier } } = Object.values(synthesized.findResources('AWS::RDS::DBCluster'))[0];
 
-  expect(DBClusterIdentifier).toEqual(`${rootStackName}-primary`);
+  expect(DBClusterIdentifier).toEqual(`${nestedStackName}-primary`);
 
   const { Properties: { GlobalClusterIdentifier } } = Object.values(synthesized.findResources('Custom::UpgradeGlobalClusterProvider'))[0];
 
-  expect(GlobalClusterIdentifier).toEqual(`global-${rootStackName}`);
+  expect(GlobalClusterIdentifier).toEqual(`global-${nestedStackName}`);
 });
 
 test('test StackParams', () => {
   const rootStackName = 'root-stack';
+  const nestedStackName = 'nested-stack';
 
   const app = new App();
-  const stack = new Stack(app, rootStackName, { env: envTokyo });
-  const nestedStack = new NestedStack(stack, 'nested-stack');
+  const stack = new Stack(app, 'root-stack', { env: envTokyo });
+  const nestedStack = new NestedStack(stack, nestedStackName);
 
   expect(Token.isUnresolved(stack.stackName)).toBeFalsy();
   expect(Token.isUnresolved(stack.region)).toBeFalsy();
@@ -357,5 +358,5 @@ test('test StackParams', () => {
   expect(rootStackParams.name).toEqual(rootStackName);
 
   expect(nestedStackParams.region).toEqual(nestedStackParams.region);
-  expect(nestedStackParams.name).toEqual(rootStackName);
+  expect(nestedStackParams.name).toEqual(nestedStackName);
 });

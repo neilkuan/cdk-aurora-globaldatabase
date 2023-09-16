@@ -552,44 +552,34 @@ export interface RegionalOptions {
 }
 
 export class StackParams {
-  private fakeStack: cdk.Stack;
+  private readonly fakeStack: cdk.Stack;
+  public readonly region: string;
+  public readonly name: string;
+  public readonly account: string;
 
-  public region: string;
-  public name: string;
-  public account: string;
-
-  constructor(
-    scope: Construct,
-  ) {
+  constructor(scope: Construct) {
     this.fakeStack = cdk.Stack.of(scope);
-    const isUnresolved = cdk.Token.isUnresolved(this.fakeStack.stackName);
+    const { region, account, node } = this.fakeStack;
 
+    this.region = region;
+    this.name = node.id;
+    this.account = account;
 
-    this.region = this.fakeStack.region;
-    this.name = isUnresolved ? this.getRootNode()?.stackName! : this.fakeStack.stackName;
-    this.account = this.fakeStack.account;
+    this.validateParams();
+  }
 
+  private validateParams() {
     if (!this.name) {
-      throw new Error(`This stack name is unsupported ${this.name}.`);
+      throw new Error(`This stack name is unsupported: ${this.name}.`);
     }
 
     if (cdk.Token.isUnresolved(this.name)) {
-      throw new Error(`This stack name is unresolved ${this.name}.`);
+      throw new Error(`This stack name is unresolved: ${this.name}.`);
     }
 
-    if (GlobalAuroraRDSSupportRegion.indexOf(this.region) == -1) {
+    if (!GlobalAuroraRDSSupportRegion.includes(this.region)) {
       throw new Error(`This region ${this.region} not Support Global RDS !!!`);
     }
-  }
-
-  private getRootNode() {
-    let root = this.fakeStack.node.scope;
-
-    while (root && !(root instanceof cdk.Stack)) {
-      root = root.node.scope;
-    }
-
-    return root;
   }
 }
 
