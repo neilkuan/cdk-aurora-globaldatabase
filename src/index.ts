@@ -552,14 +552,12 @@ export interface RegionalOptions {
 }
 
 export class StackParams {
-  private readonly fakeStack: cdk.Stack;
   public readonly region: string;
   public readonly name: string;
   public readonly account: string;
 
   constructor(scope: Construct) {
-    this.fakeStack = cdk.Stack.of(scope);
-    const { region, account, node } = this.fakeStack;
+    const { region, account, node } = cdk.Stack.of(scope);
 
     this.region = region;
     this.name = node.id;
