@@ -906,27 +906,17 @@ export class GlobalAuroraRDSSlaveInfra extends Construct {
     });
 
     const DBsubnetType = props?.subnetType ?? ec2.SubnetType.PRIVATE_WITH_EGRESS;
-    if (DBsubnetType === ec2.SubnetType.PUBLIC) {
-      const PublicSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
-      this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
-        dbSubnetGroupName: `${params.name.toLowerCase()}-publicsubnetgroup`,
-        dbSubnetGroupDescription: 'Public Subnets for database',
-        subnetIds: PublicSubnet.subnetIds,
-      });
+    const isPublic = DBsubnetType === ec2.SubnetType.PUBLIC;
+    const subnet = rdsVpcSecond.selectSubnets({ subnetType: DBsubnetType });
+    this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
+      dbSubnetGroupName: `${params.name.toLowerCase()}-${isPublic ? 'public' : 'private'}subnetgroup`,
+      dbSubnetGroupDescription: `${isPublic ? 'Public' : 'Private'} Subnets for database`,
+      subnetIds: subnet.subnetIds,
+    });
 
-      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PublicDBSubnetGroup');
-      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
-    } else {
-      const PrivateSubnet = rdsVpcSecond.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS });
-      this.dbSubnetGroup = new rds.CfnDBSubnetGroup(this, 'Subnets', {
-        dbSubnetGroupName: `${params.name.toLowerCase()}-privatesubnetgroup`,
-        dbSubnetGroupDescription: 'Private Subnets for database',
-        subnetIds: PrivateSubnet.subnetIds,
-      });
+    cdk.Tags.of(this.dbSubnetGroup).add('Name', `${isPublic ? 'Public' : 'Private'}DBSubnetGroup`);
+    this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
 
-      cdk.Tags.of(this.dbSubnetGroup).add('Name', 'PrivateDBSubnetGroup');
-      this.dbSubnetGroup.node.addDependency(rdsVpcSecond);
-    }
     new cdk.CfnOutput(this, 'newDBSubnetGroup', {
       value: `${this.dbSubnetGroup.dbSubnetGroupName}`,
     });
