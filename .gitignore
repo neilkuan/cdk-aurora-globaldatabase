@@ -30,7 +30,6 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
-!/.projenrc.js
 /test-reports/
 junit.xml
 /coverage/
@@ -58,3 +57,4 @@ yarn-error.log
 coverage
 venv
 .history
+!/.projenrc.js

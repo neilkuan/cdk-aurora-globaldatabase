@@ -28,3 +28,4 @@ image
 yarn-error.log
 coverage
 venv
+/.gitattributes
