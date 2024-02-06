@@ -15,7 +15,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     announce: false,
   },
   compat: true,
-  cdkVersion: '2.45.0',
+  cdkVersion: '2.126.0',
   /**
    * we default release the main branch(cdkv2) with major version 2.
    */
@@ -46,8 +46,14 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_aurora_globaldatabase',
   },
   rebuildBot: false,
-  workflowNodeVersion: '^16',
-  typescriptVersion: '4.8.4',
+  devDeps: [
+    'ts-jest@29.1.2',
+    'jsii-rosetta@5.0.x',
+  ],
+  minNodeVersion: '20.10.0',
+  workflowNodeVersion: '20.10.0',
+  typescriptVersion: '^5',
+  jsiiVersion: '5.3.x',
 });
 
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
