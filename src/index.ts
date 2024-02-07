@@ -665,7 +665,7 @@ export class GlobalAuroraRDSMaster extends Construct {
 
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
     this.engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
-      version: rds.AuroraMysqlEngineVersion.VER_2_07_1,
+      version: rds.AuroraMysqlEngineVersion.VER_2_07_9,
     });
 
     this.rdsInstanceType = props?.instanceType ?? InstanceTypeEnum.R5_LARGE;
