@@ -707,6 +707,7 @@ export class GlobalAuroraRDSMaster extends Construct {
       defaultDatabaseName: props?.defaultDatabaseName ?? 'globaldatabase',
       monitoringInterval: props?.monitoringInterval,
       monitoringRole: props?.monitoringRole,
+      storageEncrypted: props?.storageEncrypted ?? true,
     });
 
     this.rdsPassword = `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret?.secretName}` ?? props?.rdsPassword;;
