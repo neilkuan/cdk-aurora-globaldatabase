@@ -608,7 +608,7 @@ export class GlobalAuroraRDSMaster extends Construct {
   /**
    * return RDS Cluster Resource ARN .
    */
-  readonly rdsClusterarn: string;
+  readonly rdsClusterArn: string;
 
   /**
    * return Global RDS Cluster Identifier .
@@ -750,9 +750,9 @@ export class GlobalAuroraRDSMaster extends Construct {
       value: this.rdsIsPublic,
     });
 
-    this.rdsClusterarn = `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
+    this.rdsClusterArn = `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
     new cdk.CfnOutput(this, 'RDSClusterarn', {
-      value: this.rdsClusterarn,
+      value: this.rdsClusterArn,
     });
 
 
@@ -824,7 +824,7 @@ export class GlobalAuroraRDSMaster extends Construct {
       resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
       properties: {
-        SourceDBClusterIdentifier: this.rdsClusterarn,
+        SourceDBClusterIdentifier: this.rdsClusterArn,
         GlobalClusterIdentifier: this.globalClusterIdentifier,
         REGION: options.region,
         DBSubnetGroupName: options.dbSubnetGroupName,
