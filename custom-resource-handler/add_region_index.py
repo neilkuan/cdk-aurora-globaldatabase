@@ -19,7 +19,7 @@ def on_event(event, context):
 
 
 def on_create(event):
-    
+
     print("[INFO]", "Create Event")
     props = event["ResourceProperties"]
     print("create resource with props %s" % (props))
@@ -35,11 +35,7 @@ def on_create(event):
     seconddbInstanceIdentifier_value = props['seconddbInstanceIdentifier']
     securityGroup_value = props.get('securityGroup')
     dbParameterGroup_value = props.get('dbParameterGroup')
-    
-    if securityGroup_value == None:
-      securityGroup_value = None
-    else:
-      securityGroup_value = [securityGroup_value]
+
     kwargs = dict(
       DBClusterIdentifier=ClusterIdentifier_value,
       Engine=Engine_value,
@@ -51,7 +47,7 @@ def on_create(event):
     )
     print(f'[INFO]: {kwargs}...')
     print(f'[INFO]: remove key that value is None or null string...')
-    
+
 
     need_del_keys = []
     for k in kwargs.keys():
@@ -64,16 +60,18 @@ def on_create(event):
         print(f'[WARN]: value is {v}...')
         print(f'[INFO]: will remove from kwargs...')
         need_del_keys.append(k)
-    
+
     for k in need_del_keys:
       kwargs.pop(k)
 
+
+    kwargs['VpcSecurityGroupIds'] = [securityGroup_value]
 
     data ={
       'GlobalClusterIdentifier': GlobalClusterIdentifier_value,
       'SourceDBClusterIdentifier': SourceDBClusterIdentifier_value
     }
-    print("[INFO]", "Add second db cluster") 
+    print("[INFO]", "Add second db cluster")
     create_db_cluster_res = rds.create_db_cluster(**kwargs)
     data['secondRDSClusterArn'] = create_db_cluster_res['DBCluster']['DBClusterArn']
     time.sleep(5)
@@ -109,7 +107,7 @@ def on_delete(event):
     seconddbInstanceIdentifier_value = props['seconddbInstanceIdentifier']
     secondRDSClusterArn_value = props['secondRDSClusterArn']
     ClusterIdentifier_value = props['ClusterIdentifier']
-    
+
     print("delete resource with props %s" % (props))
 
     print ("remove second rds cluster from global cluster")
@@ -130,7 +128,7 @@ def on_delete(event):
         if global_res_len < 2:
           break
         time.sleep(10)
-    
+
     print ("remove second rds instance")
     delete_db_instance_res = rds.delete_db_instance(
     DBInstanceIdentifier=seconddbInstanceIdentifier_value,
@@ -147,7 +145,7 @@ def on_delete(event):
           print ("instance not found ")
           break
         time.sleep(10)
-    
+
     print ("remove second rds cluster")
     delete_db_cluster_res = rds.delete_db_cluster(
     DBClusterIdentifier=ClusterIdentifier_value,
@@ -179,7 +177,7 @@ def is_complete(event, context):
         describe_db_clusters_res = rds.describe_db_clusters(DBClusterIdentifier=ClusterIdentifier_value)
         print(describe_db_clusters_res)
         cluster_not_exist = False
-    except botocore.exceptions.ClientError: 
+    except botocore.exceptions.ClientError:
         print ("cluster not found ")
         cluster_not_exist = True
         pass
@@ -189,15 +187,15 @@ def is_complete(event, context):
         describe_db_instances_res = rds.describe_db_instances(DBInstanceIdentifier=seconddbInstanceIdentifier_value)
         print(describe_db_instances_res)
         instance_not_exist = False
-    except botocore.exceptions.ClientError: 
+    except botocore.exceptions.ClientError:
         print ("cluster not found ")
         instance_not_exist = True
         pass
     is_ready = cluster_not_exist and instance_not_exist
     return { 'IsComplete': is_ready }
-  
+
   if request_type == 'Create':
     return { 'IsComplete': True }
-    
+
   if request_type == 'Update':
     return { 'IsComplete': True }
