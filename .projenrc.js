@@ -70,8 +70,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   minNodeVersion: '20.10.0',
   workflowNodeVersion: '20.10.0',
-  typescriptVersion: '^5',
-  jsiiVersion: '5.3.x',
+  typescriptVersion: '^5.5',
+  jsiiVersion: '5.5.x',
 });
 
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];

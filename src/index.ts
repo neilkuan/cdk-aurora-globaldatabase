@@ -645,7 +645,9 @@ export class GlobalAuroraRDSMaster extends cdk.Construct {
       defaultDatabaseName: props?.defaultDatabaseName ?? 'globaldatabase',
     });
 
-    this.rdsPassword = `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret?.secretName}` ?? props?.rdsPassword;;
+    this.rdsPassword = this.rdsCluster.secret?.secretName
+      ? `Please use this command get password back , aws secretsmanager get-secret-value --secret-id ${this.rdsCluster.secret.secretName}`
+      : props?.rdsPassword;
 
     this.rdsCluster.node.addDependency(rdsVpc);
     this.rdsCluster.connections.allowDefaultPortFrom(ec2.Peer.ipv4(rdsVpc.vpcCidrBlock));
