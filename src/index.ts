@@ -608,7 +608,7 @@ export class GlobalAuroraRDSMaster extends Construct {
   /**
    * return RDS Cluster Resource ARN .
    */
-  readonly rdsClusterarn: string;
+  readonly rdsClusterArn: string;
 
   /**
    * return Global RDS Cluster Identifier .
@@ -665,7 +665,7 @@ export class GlobalAuroraRDSMaster extends Construct {
 
     // Mysql need (MySQL 5.6 / version > 5.6.10a) , Postgres need (version 10.11 , 10.12 , 11.7 or later)
     this.engineVersion = props?.engineVersion ?? rds.DatabaseClusterEngine.auroraMysql({
-      version: rds.AuroraMysqlEngineVersion.VER_2_07_1,
+      version: rds.AuroraMysqlEngineVersion.VER_2_07_9,
     });
 
     this.rdsInstanceType = props?.instanceType ?? InstanceTypeEnum.R5_LARGE;
@@ -707,6 +707,7 @@ export class GlobalAuroraRDSMaster extends Construct {
       defaultDatabaseName: props?.defaultDatabaseName ?? 'globaldatabase',
       monitoringInterval: props?.monitoringInterval,
       monitoringRole: props?.monitoringRole,
+      storageEncrypted: props?.storageEncrypted ?? true,
     });
 
     this.rdsPassword = this.rdsCluster.secret?.secretName
@@ -751,9 +752,9 @@ export class GlobalAuroraRDSMaster extends Construct {
       value: this.rdsIsPublic,
     });
 
-    this.rdsClusterarn = `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
+    this.rdsClusterArn = `arn:aws:rds:${params.region}:${params.account}:cluster:${this.rdsCluster.clusterIdentifier}`;
     new cdk.CfnOutput(this, 'RDSClusterarn', {
-      value: this.rdsClusterarn,
+      value: this.rdsClusterArn,
     });
 
 
@@ -825,7 +826,7 @@ export class GlobalAuroraRDSMaster extends Construct {
       resourceType: 'Custom::addRegionalClusterProvider',
       serviceToken: addRegionalProvider.serviceToken,
       properties: {
-        SourceDBClusterIdentifier: this.rdsClusterarn,
+        SourceDBClusterIdentifier: this.rdsClusterArn,
         GlobalClusterIdentifier: this.globalClusterIdentifier,
         REGION: options.region,
         DBSubnetGroupName: options.dbSubnetGroupName,
