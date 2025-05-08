@@ -347,7 +347,7 @@ export enum MySQLtimeZone {
   AUSTRALIA_BRISBANE = 'Australia/Brisbane',
 }
 
-export enum InstanceTypeEnum{
+export enum InstanceTypeEnum {
   /**
    * db Instance Type r4.large
    */
@@ -486,7 +486,7 @@ export interface GlobalAuroraRDSMasterProps {
    *
    * @default - {time_zone: 'UTC'}
    */
-  readonly parameters?: {[key: string]: string} | undefined;
+  readonly parameters?: { [key: string]: string } | undefined;
 
   /**
    * RDS Database Cluster Engine .
@@ -827,7 +827,7 @@ export class GlobalAuroraRDSSlaveInfra extends cdk.Construct {
    *
   * @default - true
   */
-  readonly dbSubnetGroup:rds.CfnDBSubnetGroup;
+  readonly dbSubnetGroup: rds.CfnDBSubnetGroup;
   constructor(scope: cdk.Construct, id: string, props?: GlobalAuroraRDSSlaveInfraProps ) {
     super(scope, id);
     const stack = cdk.Stack.of(this);
