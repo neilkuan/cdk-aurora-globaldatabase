@@ -1597,9 +1597,9 @@
   integrity sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==
 
 "@types/yargs@^16.0.0":
-  version "16.0.9"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-16.0.9.tgz#ba506215e45f7707e6cbcaf386981155b7ab956e"
-  integrity sha512-tHhzvkFXZQeTECenFoRljLBYPZJ7jAVxqqtEI0qTLOmuultnFp4I9yKE17vTuhf7BkhCu7I4XuemPgikDVuYqA==
+  version "16.0.10"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-16.0.10.tgz#2376eed83bc9dbda3d7253a44e18328fc0854477"
+  integrity sha512-0xbOE6Ht/oj0MTVVXCCdEZzUk7adwW3YB1Tg1ZBm95jrkrUMI0VA4sf3SgxC1TG8p5aKkn3jxT9A2BDw1mM/TQ==
   dependencies:
     "@types/yargs-parser" "*"
 
@@ -6311,9 +6311,9 @@ typescript@^5.5:
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 typescript@next:
-  version "6.0.0-dev.20251023"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.0-dev.20251023.tgz#477adda3dc608ddc162022d996e513b481780225"
-  integrity sha512-46h60oV08FdjoDQTcJ4WSImkCyCK9PD7fXxPx9wvDRbBZ0ncUR4ORJl0VB0a8S8J2qELj+NfbVT1qiAymH7bag==
+  version "6.0.0-dev.20251024"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.0-dev.20251024.tgz#34647e9f0be6dfacc09c421c02859a16f9383e46"
+  integrity sha512-LCvfW9FEmkdnIDeQX+GdDF/N2yvy6UvR5RFUuwFCmpjoBlAXJr84AC2L0f7Fw4pqpPeS5xwwlCRDs26Sdke2DA==
 
 typescript@~5.5:
   version "5.5.4"
