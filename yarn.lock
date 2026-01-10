@@ -1969,9 +1969,9 @@ balanced-match@^1.0.0:
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
 baseline-browser-mapping@^2.9.0:
-  version "2.9.13"
-  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.9.13.tgz#e1d39147f6a7492438131476026e705d816b10cb"
-  integrity sha512-WhtvB2NG2wjr04+h77sg3klAIwrgOqnjS49GGudnUPGFFgg7G17y7Qecqp+2Dr5kUDxNRBca0SK7cG8JwzkWDQ==
+  version "2.9.14"
+  resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.9.14.tgz#3b6af0bc032445bca04de58caa9a87cfe921cbb3"
+  integrity sha512-B0xUquLkiGLgHhpPBqvl7GWegWBUNuujQ6kXd/r1U38ElPT6Ok8KZ8e+FpUGEc2ZoRQUzq/aUnaKFc/svWUGSg==
 
 brace-expansion@^1.1.7:
   version "1.1.12"
@@ -6116,9 +6116,9 @@ typescript@^5.5:
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 typescript@next:
-  version "6.0.0-dev.20260108"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.0-dev.20260108.tgz#d3629e90f39f1b4dc11052f6b3969a66a9f58638"
-  integrity sha512-mWAHxyi0eVqDwbiSaTUqhR24MdNBWgpEtjBd/GlawwhcsK/7Nsrdc7pKMDz5aMmnSwD+SQA9jtAHCnGPV29Rnw==
+  version "6.0.0-dev.20260109"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.0-dev.20260109.tgz#6151d7737405e2652e0cf0f2af79b5a71de66593"
+  integrity sha512-wn8ujRGXLIT7rzpTK82/VGkhooKiRzQV3dOsCMaXsj5q4aHNm18JaP+VIIXpBzEjr6owdoyIAEKsV2rwEWYyoQ==
 
 typescript@~5.5:
   version "5.5.4"
