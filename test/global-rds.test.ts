@@ -82,7 +82,7 @@ test('test change default dbUserName and default database Name', () => {
   assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-mysql',
     DatabaseName: 'superdb',
-    EngineVersion: '5.7.mysql_aurora.2.07.1',
+    EngineVersion: '5.7.mysql_aurora.2.07.9',
     MasterUsername: 'superuser',
     MasterUserPassword: '1qaz2wsx',
   });
@@ -97,7 +97,7 @@ test('test no default rdsPassword', () => {
   assertions.Template.fromStack(stack).hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-mysql',
     DatabaseName: 'superdb',
-    EngineVersion: '5.7.mysql_aurora.2.07.1',
+    EngineVersion: '5.7.mysql_aurora.2.07.9',
     MasterUsername: {
       'Fn::Join': [
         '',
