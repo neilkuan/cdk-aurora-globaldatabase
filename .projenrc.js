@@ -21,12 +21,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
    */
   majorVersion: 2,
   defaultReleaseBranch: 'master',
-  /**
-    * we also release the cdkv1 branch with major version 1.
-    */
-  releaseBranches: {
-    cdkv1: { npmDistTag: 'cdkv1', majorVersion: 1 },
-  },
   stability: 'experimental',
   defaultReleaseBranch: 'master',
   autoDetectBin: false,
@@ -47,7 +41,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   rebuildBot: false,
   devDeps: [
-    'ts-jest@29.1.2',
+    // 'ts-jest@29.1.2',
     'jsii-rosetta@5.0.x',
   ],
   minNodeVersion: '^24',
