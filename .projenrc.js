@@ -44,8 +44,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     // 'ts-jest@29.1.2',
     'jsii-rosetta@5.0.x',
   ],
-  minNodeVersion: '^24',
-  workflowNodeVersion: '^24',
+  minNodeVersion: '24.0.0',
+  workflowNodeVersion: '24',
   typescriptVersion: '^5.5',
   jsiiVersion: '5.9.x',
 });
