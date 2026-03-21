@@ -40,6 +40,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_aurora_globaldatabase',
   },
   rebuildBot: false,
+  npmProvenance: true,
+  npmTokenSecret: '',
+  npmTrustedPublishing: true,
   devDeps: [
     // 'ts-jest@29.1.2',
     'jsii-rosetta@5.0.x',
@@ -48,6 +51,18 @@ const project = new awscdk.AwsCdkConstructLibrary({
   workflowNodeVersion: '24',
   typescriptVersion: '^5.5',
   jsiiVersion: '5.9.x',
+});
+
+// Add registry-url to setup-node in release_npm job for OIDC Trusted Publishing
+const releaseWorkflow = project.release.publisher.project.tryFindObjectFile('.github/workflows/release.yml');
+if (releaseWorkflow) {
+  releaseWorkflow.addOverride('jobs.release_npm.steps.0.with.registry-url', 'https://registry.npmjs.org');
+}
+
+// Add provenance to publishConfig in package.json
+project.package.addField('publishConfig', {
+  access: 'public',
+  provenance: true,
 });
 
 const common_exclude = ['cdk.out', 'cdk.context.json', 'image', 'yarn-error.log', 'coverage', 'venv'];
